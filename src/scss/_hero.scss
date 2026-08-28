@@ -1,0 +1,180 @@
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  overflow: hidden;
+  background: #000;
+}
+
+/* Earth fills entire viewport */
+.hero-earth {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+/* Dark overlays — abdunkeln + Vignette */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.267);   /* globale Abdunklung */
+  pointer-events: none;
+  z-index: 1;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top,  rgba(255, 255, 255, 0.087) 0%, rgba(0,0,0,0.0) 45%),
+    linear-gradient(to right, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.0) 40%),
+    radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0, 0, 0, 0) 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* WebGL orb — centered over earth */
+.hero-orb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(90vw, 90vh);
+  height: min(90vw, 90vh);
+  z-index: 15; /* below .hero-text-right (20) so the ABOUT button stays hoverable/clickable */
+  pointer-events: all;
+
+  canvas {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+
+/* Headline — eft */
+.hero-text-left {
+  position: absolute;
+  bottom: 21%;
+  left: 8%;
+  z-index: 10;
+  pointer-events: none;
+  text-align: left;
+}
+
+.hero-headline {
+  font-family: var(--fh);
+  font-size: clamp(2rem, 4.5vw, 4.5rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  color: var(--text);
+
+  .accent {
+    color: var(--lime);
+    text-shadow: 0 0 40px var(--lime-glow);
+  }
+}
+
+/* Info + CTA — same height as left, right-aligned */
+.hero-text-right {
+  position: absolute;
+  bottom: 21%;
+  right: 8%;
+  z-index: 20;
+  pointer-events: all;
+  width: 300px;
+  text-align: left;
+}
+
+.hero-eyebrow {
+  font-family: var(--fh);
+  font-size: 15px;
+  font-weight: 5250;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 3;
+  display: block;
+}
+
+.btn-about {
+  display: inline-block;
+  margin-top: 14px;
+  background: var(--lime);
+  font-family: var(--fh);
+  font-size: 15px;
+  font-weight: 525;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 0;
+  border: 1px solid #7a7a7a;
+  box-shadow: 4px 4px 0px 0px #d2d2d2;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  transition: border-color 0.3s ease;
+  cursor: pointer;
+
+  /* The visible text label — sets the button size */
+  &::before {
+    content: attr(data-label);
+    display: block;
+    padding: 10px 22px;
+    color: #000;
+    position: relative;
+    z-index: 1;
+    transition: transform 0.3s ease;
+  }
+  /* Blue fill slides in from bottom */
+  &::after {
+    content: attr(data-label);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 26px;
+    color: #fff;
+    background: #577BDE;
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+  }
+  &:hover {
+    border-color: #525252;
+    &::before { transform: translateY(-100%); }
+    &::after  { transform: translateY(0); }
+  }
+}
+
+/* ── Inner page hero (About / Gallery) ── */
+.hero--page {
+  height: 60vh;
+  min-height: 420px;
+}
+.hero--page-plain {
+  background: radial-gradient(ellipse at 50% 30%, #101010 0%, #000 70%);
+}
+.page-hero-text {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 16px;
+  padding: 0 24px;
+
+  .heading { margin-bottom: 0; }
+  .hero-eyebrow { color: var(--lime); line-height: 1.6; }
+  .label { color: rgb(150,150,150); } /* var(--dim) is below WCAG AA 4.5:1 on this dark background */
+}

@@ -1,0 +1,19 @@
+/*
+Theme Name: Satellite
+Theme URI: https://adored-designers-687866.framer.app
+Author: Milena Rolfes
+Author URI: mailto:milena.rolfes@web.de
+Description: Dark futuristic one-page theme for the Satellite FAU project website. Converted from the original Grav theme.
+Version: 1.0.0
+Requires at least: 6.6
+Requires PHP: 8.1
+License: MIT
+Text Domain: satellite
+*/
+
+@use 'base';
+@use 'typography';
+@use 'nav';
+@use 'hero';
+@use 'sections';
+@use 'responsive';

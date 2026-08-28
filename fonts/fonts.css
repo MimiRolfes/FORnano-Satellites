@@ -1,0 +1,33 @@
+/*
+ * Self-hosted fonts (Chakra Petch, Inter) — replaces the Google Fonts CDN
+ * link so the theme doesn't depend on an external host.
+ * Font files: SIL Open Font License (Chakra Petch) / SIL Open Font License (Inter).
+ */
+@font-face {
+	font-family: 'Chakra Petch';
+	font-style: normal;
+	font-weight: 500;
+	font-display: swap;
+	src: url('chakra-petch-500.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Chakra Petch';
+	font-style: normal;
+	font-weight: 600;
+	font-display: swap;
+	src: url('chakra-petch-600.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Chakra Petch';
+	font-style: normal;
+	font-weight: 700;
+	font-display: swap;
+	src: url('chakra-petch-700.woff2') format('woff2');
+}
+@font-face {
+	font-family: 'Inter';
+	font-style: normal;
+	font-weight: 400 500;
+	font-display: swap;
+	src: url('inter-400.woff2') format('woff2');
+}

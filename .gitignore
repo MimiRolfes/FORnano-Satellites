@@ -1,0 +1,8 @@
+node_modules/
+npm-debug.log*
+.DS_Store
+
+# Raw/staging source images, not the ones the theme actually uses (see images/).
+# Also currently holds a signed, unlicensed third-party image that must never
+# be committed — see /Assets/Satelite_Landing.jpeg.
+/Assets/

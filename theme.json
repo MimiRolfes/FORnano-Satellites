@@ -1,0 +1,64 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/theme.json",
+	"version": 3,
+	"settings": {
+		"appearanceTools": true,
+		"color": {
+			"custom": true,
+			"customDuotone": false,
+			"palette": [
+				{ "slug": "bg", "name": "Background", "color": "#000000" },
+				{ "slug": "bg-alt", "name": "Background Alt", "color": "#080808" },
+				{ "slug": "light-section", "name": "Light Section", "color": "#eeeeee" },
+				{ "slug": "border", "name": "Border", "color": "#303030" },
+				{ "slug": "text", "name": "Text", "color": "#fafafa" },
+				{ "slug": "muted", "name": "Muted", "color": "#b6b7b4" },
+				{ "slug": "dim", "name": "Dim", "color": "#656565" },
+				{ "slug": "lime", "name": "Lime", "color": "#8fe388" }
+			]
+		},
+		"typography": {
+			"fontFamilies": [
+				{
+					"slug": "chakra-petch",
+					"name": "Chakra Petch",
+					"fontFamily": "'Chakra Petch', sans-serif",
+					"fontFace": [
+						{ "fontFamily": "Chakra Petch", "fontWeight": "500", "fontStyle": "normal", "src": [ "file:./fonts/chakra-petch-500.woff2" ] },
+						{ "fontFamily": "Chakra Petch", "fontWeight": "600", "fontStyle": "normal", "src": [ "file:./fonts/chakra-petch-600.woff2" ] },
+						{ "fontFamily": "Chakra Petch", "fontWeight": "700", "fontStyle": "normal", "src": [ "file:./fonts/chakra-petch-700.woff2" ] }
+					]
+				},
+				{
+					"slug": "inter",
+					"name": "Inter",
+					"fontFamily": "'Inter', sans-serif",
+					"fontFace": [
+						{ "fontFamily": "Inter", "fontWeight": "400 500", "fontStyle": "normal", "src": [ "file:./fonts/inter-400.woff2" ] }
+					]
+				}
+			]
+		},
+		"layout": {
+			"contentSize": "1200px",
+			"wideSize": "1200px"
+		}
+	},
+	"styles": {
+		"color": {
+			"background": "var(--wp--preset--color--bg)",
+			"text": "var(--wp--preset--color--text)"
+		},
+		"typography": {
+			"fontFamily": "var(--wp--preset--font-family--inter)"
+		}
+	},
+	"templateParts": [
+		{ "name": "header", "title": "Header", "area": "header" },
+		{ "name": "footer", "title": "Footer", "area": "footer" }
+	],
+	"customTemplates": [
+		{ "name": "page-about", "title": "About Page", "postTypes": [ "page" ] },
+		{ "name": "page-gallery", "title": "Gallery Page", "postTypes": [ "page" ] }
+	]
+}

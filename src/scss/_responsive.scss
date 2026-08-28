@@ -1,0 +1,18 @@
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 860px) {
+  .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+  .team-card--wide { grid-column: span 1; flex-direction: column; }
+  .highlights-grid { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+  .gallery-item--tall { grid-row: span 1; }
+  .gallery-inner { height: 200px; }
+}
+@media (max-width: 600px) {
+  .container { padding: 0 20px; }
+  .hero-text-left { left: 24px; right: 24px; bottom: 190px; }
+  .hero-text-right { left: 24px; right: 24px; bottom: 24px; width: auto; }
+  .hero-headline { font-size: clamp(2.2rem, 11vw, 4rem); }
+  .footer-inner { flex-direction: column; }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "satellite-wp-theme",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Build tooling for the Satellite WordPress theme — compiles assets/scss/style.scss to style.css via Sass, Autoprefixer and minification (per FAU RRZE theme requirements).",
+  "scripts": {
+    "build:css": "node build-css.js",
+    "watch:css": "node build-css.js --watch"
+  },
+  "browserslist": [
+    "last 3 versions",
+    "not dead"
+  ],
+  "devDependencies": {
+    "autoprefixer": "^10.4.19",
+    "cssnano": "^7.0.0",
+    "postcss": "^8.4.38",
+    "sass": "^1.77.0"
+  }
+}
