@@ -1,13 +1,33 @@
-/* ── Kleine Kategorie-Labels (z. B. "ABOUT", "HIGHLIGHTS") ── */
+/* ── Kleine Kategorie-Labels (z. B. "ABOUT", "HIGHLIGHTS") ──
+   Dünne, selbst gezeichnete eckige Klammern (per CSS-Rahmen, nicht das
+   "[" "]" Schriftzeichen), wie auf der Framer-Referenz. */
 .label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
   font-family: var(--fh);
-  font-size: 10px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--dim);
-  margin-bottom: 16px;
-  display: block;
+  color: #1a1a1a;
+  margin-bottom: 32px;
+  padding: 3px 11px;
+
+  /* currentColor statt var(--dim), damit die Klammern immer zur jeweils
+     geltenden Textfarbe passen (z. B. dunkler auf hellen Sektionen) */
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    border-top: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
+  }
+  &::before { left: 0; border-left: 1px solid currentColor; }
+  &::after  { right: 0; border-right: 1px solid currentColor; }
 }
 
 /* ── Überschriften (h1/h2, sitzen auf hellen wie dunklen Sektionen) ── */

@@ -43,19 +43,21 @@
 		<div class="about-grid">
 			<div class="about-text">
 				<p class="label">ABOOUT</p>
-				<h2 class="heading">Watching the Clouds with our Satllite. Find out more about our porject</h2>
-				<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="btn-about" data-label="ABOUT THE PROJECT &#8599;" aria-label="About the Project"></a>
+				<div class="about-text__main">
+					<h2 class="heading">Watching the Clouds with our Satllite. Find out more about our porject</h2>
+					<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="btn-about" data-label="ABOUT THE PROJECT &#8599;" aria-label="About the Project"></a>
+				</div>
 			</div>
 			<div class="about-image">
 				<img src="<?php echo esc_url( get_template_directory_uri() . '/images/about-planet.jpg' ); ?>" alt="Stylised render of a planet surface" />
 			</div>
 			<div class="stats-row">
 				<div class="stat-item">
-					<span class="stat-n">100<em>%</em></span>
+					<span class="stat-n">60<em>+</em></span>
 					<span class="stat-l">Hours of Work</span>
 				</div>
 				<div class="stat-item">
-					<span class="stat-n">20<em>+</em></span>
+					<span class="stat-n">1000<em>+</em></span>
 					<span class="stat-l">Lines of Code</span>
 				</div>
 				<div class="stat-item">
@@ -74,20 +76,28 @@
 		<h2 class="heading">Highlights of our<br>Work process</h2>
 		<div class="highlights-grid">
 			<div class="hl-card">
+				<h4 class="hl-label">HIGHLIGHT</h4>
 				<span class="hl-num">01</span>
-				<p>Gain tech insights from founders &amp; true leaders</p>
+				<div class="hl-visual" aria-hidden="true"></div>
+				<p>System-in-Package technology packs high-performance electronics into a compact satellite footprint.</p>
 			</div>
 			<div class="hl-card">
+				<h4 class="hl-label">HIGHLIGHT</h4>
 				<span class="hl-num">02</span>
-				<p>Join workshops with AI experts creative solving.</p>
+				<div class="hl-visual" aria-hidden="true"></div>
+				<p>A fully digitalized, automated manufacturing process for building nanosatellites in Bavaria.</p>
 			</div>
 			<div class="hl-card">
+				<h4 class="hl-label">HIGHLIGHT</h4>
 				<span class="hl-num">03</span>
-				<p>Connect with like-minded professionals and expand</p>
+				<div class="hl-visual" aria-hidden="true"></div>
+				<p>Leading Bavarian universities and industry partners collaborate to advance nanosatellite technology.</p>
 			</div>
 			<div class="hl-card">
+				<h4 class="hl-label">HIGHLIGHT</h4>
 				<span class="hl-num">04</span>
-				<p>Exploring the future of AI and tech with experts.</p>
+				<div class="hl-visual" aria-hidden="true"></div>
+				<p>Applications ranging from Earth observation to IoT connectivity and scientific research.</p>
 			</div>
 		</div>
 	</div>

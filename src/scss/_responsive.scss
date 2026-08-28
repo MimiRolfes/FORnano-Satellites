@@ -6,7 +6,7 @@
 @media (max-width: 860px) {
   .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
   .team-card--wide { grid-column: span 1; flex-direction: column; }
-  .highlights-grid { grid-template-columns: 1fr; }
+  .highlights-grid { flex-direction: column; }
   .gallery-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
   .gallery-item--tall { grid-row: span 1; }
   .gallery-inner { height: 200px; }
