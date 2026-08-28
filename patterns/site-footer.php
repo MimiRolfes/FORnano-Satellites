@@ -4,9 +4,12 @@
  * Slug: satellite/site-footer
  * Categories: satellite
  * Inserter: no
+ *
+ * Deutsch: Fußbereich der Website, wird über parts/footer.html auf jeder
+ * Seite eingebunden (Logo, Links, Design-Credit).
  */
 ?>
-<!-- FOOTER -->
+<!-- FUSSBEREICH -->
 <footer class="footer">
 	<div class="container footer-inner">
 		<div>

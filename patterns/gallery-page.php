@@ -4,9 +4,13 @@
  * Slug: satellite/gallery-page
  * Categories: satellite
  * Inserter: no
+ *
+ * Deutsch: Inhalt der Gallery-Seite (templates/page-gallery.html). Wird
+ * automatisch für jede WordPress-Seite mit dem Slug "gallery" verwendet,
+ * oder manuell im Editor über "Vorlage: Gallery Page" wählbar.
  */
 ?>
-<!-- PAGE HERO -->
+<!-- SEITEN-HERO mit Hintergrundbild -->
 <section class="hero hero--page">
 	<img class="hero-earth"
 		src="<?php echo esc_url( get_template_directory_uri() . '/images/gallery/astronaut-earthrise.jpg' ); ?>"
@@ -17,7 +21,7 @@
 	</div>
 </section>
 
-<!-- VISUALS -->
+<!-- BILDER-GRID (2-spaltiges Masonry-Layout, siehe .gallery-grid in src/scss/_sections.scss) -->
 <section class="section" id="visuals">
 	<div class="container">
 		<p class="label">VISUALS</p>

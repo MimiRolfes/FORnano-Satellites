@@ -1,4 +1,4 @@
-// Nav toggle
+// Nav-Dropdown öffnen/schließen (der "+"-Button oben rechts in der Navigation)
 const toggle = document.getElementById('nav-toggle');
 const dropdown = document.getElementById('nav-dropdown');
 const backdrop = document.getElementById('nav-backdrop');
@@ -23,14 +23,17 @@ backdrop.addEventListener('click', () => {
   backdrop.classList.remove('open');
 });
 
-// ── Nova WebGL Orb ────────────────────────────────────────────
+// ── Nova WebGL-Orb ────────────────────────────────────────────
+// Animierte, leuchtende Kugel im Hero-Bereich, gerendert per WebGL-Shader
+// (siehe .hero-orb im CSS). Reagiert auf Mausbewegung (Hover-Verzerrung)
+// und dreht sich leicht, solange der Mauszeiger darüber ist.
 (function initOrb() {
   const container = document.getElementById('hero-orb');
   if (!container) return;
 
-  const HUE = 84;            // shift purple→lime/green
-  const HOVER_INTENSITY = 0.3;
-  const ROTATE_ON_HOVER = true;
+  const HUE = 84;            // Farbton-Verschiebung: Lila → Lime/Grün
+  const HOVER_INTENSITY = 0.3;  // Stärke der Verzerrung bei Mausbewegung
+  const ROTATE_ON_HOVER = true; // Rotation nur aktiv, solange Maus über dem Orb ist
 
   const vert = `
     precision highp float;
@@ -155,6 +158,7 @@ backdrop.addEventListener('click', () => {
     }
   `;
 
+  // Hilfsfunktionen zum Kompilieren/Verlinken der obigen GLSL-Shader
   function createShader(gl, type, source) {
     const shader = gl.createShader(type);
     gl.shaderSource(shader, source);
@@ -211,6 +215,8 @@ backdrop.addEventListener('click', () => {
   const rotLoc         = gl.getUniformLocation(program, 'rot');
   const hoverIntLoc    = gl.getUniformLocation(program, 'hoverIntensity');
 
+  // Passt die Canvas-Auflösung an die tatsächliche Container-Größe
+  // (inkl. Retina/HiDPI-Displays) an
   function resize() {
     const dpr = window.devicePixelRatio || 1;
     const w = container.clientWidth;
@@ -226,6 +232,8 @@ backdrop.addEventListener('click', () => {
 
   let targetHover = 0, currentHover = 0, currentRot = 0, lastTime = 0;
 
+  // Prüft, ob die Maus innerhalb des kreisförmigen Orb-Bereichs ist,
+  // um den Hover-Effekt weich ein-/auszublenden
   container.addEventListener('mousemove', (e) => {
     const rect = container.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -237,6 +245,7 @@ backdrop.addEventListener('click', () => {
   });
   container.addEventListener('mouseleave', () => { targetHover = 0; });
 
+  // Haupt-Render-Loop, läuft dauerhaft per requestAnimationFrame
   function frame(t) {
     requestAnimationFrame(frame);
     const dt = (t - lastTime) * 0.001;

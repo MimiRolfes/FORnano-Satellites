@@ -1,7 +1,7 @@
 /* ============================================================
    NAV — eine gemeinsame Kapsel: [SATELITE ........... +]
    ============================================================ */
-/* ── Nav outer wrapper ── */
+/* ── Äußerer Nav-Container (fixiert, volle Breite) ── */
 .nav {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -16,7 +16,7 @@
   pointer-events: none;
 }
 
-/* ── 600px wrapper with top padding ── */
+/* ── 600px breiter Container mit Abstand oben ── */
 .nav-wrap {
   width: 600px;
   height: min-content;
@@ -31,7 +31,7 @@
   position: relative;
 }
 
-/* ── Nav top row ── */
+/* ── Obere Nav-Zeile ── */
 .nav-top {
   width: 100%;
   height: min-content;
@@ -48,7 +48,7 @@
   pointer-events: all;
 }
 
-/* ── Inner container: logo + plus ── */
+/* ── Innerer Container: Logo + Plus-Button ── */
 .nav-inner {
   width: min-content;
   height: min-content;
@@ -64,7 +64,7 @@
   border-radius: 0;
 }
 
-/* ── Left side: logo container ── */
+/* ── Linke Seite: Logo-Container ── */
 .nav-left {
   flex: 1;
   width: 1px;
@@ -123,7 +123,7 @@
   &.open { color: var(--lime); }
 }
 
-/* Dropdown — absolutely positioned below nav-top, doesn't shift layout */
+/* Dropdown — absolut positioniert unterhalb der Nav-Zeile, verschiebt kein Layout */
 .nav-dropdown {
   position: absolute;
   top: calc(100% + 6px);
@@ -172,7 +172,7 @@
   }
 }
 
-/* Backdrop blur over page */
+/* Unscharfer Hintergrund über der ganzen Seite, wenn Dropdown offen ist */
 .nav-backdrop {
   position: fixed;
   inset: 0;
@@ -192,7 +192,7 @@
   }
 }
 
-/* Only the + icon animates, not the container */
+/* Nur das +-Symbol animiert sich, nicht der ganze Container */
 .nav-plus-icon {
   display: inline-block;
   transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),

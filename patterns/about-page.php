@@ -4,9 +4,13 @@
  * Slug: satellite/about-page
  * Categories: satellite
  * Inserter: no
+ *
+ * Deutsch: Inhalt der "Über das Projekt"-Seite (templates/page-about.html).
+ * Wird automatisch für jede WordPress-Seite mit dem Slug "about"
+ * verwendet, oder manuell im Editor über "Vorlage: About Page" wählbar.
  */
 ?>
-<!-- PAGE HERO -->
+<!-- SEITEN-HERO (dunkler Kopfbereich dieser Unterseite) -->
 <section class="hero hero--page hero--page-plain">
 	<div class="page-hero-text">
 		<p class="label">GET TO KNOW THE PROJECT</p>
@@ -14,7 +18,7 @@
 	</div>
 </section>
 
-<!-- OVERVIEW -->
+<!-- ÜBERBLICK-SEKTION (Platzhaltertext, später mit echtem Projektinhalt füllen) -->
 <section class="section" id="overview">
 	<div class="container">
 		<p class="label">OVERVIEW</p>
@@ -24,7 +28,7 @@
 	</div>
 </section>
 
-<!-- TECH STACK -->
+<!-- TECH-STACK-SEKTION (Platzhalter-Karten, Inhalte noch auszufüllen) -->
 <section class="section section--dark" id="tech-stack">
 	<div class="container">
 		<p class="label">TECH STACK</p>

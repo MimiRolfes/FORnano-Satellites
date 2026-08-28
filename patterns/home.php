@@ -4,27 +4,31 @@
  * Slug: satellite/home
  * Categories: satellite
  * Inserter: no
+ *
+ * Deutsch: Inhalt der Startseite (front-page.html). Enthält alle
+ * Sektionen der One-Page-Startseite: Hero, About, Highlights, Team,
+ * Contact.
  */
 ?>
-<!-- HERO -->
+<!-- HERO-BEREICH (erster sichtbarer Abschnitt, volle Bildschirmhöhe) -->
 <section class="hero">
 
-	<!-- Earth photo fills entire viewport -->
+	<!-- Erdfoto füllt den gesamten Viewport -->
 	<img class="hero-earth"
 		src="<?php echo esc_url( get_template_directory_uri() . '/images/landing-earth.jpg' ); ?>"
 		alt="Earth from space" />
 
-	<!-- WebGL animated orb (Nova) -->
+	<!-- Animierter WebGL-Orb (Shader-Effekt, siehe js/satellite.js) -->
 	<div class="hero-orb" id="hero-orb"></div>
 
-	<!-- Headline center-left -->
+	<!-- Überschrift, mittig-links -->
 	<div class="hero-text-left">
 		<h1 class="hero-headline">
 			A <span class="accent">BETTER VIEW</span><br>FROM ABOVE
 		</h1>
 	</div>
 
-	<!-- Info + CTA center-right -->
+	<!-- Info-Text + Call-to-Action-Button, mittig-rechts -->
 	<div class="hero-text-right">
 		<p class="hero-eyebrow">A PROJECT FROM FAU STUDENTS</p>
 		<p class="hero-eyebrow">SUPERVISION BY PROF. FEY</p>
@@ -33,7 +37,7 @@
 
 </section>
 
-<!-- ABOUT -->
+<!-- ABOUT-SEKTION -->
 <section class="section" id="about">
 	<div class="container">
 		<div class="about-grid">
@@ -63,7 +67,7 @@
 	</div>
 </section>
 
-<!-- HIGHLIGHTS -->
+<!-- HIGHLIGHTS-SEKTION -->
 <section class="section section--dark" id="highlights">
 	<div class="container">
 		<p class="label">HIGHLIGHTS</p>
@@ -89,7 +93,7 @@
 	</div>
 </section>
 
-<!-- TEAM -->
+<!-- TEAM-SEKTION -->
 <section class="section" id="team">
 	<div class="container">
 		<p class="label">SUPPERRVISON</p>
@@ -123,7 +127,7 @@
 	</div>
 </section>
 
-<!-- CONTACT -->
+<!-- KONTAKT-SEKTION -->
 <section class="section" id="contact">
 	<div class="container">
 		<div class="contact-grid">

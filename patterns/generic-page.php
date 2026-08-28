@@ -4,6 +4,10 @@
  * Slug: satellite/generic-page
  * Categories: satellite
  * Inserter: no
+ *
+ * Deutsch: Standard-Fallback für jede WordPress-Seite ohne eigenes
+ * Template (also alles außer Startseite, About- und Gallery-Seite).
+ * Gibt einfach Titel + Inhalt der Seite aus (die "WordPress-Loop").
  */
 ?>
 <section class="section">

@@ -1,4 +1,4 @@
-/* ── Labels ── */
+/* ── Kleine Kategorie-Labels (z. B. "ABOUT", "HIGHLIGHTS") ── */
 .label {
   font-family: var(--fh);
   font-size: 10px;
@@ -10,7 +10,7 @@
   display: block;
 }
 
-/* ── Headings ── */
+/* ── Überschriften (h1/h2, sitzen auf hellen wie dunklen Sektionen) ── */
 .heading {
   font-family: var(--fh);
   font-size: clamp(1.8rem, 3vw, 2.6rem);

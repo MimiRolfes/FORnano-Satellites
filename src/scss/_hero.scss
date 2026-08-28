@@ -1,5 +1,5 @@
 /* ============================================================
-   HERO
+   HERO-BEREICH (erster Abschnitt der Startseite, volle Bildschirmhöhe)
    ============================================================ */
 .hero {
   position: relative;
@@ -9,7 +9,7 @@
   background: #000;
 }
 
-/* Earth fills entire viewport */
+/* Erdfoto füllt den gesamten sichtbaren Bereich */
 .hero-earth {
   position: absolute;
   inset: 0;
@@ -19,7 +19,7 @@
   object-position: center center;
 }
 
-/* Dark overlays — abdunkeln + Vignette */
+/* Dunkle Überlagerungen — Abdunklung + Vignette */
 .hero::before {
   content: '';
   position: absolute;
@@ -40,7 +40,7 @@
   z-index: 2;
 }
 
-/* WebGL orb — centered over earth */
+/* WebGL-Orb — zentriert über dem Erdfoto */
 .hero-orb {
   position: absolute;
   top: 50%;
@@ -57,7 +57,7 @@
   }
 }
 
-/* Headline — eft */
+/* Überschrift — links */
 .hero-text-left {
   position: absolute;
   bottom: 21%;
@@ -82,7 +82,7 @@
   }
 }
 
-/* Info + CTA — same height as left, right-aligned */
+/* Info-Text + Call-to-Action — gleiche Höhe wie links, rechtsbündig */
 .hero-text-right {
   position: absolute;
   bottom: 21%;
@@ -122,7 +122,7 @@
   transition: border-color 0.3s ease;
   cursor: pointer;
 
-  /* The visible text label — sets the button size */
+  /* Sichtbarer Button-Text — bestimmt die Button-Größe */
   &::before {
     content: attr(data-label);
     display: block;
@@ -132,7 +132,7 @@
     z-index: 1;
     transition: transform 0.3s ease;
   }
-  /* Blue fill slides in from bottom */
+  /* Blaue Füllung schiebt sich von unten rein (Hover-Effekt) */
   &::after {
     content: attr(data-label);
     display: flex;
@@ -154,7 +154,7 @@
   }
 }
 
-/* ── Inner page hero (About / Gallery) ── */
+/* ── Kleinerer Hero für Unterseiten (About / Gallery) ── */
 .hero--page {
   height: 60vh;
   min-height: 420px;

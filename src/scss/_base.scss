@@ -1,9 +1,11 @@
 /* ============================================================
-   Accent: #cfff64 (lime) · Font: Chakra Petch + Inter
+   Grundlagen: CSS-Reset, Design-Tokens (Farben, Schriften, Abstände)
+   Akzentfarbe: #cfff64 (Lime) · Schriften: Chakra Petch + Inter
    ============================================================ */
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+/* Design-Tokens als CSS-Custom-Properties — überall im Theme per var(--name) verwendbar */
 :root {
   --bg:       #000;
   --bg2:      #080808;

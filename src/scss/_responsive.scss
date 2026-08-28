@@ -1,6 +1,8 @@
 /* ============================================================
-   RESPONSIVE
+   RESPONSIVE ANPASSUNGEN (Tablet- und Mobile-Breakpoints)
    ============================================================ */
+
+/* Tablet: Grids werden einspaltig, breite Team-Karte wird schmal */
 @media (max-width: 860px) {
   .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
   .team-card--wide { grid-column: span 1; flex-direction: column; }
@@ -9,6 +11,7 @@
   .gallery-item--tall { grid-row: span 1; }
   .gallery-inner { height: 200px; }
 }
+/* Mobile: Hero-Texte gestapelt (nicht überlappend), kleinere Abstände */
 @media (max-width: 600px) {
   .container { padding: 0 20px; }
   .hero-text-left { left: 24px; right: 24px; bottom: 190px; }

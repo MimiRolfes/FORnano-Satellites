@@ -1,40 +1,40 @@
 # Satellite
 
-WordPress Block Theme for the **FORnanoSatellites** project website (FAU Erlangen-Nürnberg).
+WordPress-Block-Theme für die Projektwebsite von **FORnanoSatellites** (FAU Erlangen-Nürnberg).
 
-Dark, one-page-style design with a WebGL hero animation, converted from an original [Grav](https://getgrav.org/) theme and rebuilt as a WordPress Block Theme.
+Dunkles One-Page-Design mit WebGL-Hero-Animation, ursprünglich als [Grav](https://getgrav.org/)-Theme gebaut und hier als WordPress-Block-Theme neu aufgesetzt.
 
-## Requirements
+## Voraussetzungen
 
 - WordPress 6.6+
 - PHP 8.1+
-- Node.js 18+ (only needed for editing styles, not for running the site)
+- Node.js 18+ (nur zum Bearbeiten der Styles nötig, nicht zum Betrieb der Seite)
 
 ## Installation
 
-1. Copy this `satellite/` folder into `wp-content/themes/`.
-2. Activate it under **Appearance → Themes**.
-3. Create two pages in wp-admin with the slugs `about` and `gallery` — their templates are picked up automatically (or assign them manually under **Page → Template** in the block editor: "About Page" / "Gallery Page").
-4. Set your site title under **Settings → General** — it's used in the nav logo and footer.
+1. Diesen `satellite/`-Ordner nach `wp-content/themes/` kopieren.
+2. Unter **Design → Themes** aktivieren.
+3. Zwei Seiten im wp-admin anlegen mit den Slugs `about` und `gallery` — die passenden Templates werden automatisch zugeordnet (oder manuell im Block-Editor unter **Seite → Vorlage**: "About Page" / "Gallery Page" auswählen).
+4. Website-Titel unter **Einstellungen → Allgemein** setzen — wird im Nav-Logo und Footer verwendet.
 
-## Editing styles
+## Styles bearbeiten
 
-CSS is built from SCSS via a small Node pipeline (Sass → Autoprefixer → minification). **Don't edit `style.css` directly** — it's a generated file and gets overwritten on every build.
+Das CSS wird aus SCSS-Dateien gebaut (Sass → Autoprefixer → Minifizierung). **`style.css` nicht direkt bearbeiten** — die Datei wird automatisch generiert und bei jedem Build überschrieben.
 
 ```bash
-npm install        # once
-npm run watch:css  # rebuilds style.css automatically while you edit
-# or just once:
+npm install        # einmalig
+npm run watch:css  # baut style.css automatisch neu bei jeder Änderung
+# oder einmalig:
 npm run build:css
 ```
 
-Source files live in [`src/scss/`](src/scss). The build writes:
-- `style.css` — minified, this is what WordPress loads
-- `src/css/style.css` — readable, autoprefixed, unminified (for inspecting the compiled output)
+Die Quelldateien liegen unter [`src/scss/`](src/scss). Der Build erzeugt:
+- `style.css` — minifiziert, das lädt WordPress
+- `src/css/style.css` — lesbar, mit Autoprefixer, aber unminifiziert (zum Nachschauen)
 
-## Local preview without WordPress
+## Lokale Vorschau ohne WordPress
 
-[`../dev-server/`](../dev-server) contains a lightweight PHP router that mocks just enough of the WordPress API to render this theme's actual template/part/pattern files directly — useful for quick visual checks without a full WordPress install.
+[`../dev-server/`](../dev-server) enthält einen schlanken PHP-Router, der einen minimalen Teil der WordPress-API simuliert und direkt die echten Template-/Part-/Pattern-Dateien dieses Themes rendert — praktisch für schnelle visuelle Checks ohne komplette WordPress-Installation.
 
 ```bash
 cd ../dev-server
@@ -42,28 +42,28 @@ bash run.sh
 # → http://localhost:8791/
 ```
 
-This is a dev convenience only, not a substitute for testing against real WordPress before release.
+Das ist nur eine Entwicklungs-Hilfe, kein Ersatz für einen echten Test in WordPress vor der Veröffentlichung.
 
-## Theme structure (Block Theme)
+## Theme-Struktur (Block-Theme)
 
-- `theme.json` — color palette, typography (self-hosted fonts), layout settings
-- `templates/` — top-level page templates (`front-page.html`, `page-about.html`, `page-gallery.html`, `page.html`, `index.html`)
-- `parts/` — reusable template parts (header, footer)
-- `patterns/` — the actual bespoke markup for each section, as PHP files (so `home_url()`, `get_template_directory_uri()`, etc. work normally)
-- `fonts/` — self-hosted Chakra Petch (SIL OFL) and Inter (SIL OFL) font files
-- `images/` — theme-bundled imagery
-- `js/satellite.js` — nav toggle + WebGL hero orb shader
+- `theme.json` — Farbpalette, Typografie (lokal eingebundene Schriften), Layout-Einstellungen
+- `templates/` — Haupt-Seitenvorlagen (`front-page.html`, `page-about.html`, `page-gallery.html`, `page.html`, `index.html`)
+- `parts/` — wiederverwendbare Template-Parts (Header, Footer)
+- `patterns/` — das eigentliche, individuelle Markup für jede Sektion, als PHP-Dateien (damit `home_url()`, `get_template_directory_uri()` usw. ganz normal funktionieren)
+- `fonts/` — lokal eingebundene Schriftarten Chakra Petch (SIL OFL) und Inter (SIL OFL)
+- `images/` — im Theme mitgelieferte Bilder
+- `js/satellite.js` — Nav-Toggle + WebGL-Hero-Orb-Shader
 
-## Status against FAU RRZE theme requirements
+## Stand bezüglich der FAU-RRZE-Theme-Vorgaben
 
-- ✅ Block Editor theme (no Classic-theme exception needed)
-- ✅ No external CDNs — fonts self-hosted
-- ✅ No plugin dependency, no pagebuilder
-- ✅ SASS build with Autoprefixer + minification
-- ✅ WordPress/PHP minimum versions declared
-- ⚠️ Accessibility: spot-fixed (button labels, contrast) — full WCAG 2.2 AA audit still pending in a real WordPress environment
-- ⚠️ Theme Check plugin — not yet run (needs a real WordPress install)
+- ✅ Block-Editor-Theme (keine Classic-Theme-Ausnahme nötig)
+- ✅ Keine externen CDNs — Schriften lokal eingebunden
+- ✅ Keine Plugin-Abhängigkeit, kein Pagebuilder
+- ✅ SASS-Build mit Autoprefixer + Minifizierung
+- ✅ Mindestversionen für WordPress/PHP hinterlegt
+- ⚠️ Barrierefreiheit: punktuell gefixt (Button-Beschriftungen, Kontrast) — vollständiger WCAG-2.2-AA-Audit steht noch aus (braucht echte WordPress-Umgebung)
+- ⚠️ Theme-Check-Plugin — noch nicht durchgelaufen (braucht echte WordPress-Installation)
 
-## Contact
+## Kontakt
 
 Milena Rolfes — milena.rolfes@web.de
