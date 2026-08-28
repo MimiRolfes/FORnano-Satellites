@@ -2,7 +2,7 @@
 
 WordPress-Block-Theme für die Projektwebsite von **FORnanoSatellites** (FAU Erlangen-Nürnberg).
 
-Dunkles One-Page-Design mit WebGL-Hero-Animation, ursprünglich als [Grav](https://getgrav.org/)-Theme gebaut und hier als WordPress-Block-Theme neu aufgesetzt.
+Dunkles One-Page-Design mit WebGL-Hero-Animation, als WordPress-Block-Theme.
 
 ## Voraussetzungen
 
