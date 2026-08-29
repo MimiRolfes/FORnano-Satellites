@@ -1,45 +1,62 @@
-/* ── Kleine Kategorie-Labels (z. B. "ABOUT", "HIGHLIGHTS") ──
-   Dünne, selbst gezeichnete eckige Klammern (per CSS-Rahmen, nicht das
-   "[" "]" Schriftzeichen), wie auf der Framer-Referenz. */
+/* ── Kleine Kategorie-Labels / "Section Tag" (z. B. "ABOUT", "HIGHLIGHTS") ──
+   Framer-Komponente "Elements/Section Tag": Chakra Petch 500, 15px, kein
+   Tracking, Farbe Grey 100 (#525252), min-width 80px, Padding 5px 12px.
+   KEIN durchgehender Rahmen — 4 einzelne L-förmige Eckwinkel (Framer-
+   Komponente "Elements/Border", Variante "Small", ~10px, Deckkraft 0,74),
+   umgesetzt als 8 Hintergrund-Verläufe (je 2 pro Ecke). Auf dunklen
+   Kopfbereichen werden Text + Winkel aufgehellt (siehe #about, .page-hero-text). */
 .label {
-  position: relative;
+  --bracket: rgba(0, 0, 0, 0.45);   /* Farbe der Eckwinkel */
+  --bracket-len: 9px;
+  --bracket-w: 1px;
+
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  min-width: 80px;
+  padding: 5px 12px;
   font-family: var(--fh);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.22em;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: #1a1a1a;
-  margin-bottom: 32px;
-  padding: 3px 11px;
+  color: var(--ink);
+  margin-bottom: 16px;
 
-  /* currentColor statt var(--dim), damit die Klammern immer zur jeweils
-     geltenden Textfarbe passen (z. B. dunkler auf hellen Sektionen) */
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 5px;
-    border-top: 1px solid currentColor;
-    border-bottom: 1px solid currentColor;
-  }
-  &::before { left: 0; border-left: 1px solid currentColor; }
-  &::after  { right: 0; border-right: 1px solid currentColor; }
+  background-image:
+    linear-gradient(var(--bracket), var(--bracket)), linear-gradient(var(--bracket), var(--bracket)),
+    linear-gradient(var(--bracket), var(--bracket)), linear-gradient(var(--bracket), var(--bracket)),
+    linear-gradient(var(--bracket), var(--bracket)), linear-gradient(var(--bracket), var(--bracket)),
+    linear-gradient(var(--bracket), var(--bracket)), linear-gradient(var(--bracket), var(--bracket));
+  background-repeat: no-repeat;
+  background-position:
+    top left, top left,
+    top right, top right,
+    bottom left, bottom left,
+    bottom right, bottom right;
+  background-size:
+    var(--bracket-len) var(--bracket-w), var(--bracket-w) var(--bracket-len),
+    var(--bracket-len) var(--bracket-w), var(--bracket-w) var(--bracket-len),
+    var(--bracket-len) var(--bracket-w), var(--bracket-w) var(--bracket-len),
+    var(--bracket-len) var(--bracket-w), var(--bracket-w) var(--bracket-len);
 }
 
-/* ── Überschriften (h1/h2, sitzen auf hellen wie dunklen Sektionen) ── */
+/* ── Sektions-Überschriften (Framer-Komponente "TextReveal") ──
+   Chakra Petch 600, fix 32px (nicht responsiv skaliert), Zeilenhöhe 1.3,
+   Laufweite -0.01em. Nur Seiten-Hero-Titel sind größer (siehe _hero.scss). */
 .heading {
   font-family: var(--fh);
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-size: 2rem;          /* 32px */
   font-weight: 600;
   color: var(--text);
-  line-height: 1.12;
+  line-height: 1.3;
   letter-spacing: -0.01em;
   margin-bottom: 20px;
   text-transform: none;
+}
+@media (max-width: 600px) {
+  .heading { font-size: 1.75rem; }
 }
 
 .body-text { font-size: 17px; color: var(--muted); line-height: 1.6; margin-bottom: 28px; }
@@ -50,7 +67,7 @@
   font-family: var(--fh);
   font-weight: 600;
   letter-spacing: 0.05em;
-  border-bottom: 1px solid rgba(207,255,100,0.4);
+  border-bottom: 1px solid rgba(143, 227, 136, 0.4);
   padding-bottom: 2px;
   transition: border-color var(--t);
 

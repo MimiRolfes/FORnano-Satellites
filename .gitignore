@@ -6,3 +6,10 @@ npm-debug.log*
 # Also currently holds a signed, unlicensed third-party image that must never
 # be committed — see /Assets/Satelite_Landing.jpeg.
 /Assets/
+
+# Dekografiken aus der Framer-Vorlage — Lizenz ungeklärt, daher nicht im
+# Repo. Die Patterns prüfen per file_exists(): sind die Dateien lokal da,
+# werden sie gezeigt, sonst rendert die Sektion ohne sie. Eigene Bilder
+# lokal ablegen oder im Website-Editor setzen (siehe patterns/home.php).
+images/highlights/
+images/about-satellite.png

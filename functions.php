@@ -31,6 +31,17 @@ add_action( 'init', 'satellite_pattern_categories' );
  * CDNs, siehe FAU-RRZE-Vorgaben) und style.css ist eine generierte Datei
  * (siehe src/scss/ und build-css.js) — hier nicht manuell anpassen.
  */
+/**
+ * Kleines Inline-SVG "Pfeil nach oben" (↑). Steht in der About-Sektion links
+ * neben jeder Kennzahl — analog zur Framer-Referenz. Rein dekorativ
+ * (aria-hidden), erbt die Textfarbe.
+ */
+function satellite_arrow_icon() {
+	return '<svg class="metric-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">'
+		. '<path d="M12 19V6M12 6L6 12M12 6L18 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"/>'
+		. '</svg>';
+}
+
 function satellite_enqueue_assets() {
 	wp_enqueue_style(
 		'satellite-fonts',

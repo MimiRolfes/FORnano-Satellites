@@ -1,0 +1,56 @@
+/* ============================================================
+   SCROLL-REVEAL
+   Blendet Sektions-Inhalte beim Hereinscrollen ein (Fade + leichter
+   Versatz / Scale), analog zu den "appear"-Effekten der Framer-Referenz.
+
+   Die Trigger-Klassen (.reveal / .reveal--scale / .reveal--stagger)
+   werden per JavaScript gesetzt (initReveal() in js/satellite.js) — ohne
+   JS bleibt alles regulär sichtbar (Progressive Enhancement). Unter
+   prefers-reduced-motion greift keine der Versteck-Regeln.
+   ============================================================ */
+
+@media (prefers-reduced-motion: no-preference) {
+
+  /* Einzelnes Element */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--reveal-delay, 0s);
+    will-change: opacity, transform;
+  }
+  .reveal--scale { transform: scale(0.93); }
+  .reveal--left  { transform: translateX(-20px); }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Container, dessen direkte Kinder gestaffelt nachziehen */
+  .reveal--stagger > * {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+  .reveal--stagger.is-visible > * {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal--stagger.is-visible > *:nth-child(2) { transition-delay: 0.08s; }
+  .reveal--stagger.is-visible > *:nth-child(3) { transition-delay: 0.16s; }
+  .reveal--stagger.is-visible > *:nth-child(4) { transition-delay: 0.24s; }
+  .reveal--stagger.is-visible > *:nth-child(5) { transition-delay: 0.32s; }
+
+  /* Scroll-gekoppelte Farb-Enthüllung der Sektions-Überschriften
+     (Framer-Komponente "TextReveal": Grau -> Schwarz, wortweise, über
+     ~400 px Scroll-Weg). Die Wort-<span>s + Farben setzt initHeadingReveal()
+     in js/satellite.js; hier nur ein minimaler Übergang gegen Frame-Sprünge.
+     Grundzustand ohne JS / bei reduced-motion: die reguläre Textfarbe. */
+  .heading .rw { transition: color 0.06s linear; }
+}

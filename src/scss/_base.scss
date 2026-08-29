@@ -1,6 +1,7 @@
 /* ============================================================
    Grundlagen: CSS-Reset, Design-Tokens (Farben, Schriften, Abstände)
-   Akzentfarbe: #cfff64 (Lime) · Schriften: Chakra Petch + Inter
+   Akzentfarbe: #8FE388 (Mint) · Schriften: Chakra Petch + Inter
+   Werte gegen die Framer-Referenz (Projekt "ICONIQ copy") abgeglichen.
    ============================================================ */
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -13,13 +14,19 @@
   --text:     #fafafa;
   --muted:    rgb(182, 183, 180);
   --dim:      rgb(101, 101, 101);
-  --lime:     #8FE388;
+  --lime:     #8FE388;                 /* Framer "rgb(143,227,136)" — Akzent + Button-Füllung */
   --lime-glow:rgba(167, 115, 82, 0.25);
+  --blue:     #577BDE;                 /* Framer Button-Hover-Blau */
+  --silver:   #D2D2D2;                 /* Framer "Silver 100" — Karten-Rahmen, Offset-Schatten, Highlight-Nummer */
+  --teal:     #13ACAB;                 /* Framer Hero-Trennlinie */
+  --ink:      #525252;                 /* Framer "Grey 100" — Fließtext auf hellen Sektionen */
   --nav-bg:   rgba(0,0,0,0.61);
   --fh:       'Chakra Petch', sans-serif;
   --fb:       'Inter', sans-serif;
   --max:      1200px;
   --r:        4px;
+  --shadow-hard: 4px 4px 0 0 var(--silver);   /* Signatur-Schatten (Buttons + Karten) */
+  --section-pad: 120px;                /* vertikales Sektions-Padding lt. Framer */
   --t:        0.2s ease;
 }
 

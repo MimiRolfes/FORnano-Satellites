@@ -1,7 +1,22 @@
 /* ============================================================
    INHALTS-SEKTIONEN (About, Highlights, Team, Gallery, Contact, Footer)
    ============================================================ */
-.section         { padding: 100px 0; border-top: 1px solid var(--border); background: #eee; color: #111; }
+
+/* ── WordPress-Block-Integration ──
+   Die Startseiten-Sektionen sind als Gutenberg-Blöcke ausgezeichnet
+   (wp:group / wp:heading / wp:paragraph / wp:image), damit Überschriften,
+   Texte, Kennzahlen und Karten-Bilder im Website-Editor bearbeitbar sind.
+   Diese Resets neutralisieren die Default-Abstände der Block-Library, damit
+   unser eigenes Layout greift. Bewusst NICHT `.wp-block-group { margin: 0 }`
+   — das würde u. a. das `margin: 0 auto` von `.container` aushebeln. */
+.wp-block-heading { margin-top: 0; }
+.hl-card .wp-block-image,
+.hl-card .wp-block-image img { margin: 0; display: block; }
+.metrics .metric-n,
+.metrics .metric-l,
+.hero-eyebrow,
+.hl-card p { margin-top: 0; margin-bottom: 0; }
+.section         { padding: var(--section-pad) 0; border-top: 1px solid var(--border); background: #eee; color: #111; }
 .section--dark   { background: #eee; }
 
 /* About sits directly under the dark hero, so it fades in from the hero's
@@ -20,19 +35,16 @@
   > .container { text-align: center; }
 }
 
-/* ABOUT-Label: dunkel + bold auf explizite Anweisung, obwohl das Label
-   (durch align-items: start) im dunklen oberen Teil des Verlaufs sitzt.
-   Kontrast an dieser Stelle ist rechnerisch nur ~2,7:1 (unter WCAG AA
-   4,5:1) — offener Punkt, siehe Projekt-Notizen / QA-Report. */
-#about .label { color: #1a1a1a; font-weight: 700; }
+/* Section-Tag / .label hat EINE universelle Farbe (Framer "Grey 100" =
+   #525252 = var(--ink)) auf allen Sektionen — kein sektionsspezifischer
+   Override. Hinweis: im dunklen Verlaufsanfang von #about ist der Kontrast
+   dadurch gering (wie in der Framer-Referenz) — bewusst so gewählt. */
 
 /* Light-section text overrides — hero/nav/footer stay on the dark palette,
    but content sections now match the light Framer reference. */
 .section {
   .heading      { color: #111; }
   .body-text    { color: #4a4a4a; }
-  .stat-n       { color: #111; }
-  .hl-card p    { color: #4a4a4a; }
   .team-card    { background: #fff; }
   .team-card h3 { color: #111; }
   .team-init    { color: #111; }
@@ -40,117 +52,173 @@
   .team-grid { background: #ddd; } /* nur noch fürs Team-Grid nötig (füllt leere Zellen bei ungerader Mitgliederzahl); Highlights ist jetzt flex mit vollständig befüllten Karten, braucht das nicht mehr */
 }
 
-/* ── About-Sektion ── */
-.about-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px 80px;
-  align-items: start; /* Label bleibt oben, siehe .about-text/.about-text__main für die Zentrierung darunter */
+/* ── About-Sektion ──
+   Framer-Aufbau: eine linke Spalte (Tag + Überschrift + Button, max 600),
+   darunter mit 96px Abstand eine volle Breite einnehmende Kennzahlen-Reihe.
+   Rechts ragt eine dekorative, langsam rotierende Satelliten-Grafik aus
+   dem Bild (rein dekorativ, hinter dem Inhalt). */
+.about {
+  position: relative;
 }
-.about-text {
-  align-self: stretch; /* auf volle Zeilenhöhe strecken (Höhe der Bild-Spalte), damit unten Platz zum Zentrieren entsteht */
+.about-satellite {
+  position: absolute;
+  top: 50%;
+  right: clamp(-140px, -7vw, -40px);
+  width: clamp(280px, 42vw, 520px);
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  z-index: 0;
+  pointer-events: none;
+  will-change: transform;
+  /* Framer "loopEffect" (repeatType mirror): kein Drehen — nur ein leichtes
+     Rein-/Raus-Zoomen mit minimalem Höhen-Versatz, weich hin und her. */
+  animation: about-satellite-bob 2.4s ease-in-out infinite alternate;
+  transform: translateY(-50%) scale(1);
+}
+@keyframes about-satellite-bob {
+  from { transform: translateY(-50%) scale(1); }
+  to   { transform: translateY(calc(-50% + 6px)) scale(1.04); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-satellite { animation: none; }
+}
+
+.about-head {
+  position: relative;
+  z-index: 1;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
-
-  .label {
-    margin-bottom: 0; /* Abstand hier komplett über auto-margin von .about-text__main geregelt, sonst nicht exakt mittig */
-    align-self: flex-start; /* sonst streckt der Flex-Column-Parent das Label auf volle Breite und die rechte Klammer landet weit außen */
-  }
+  align-items: flex-start;
+  gap: 40px;
 }
-.about-text__main {
-  margin-top: auto;
-  margin-bottom: auto; /* zentriert sich im Platz zwischen Label (oben) und Zeilenende (auf Höhe der Stats-Reihe) */
-}
-.about-image {
-  aspect-ratio: 1 / 1;
-  border-radius: var(--r);
-  overflow: hidden;
-  max-width: 82%;   /* etwas kleiner als die volle Spaltenbreite */
-  margin-left: auto; /* bleibt rechtsbündig in seiner Spalte */
+.about-titles {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  max-width: 450px;
 
-  img { width: 100%; height: 100%; object-fit: cover; }
+  .label   { margin-bottom: 0; }
+  .heading { margin-bottom: 0; }
 }
 
-.stats-row {
-  grid-column: 1 / -1;
+.metrics {
+  position: relative;
+  z-index: 1;
+  margin-top: 96px;
   display: flex;
   flex-wrap: wrap;
-  gap: 24px 48px;
-  margin-top: 8px;
-}
-.stat-item {
-  display: flex;
-  flex-direction: column; /* Beschriftung sitzt unter der Zahl, nicht daneben */
+  gap: 32px 48px;
   align-items: flex-start;
+}
+.metric {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.metric-icon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  color: #000;
+}
+.metric-body {
+  display: flex;
+  flex-direction: column;
   gap: 4px;
 }
-.stat-n {
+.metric-n {
   font-family: var(--fh);
-  font-size: clamp(2.2rem, 3.5vw, 3rem);
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1;
-  min-width: 100px;
-
-  em {
-    font-style: normal;
-    font-size: 0.8em;
-    color: var(--lime);
-  }
-}
-.stat-l {
-  font-family: var(--fh);
-  font-size: 13px;
+  font-size: 24px;
   font-weight: 600;
-  color: var(--dim);
+  line-height: 1.3;
+  color: #000;
+}
+.metric-l {
+  font-family: var(--fb);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--ink);
+  text-transform: capitalize;
 }
 
 /* ── Highlights-Sektion ──
-   4 Karten in einer Reihe (kein Grid), wie auf der Framer-Referenz. */
+   Kopf (Tag + Überschrift) zentriert, 16px Abstand, dann 4 Karten in einer
+   Reihe. Framer "Highlights Card": weiße Karte (#F3F3F3), 1px-Rahmen +
+   Offset-Schatten in Silber, keine Rundung, Kopfzeile [Label — Nummer],
+   darunter Bild, darunter Fließtext. */
+.hl-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 450px;
+  margin: 0 auto 64px;
+
+  .label   { margin-bottom: 0; }
+  .heading { margin-bottom: 0; text-align: center; }
+}
+
 .highlights-grid {
   display: flex;
   flex-wrap: nowrap;
-  gap: 20px;
-  margin-top: 48px;
+  gap: 24px;
 }
 .hl-card {
   flex: 1;
   background: #f3f3f3;
-  border: 1px solid rgba(0,0,0,0.1); /* macht jede Karte als eigene Box erkennbar, auch bei minimalem Gap */
+  border: 1px solid var(--silver);
+  box-shadow: var(--shadow-hard);
   padding: 24px;
-  border-radius: 5px;
+  border-radius: 0;
   display: flex;
   flex-direction: column;
   gap: 24px;
+  text-align: left;   /* #highlights .container zentriert nur den Kopf, nicht die Karten */
 
-  p { font-size: 15px; color: var(--muted); line-height: 1.65; }
+  p {
+    font-family: var(--fb);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: var(--ink);
+    text-transform: capitalize;   /* Framer "Body"-Preset: Title Case */
+  }
+}
+.hl-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
 }
 .hl-label {
+  flex: 1;
   font-family: var(--fh);
   font-size: 24px;
   font-weight: 600;
-  color: #111;
-}
-/* Platzhalter-Visual pro Karte (die Referenz hat hier ein eigenes Bild
-   pro Highlight — bis echte Grafiken da sind, ein klar erkennbarer
-   Platzhalter, gleiches Grid-Pattern-Prinzip wie .gallery-inner, nur in
-   einer für den hellen Kartenhintergrund passenden Variante). */
-.hl-visual {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  border-radius: var(--r);
-  background: #e8e8e8;
-  background-image:
-    linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px);
-  background-size: 24px 24px;
+  line-height: 1.3;
+  color: #000;
 }
 .hl-num {
   font-family: var(--fh);
-  font-size: 2.5rem;
+  font-size: 40px;
   font-weight: 600;
-  color: #d2d2d2;
-  line-height: 1;
+  line-height: 1.2;
+  color: var(--silver);
+}
+/* Karten-Bild (Framer: 1fr breit, 210px hoch, leichte Grün-Tönung). */
+.hl-visual {
+  width: 100%;
+  height: 210px;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: hue-rotate(7deg);
+  }
 }
 
 /* ── Team-Sektion ── */

@@ -275,3 +275,129 @@ backdrop.addEventListener('click', () => {
   }
   requestAnimationFrame(frame);
 })();
+
+// ── Scroll-Reveal ─────────────────────────────────────────────
+// Blendet Sektions-Inhalte beim Hereinscrollen ein (Fade + leichter
+// Versatz / Scale), analog zu den "appear"-Effekten der Framer-Referenz.
+// Die eigentliche Animation liegt im CSS (src/scss/_reveal.scss); hier
+// werden nur die Trigger-Klassen gesetzt. Ohne JS oder bei
+// prefers-reduced-motion bleibt alles regulär sichtbar.
+(function initReveal() {
+  // [Selektor, Modus] — 'single' | 'scale' | 'stagger'
+  var groups = [
+    ['.hero-headline', 'single'],
+    ['.hero-aside', 'single'],
+    ['.about-titles', 'scale'],
+    ['.metrics', 'stagger'],
+    ['.hl-header', 'scale'],
+    ['.highlights-grid', 'stagger']
+  ];
+
+  var els = [];
+  groups.forEach(function (group) {
+    var selector = group[0];
+    var mode = group[1];
+    document.querySelectorAll(selector).forEach(function (el) {
+      el.classList.add(mode === 'stagger' ? 'reveal--stagger' : 'reveal');
+      if (mode === 'scale') el.classList.add('reveal--scale');
+      els.push(el);
+    });
+  });
+  if (!els.length) return;
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce || !('IntersectionObserver' in window)) {
+    els.forEach(function (el) { el.classList.add('is-visible'); });
+    return;
+  }
+
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
+
+  els.forEach(function (el) { observer.observe(el); });
+
+  // Sicherheitsnetz: falls der Observer (z. B. in einem Hintergrund-Tab)
+  // nicht auslöst, wird der Inhalt nach spätestens 3 s regulär eingeblendet.
+  window.setTimeout(function () {
+    els.forEach(function (el) {
+      observer.unobserve(el);
+      el.classList.add('is-visible');
+    });
+  }, 3000);
+})();
+
+// ── Überschriften-Farb-Enthüllung ─────────────────────────────
+// Framer-Komponente "TextReveal": die Sektions-Überschrift (About,
+// Highlights) startet grau (#969696) und färbt sich beim Scrollen Wort
+// für Wort nach Schwarz, verteilt über ~400 px Scroll-Weg.
+// Ohne JS oder bei prefers-reduced-motion bleibt die reguläre Textfarbe.
+(function initHeadingReveal() {
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var headings = document.querySelectorAll('#about .heading, #highlights .heading');
+  if (reduce || !headings.length) return;
+
+  var FROM = [150, 150, 150]; // Framer "Grey 60"
+  var TO = [0, 0, 0];         // Framer "Black 100"
+  var DISTANCE = 400;         // Framer "fullRevealDistance"
+
+  function wrapWords(el) {
+    Array.prototype.slice.call(el.childNodes).forEach(function (node) {
+      if (node.nodeType !== 3) return; // nur Textknoten; <br> u. Ä. bleiben
+      var frag = document.createDocumentFragment();
+      node.textContent.split(/(\s+)/).forEach(function (part) {
+        if (part === '') return;
+        if (/^\s+$/.test(part)) {
+          frag.appendChild(document.createTextNode(part));
+        } else {
+          var span = document.createElement('span');
+          span.className = 'rw';
+          span.textContent = part;
+          frag.appendChild(span);
+        }
+      });
+      el.replaceChild(frag, node);
+    });
+  }
+
+  var items = [];
+  headings.forEach(function (h) {
+    wrapWords(h);
+    var words = h.querySelectorAll('.rw');
+    if (words.length) items.push({ words: words, ref: h });
+  });
+  if (!items.length) return;
+
+  function lerp(a, b, t) { return Math.round(a + (b - a) * t); }
+
+  function update() {
+    var start = window.innerHeight * 0.85;
+    items.forEach(function (item) {
+      var scrolled = start - item.ref.getBoundingClientRect().top;
+      var p = Math.max(0, Math.min(1, scrolled / DISTANCE));
+      var n = item.words.length;
+      for (var i = 0; i < n; i++) {
+        var wp = Math.max(0, Math.min(1, p * n - i));
+        item.words[i].style.color =
+          'rgb(' + lerp(FROM[0], TO[0], wp) + ',' +
+                   lerp(FROM[1], TO[1], wp) + ',' +
+                   lerp(FROM[2], TO[2], wp) + ')';
+      }
+    });
+  }
+
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(function () { update(); ticking = false; });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  update();
+})();

@@ -2,20 +2,31 @@
    RESPONSIVE ANPASSUNGEN (Tablet- und Mobile-Breakpoints)
    ============================================================ */
 
-/* Tablet: Grids werden einspaltig, breite Team-Karte wird schmal */
-@media (max-width: 860px) {
-  .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
-  .team-card--wide { grid-column: span 1; flex-direction: column; }
+/* Tablet: Grids/Reihen werden einspaltig, breite Team-Karte wird schmal */
+@media (max-width: 960px) {
   .highlights-grid { flex-direction: column; }
+  .hl-visual { height: 240px; }
+}
+@media (max-width: 860px) {
+  .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+  .team-card--wide { grid-column: span 1; flex-direction: column; }
   .gallery-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
   .gallery-item--tall { grid-row: span 1; }
   .gallery-inner { height: 200px; }
+
+  /* Hero-Titelzeile stapeln, Info-Block unter die Überschrift */
+  .hero-row { flex-direction: column; align-items: flex-start; gap: 28px; }
+  .hero-aside { width: 100%; }
+  .hero-container { gap: clamp(40px, 8vh, 90px); }
+
+  /* Dekorative Satelliten-Grafik nicht mehr aus dem Bild ragen lassen */
+  .about-satellite { right: -30%; opacity: 0.5; }
 }
-/* Mobile: Hero-Texte gestapelt (nicht überlappend), kleinere Abstände */
+/* Mobile: kleinere Abstände */
 @media (max-width: 600px) {
   .container { padding: 0 20px; }
-  .hero-text-left { left: 24px; right: 24px; bottom: 190px; }
-  .hero-text-right { left: 24px; right: 24px; bottom: 24px; width: auto; }
-  .hero-headline { font-size: clamp(2.2rem, 11vw, 4rem); }
+  .hero-container { padding: 0 20px; bottom: 28px; }
+  .hero-headline { font-size: clamp(2.2rem, 11vw, 3.25rem); }
+  .metrics { margin-top: 56px; gap: 24px 32px; }
   .footer-inner { flex-direction: column; }
 }

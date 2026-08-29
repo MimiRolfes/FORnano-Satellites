@@ -13,7 +13,8 @@ Text Domain: satellite
 
 /* ============================================================
    Grundlagen: CSS-Reset, Design-Tokens (Farben, Schriften, Abstände)
-   Akzentfarbe: #cfff64 (Lime) · Schriften: Chakra Petch + Inter
+   Akzentfarbe: #8FE388 (Mint) · Schriften: Chakra Petch + Inter
+   Werte gegen die Framer-Referenz (Projekt "ICONIQ copy") abgeglichen.
    ============================================================ */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -29,13 +30,19 @@ Text Domain: satellite
   --text: #fafafa;
   --muted: rgb(182, 183, 180);
   --dim: rgb(101, 101, 101);
-  --lime: #8FE388;
+  --lime: #8FE388; /* Framer "rgb(143,227,136)" — Akzent + Button-Füllung */
   --lime-glow:rgba(167, 115, 82, 0.25);
+  --blue: #577BDE; /* Framer Button-Hover-Blau */
+  --silver: #D2D2D2; /* Framer "Silver 100" — Karten-Rahmen, Offset-Schatten, Highlight-Nummer */
+  --teal: #13ACAB; /* Framer Hero-Trennlinie */
+  --ink: #525252; /* Framer "Grey 100" — Fließtext auf hellen Sektionen */
   --nav-bg: rgba(0,0,0,0.61);
   --fh: 'Chakra Petch', sans-serif;
   --fb: 'Inter', sans-serif;
   --max: 1200px;
   --r: 4px;
+  --shadow-hard: 4px 4px 0 0 var(--silver); /* Signatur-Schatten (Buttons + Karten) */
+  --section-pad: 120px; /* vertikales Sektions-Padding lt. Framer */
   --t: 0.2s ease;
 }
 
@@ -73,54 +80,55 @@ img {
   padding: 0 48px;
 }
 
-/* ── Kleine Kategorie-Labels (z. B. "ABOUT", "HIGHLIGHTS") ──
-   Dünne, selbst gezeichnete eckige Klammern (per CSS-Rahmen, nicht das
-   "[" "]" Schriftzeichen), wie auf der Framer-Referenz. */
+/* ── Kleine Kategorie-Labels / "Section Tag" (z. B. "ABOUT", "HIGHLIGHTS") ──
+   Framer-Komponente "Elements/Section Tag": Chakra Petch 500, 15px, kein
+   Tracking, Farbe Grey 100 (#525252), min-width 80px, Padding 5px 12px.
+   KEIN durchgehender Rahmen — 4 einzelne L-förmige Eckwinkel (Framer-
+   Komponente "Elements/Border", Variante "Small", ~10px, Deckkraft 0,74),
+   umgesetzt als 8 Hintergrund-Verläufe (je 2 pro Ecke). Auf dunklen
+   Kopfbereichen werden Text + Winkel aufgehellt (siehe #about, .page-hero-text). */
 .label {
-  position: relative;
+  --bracket: rgba(0, 0, 0, 0.45); /* Farbe der Eckwinkel */
+  --bracket-len: 9px;
+  --bracket-w: 1px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  min-width: 80px;
+  padding: 5px 12px;
   font-family: var(--fh);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.22em;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: #1a1a1a;
-  margin-bottom: 32px;
-  padding: 3px 11px;
-  /* currentColor statt var(--dim), damit die Klammern immer zur jeweils
-     geltenden Textfarbe passen (z. B. dunkler auf hellen Sektionen) */
-}
-.label::before, .label::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 5px;
-  border-top: 1px solid currentColor;
-  border-bottom: 1px solid currentColor;
-}
-.label::before {
-  left: 0;
-  border-left: 1px solid currentColor;
-}
-.label::after {
-  right: 0;
-  border-right: 1px solid currentColor;
+  color: var(--ink);
+  margin-bottom: 16px;
+  background-image: linear-gradient(var(--bracket), var(--bracket)), linear-gradient(var(--bracket), var(--bracket)), linear-gradient(var(--bracket), var(--bracket)), linear-gradient(var(--bracket), var(--bracket)), linear-gradient(var(--bracket), var(--bracket)), linear-gradient(var(--bracket), var(--bracket)), linear-gradient(var(--bracket), var(--bracket)), linear-gradient(var(--bracket), var(--bracket));
+  background-repeat: no-repeat;
+  background-position: top left, top left, top right, top right, bottom left, bottom left, bottom right, bottom right;
+  background-size: var(--bracket-len) var(--bracket-w), var(--bracket-w) var(--bracket-len), var(--bracket-len) var(--bracket-w), var(--bracket-w) var(--bracket-len), var(--bracket-len) var(--bracket-w), var(--bracket-w) var(--bracket-len), var(--bracket-len) var(--bracket-w), var(--bracket-w) var(--bracket-len);
 }
 
-/* ── Überschriften (h1/h2, sitzen auf hellen wie dunklen Sektionen) ── */
+/* ── Sektions-Überschriften (Framer-Komponente "TextReveal") ──
+   Chakra Petch 600, fix 32px (nicht responsiv skaliert), Zeilenhöhe 1.3,
+   Laufweite -0.01em. Nur Seiten-Hero-Titel sind größer (siehe _hero.scss). */
 .heading {
   font-family: var(--fh);
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-size: 2rem; /* 32px */
   font-weight: 600;
   color: var(--text);
-  line-height: 1.12;
+  line-height: 1.3;
   letter-spacing: -0.01em;
   margin-bottom: 20px;
   text-transform: none;
 }
 
+@media (max-width: 600px) {
+  .heading {
+    font-size: 1.75rem;
+  }
+}
 .body-text {
   font-size: 17px;
   color: var(--muted);
@@ -134,7 +142,7 @@ img {
   font-family: var(--fh);
   font-weight: 600;
   letter-spacing: 0.05em;
-  border-bottom: 1px solid rgba(207, 255, 100, 0.4);
+  border-bottom: 1px solid rgba(143, 227, 136, 0.4);
   padding-bottom: 2px;
   transition: border-color var(--t);
 }
@@ -396,6 +404,24 @@ img {
   z-index: 2;
 }
 
+/* "Frost" — mattierter Glasstreifen am unteren Hero-Rand (Framer-Ebene
+   "Frost": backdrop-blur ~36px, minimaler Weißverlauf, unten voll,
+   nach oben in Transparenz auslaufend). */
+.hero-frost {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 38%;
+  z-index: 3;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 254, 250, 0) 0%, rgba(255, 254, 250, 0.02) 100%);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 46%, rgb(0, 0, 0) 100%);
+  mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.9) 46%, rgb(0, 0, 0) 100%);
+}
+
 /* WebGL-Orb — zentriert über dem Erdfoto */
 .hero-orb {
   position: absolute;
@@ -404,7 +430,7 @@ img {
   transform: translate(-50%, -50%);
   width: min(90vw, 90vh);
   height: min(90vw, 90vh);
-  z-index: 15; /* below .hero-text-right (20) so the ABOUT button stays hoverable/clickable */
+  z-index: 15; /* unter .hero-container (20), damit der ABOUT-Button klickbar bleibt */
   pointer-events: all;
 }
 .hero-orb canvas {
@@ -412,64 +438,93 @@ img {
   height: 100% !important;
 }
 
-/* Überschrift — links */
-.hero-text-left {
+/* Unterer Hero-Inhalt (Framer: "Container", width 1fr / max 1200, unten
+   angedockt). Enthält die Titelzeile und darunter — mit großem Abstand —
+   die Teal-Trennlinie. */
+.hero-container {
   position: absolute;
-  bottom: 21%;
-  left: 8%;
-  z-index: 10;
-  pointer-events: none;
-  text-align: left;
+  left: 0;
+  right: 0;
+  bottom: 40px;
+  z-index: 20;
+  width: 100%;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 0 40px;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(64px, 14vh, 180px);
+}
+
+/* Titelzeile: Überschrift links, Info + Button rechts, an der Grundlinie
+   ausgerichtet (Framer: stackDistribution space-between, align end). */
+.hero-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 48px;
 }
 
 .hero-headline {
+  max-width: 600px;
   font-family: var(--fh);
-  font-size: clamp(2rem, 4.5vw, 4.5rem);
+  font-size: clamp(2.5rem, 5.2vw, 4rem); /* bis 64px lt. Framer "Heading 1" */
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   line-height: 1.2;
-  color: var(--text);
+  color: #f3f3f3;
+  pointer-events: none;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55); /* Lesbarkeit über wechselnden Bildbereichen (WCAG) */
 }
 .hero-headline .accent {
   color: var(--lime);
-  text-shadow: 0 0 40px var(--lime-glow);
+  text-shadow: 0 0 40px var(--lime-glow), 0 2px 14px rgba(0, 0, 0, 0.55);
 }
 
-/* Info-Text + Call-to-Action — gleiche Höhe wie links, rechtsbündig */
-.hero-text-right {
-  position: absolute;
-  bottom: 21%;
-  right: 8%;
-  z-index: 20;
-  pointer-events: all;
+/* Info-Text + Call-to-Action rechts (Framer: "Content", max 300). */
+.hero-aside {
   width: 300px;
+  flex-shrink: 0;
   text-align: left;
 }
 
 .hero-eyebrow {
+  display: block;
   font-family: var(--fh);
-  font-size: 15px;
-  font-weight: 5250;
+  font-size: 16px;
+  font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #ffffff;
-  line-height: 3;
-  display: block;
+  color: #f3f3f3;
+  line-height: 1.4;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
+}
+.hero-eyebrow + .hero-eyebrow {
+  margin-top: 4px;
+}
+
+/* Teal-Trennlinie unter dem Hero-Inhalt (Framer: "Distributor", 1px,
+   rgb(19,172,171), volle Breite). */
+.hero-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--teal);
 }
 
 .btn-about {
   display: inline-block;
-  margin-top: 14px;
+  margin-top: 32px;
   background: var(--lime);
   font-family: var(--fh);
   font-size: 15px;
-  font-weight: 525;
+  font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   border-radius: 0;
   border: 1px solid #7a7a7a;
-  box-shadow: 4px 4px 0px 0px #d2d2d2;
+  box-shadow: var(--shadow-hard);
   white-space: nowrap;
   overflow: hidden;
   position: relative;
@@ -480,7 +535,7 @@ img {
 .btn-about::before {
   content: attr(data-label);
   display: block;
-  padding: 10px 22px;
+  padding: 10px 20px;
   color: #000;
   position: relative;
   z-index: 1;
@@ -494,22 +549,22 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 13px 26px;
+  padding: 10px 20px;
   color: #fff;
-  background: #577BDE;
+  background: var(--blue);
   position: absolute;
   inset: 0;
   z-index: 2;
   transform: translateY(100%);
   transition: transform 0.3s ease;
 }
-.btn-about:hover {
-  border-color: #525252;
+.btn-about:hover, .btn-about:focus-visible {
+  border-color: var(--ink);
 }
-.btn-about:hover::before {
+.btn-about:hover::before, .btn-about:focus-visible::before {
   transform: translateY(-100%);
 }
-.btn-about:hover::after {
+.btn-about:hover::after, .btn-about:focus-visible::after {
   transform: translateY(0);
 }
 
@@ -534,24 +589,60 @@ img {
   text-align: center;
   gap: 16px;
   padding: 0 24px;
+  /* Seiten-Hero-Titel folgen der Framer-"Heading 1" (groß), nicht der
+     32px-Sektionsüberschrift. */
 }
 .page-hero-text .heading {
   margin-bottom: 0;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  text-transform: uppercase;
+  letter-spacing: 0;
+  line-height: 1.2;
 }
 .page-hero-text .hero-eyebrow {
   color: var(--lime);
   line-height: 1.6;
 }
-.page-hero-text .label {
-  color: rgb(150, 150, 150);
+.page-hero-text {
+  /* TODO: Beim About-/Gallery-Seiten-Umbau gegen die Framer-Referenz prüfen —
+     Section-Tag-Farbe ist eigentlich universell #525252, hier aber nur
+     aufgehellt lesbar auf dem fast schwarzen Seiten-Hero. */
 }
-.page-hero-text { /* var(--dim) is below WCAG AA 4.5:1 on this dark background */ }
+.page-hero-text .label {
+  color: #f3f3f3;
+  --bracket: rgba(255,255,255,0.4);
+}
 
 /* ============================================================
    INHALTS-SEKTIONEN (About, Highlights, Team, Gallery, Contact, Footer)
    ============================================================ */
+/* ── WordPress-Block-Integration ──
+   Die Startseiten-Sektionen sind als Gutenberg-Blöcke ausgezeichnet
+   (wp:group / wp:heading / wp:paragraph / wp:image), damit Überschriften,
+   Texte, Kennzahlen und Karten-Bilder im Website-Editor bearbeitbar sind.
+   Diese Resets neutralisieren die Default-Abstände der Block-Library, damit
+   unser eigenes Layout greift. Bewusst NICHT `.wp-block-group { margin: 0 }`
+   — das würde u. a. das `margin: 0 auto` von `.container` aushebeln. */
+.wp-block-heading {
+  margin-top: 0;
+}
+
+.hl-card .wp-block-image,
+.hl-card .wp-block-image img {
+  margin: 0;
+  display: block;
+}
+
+.metrics .metric-n,
+.metrics .metric-l,
+.hero-eyebrow,
+.hl-card p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 .section {
-  padding: 100px 0;
+  padding: var(--section-pad) 0;
   border-top: 1px solid var(--border);
   background: #eee;
   color: #111;
@@ -582,27 +673,16 @@ img {
   text-align: center;
 }
 
-/* ABOUT-Label: dunkel + bold auf explizite Anweisung, obwohl das Label
-   (durch align-items: start) im dunklen oberen Teil des Verlaufs sitzt.
-   Kontrast an dieser Stelle ist rechnerisch nur ~2,7:1 (unter WCAG AA
-   4,5:1) — offener Punkt, siehe Projekt-Notizen / QA-Report. */
-#about .label {
-  color: #1a1a1a;
-  font-weight: 700;
-}
-
+/* Section-Tag / .label hat EINE universelle Farbe (Framer "Grey 100" =
+   #525252 = var(--ink)) auf allen Sektionen — kein sektionsspezifischer
+   Override. Hinweis: im dunklen Verlaufsanfang von #about ist der Kontrast
+   dadurch gering (wie in der Framer-Referenz) — bewusst so gewählt. */
 /* Light-section text overrides — hero/nav/footer stay on the dark palette,
    but content sections now match the light Framer reference. */
 .section .heading {
   color: #111;
 }
 .section .body-text {
-  color: #4a4a4a;
-}
-.section .stat-n {
-  color: #111;
-}
-.section .hl-card p {
   color: #4a4a4a;
 }
 .section .team-card {
@@ -622,130 +702,198 @@ img {
 }
 .section { /* nur noch fürs Team-Grid nötig (füllt leere Zellen bei ungerader Mitgliederzahl); Highlights ist jetzt flex mit vollständig befüllten Karten, braucht das nicht mehr */ }
 
-/* ── About-Sektion ── */
-.about-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px 80px;
-  align-items: start; /* Label bleibt oben, siehe .about-text/.about-text__main für die Zentrierung darunter */
+/* ── About-Sektion ──
+   Framer-Aufbau: eine linke Spalte (Tag + Überschrift + Button, max 600),
+   darunter mit 96px Abstand eine volle Breite einnehmende Kennzahlen-Reihe.
+   Rechts ragt eine dekorative, langsam rotierende Satelliten-Grafik aus
+   dem Bild (rein dekorativ, hinter dem Inhalt). */
+.about {
+  position: relative;
 }
 
-.about-text {
-  align-self: stretch; /* auf volle Zeilenhöhe strecken (Höhe der Bild-Spalte), damit unten Platz zum Zentrieren entsteht */
+.about-satellite {
+  position: absolute;
+  top: 50%;
+  right: clamp(-140px, -7vw, -40px);
+  width: clamp(280px, 42vw, 520px);
+  aspect-ratio: 1/1;
+  -o-object-fit: contain;
+     object-fit: contain;
+  z-index: 0;
+  pointer-events: none;
+  will-change: transform;
+  /* Framer "loopEffect" (repeatType mirror): kein Drehen — nur ein leichtes
+     Rein-/Raus-Zoomen mit minimalem Höhen-Versatz, weich hin und her. */
+  animation: about-satellite-bob 2.4s ease-in-out infinite alternate;
+  transform: translateY(-50%) scale(1);
+}
+
+@keyframes about-satellite-bob {
+  from {
+    transform: translateY(-50%) scale(1);
+  }
+  to {
+    transform: translateY(calc(-50% + 6px)) scale(1.04);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-satellite {
+    animation: none;
+  }
+}
+.about-head {
+  position: relative;
+  z-index: 1;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
-}
-.about-text .label {
-  margin-bottom: 0; /* Abstand hier komplett über auto-margin von .about-text__main geregelt, sonst nicht exakt mittig */
-  align-self: flex-start; /* sonst streckt der Flex-Column-Parent das Label auf volle Breite und die rechte Klammer landet weit außen */
+  align-items: flex-start;
+  gap: 40px;
 }
 
-.about-text__main {
-  margin-top: auto;
-  margin-bottom: auto; /* zentriert sich im Platz zwischen Label (oben) und Zeilenende (auf Höhe der Stats-Reihe) */
+.about-titles {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  max-width: 450px;
+}
+.about-titles .label {
+  margin-bottom: 0;
+}
+.about-titles .heading {
+  margin-bottom: 0;
 }
 
-.about-image {
-  aspect-ratio: 1/1;
-  border-radius: var(--r);
-  overflow: hidden;
-  max-width: 82%; /* etwas kleiner als die volle Spaltenbreite */
-  margin-left: auto; /* bleibt rechtsbündig in seiner Spalte */
-}
-.about-image img {
-  width: 100%;
-  height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
-}
-
-.stats-row {
-  grid-column: 1/-1;
+.metrics {
+  position: relative;
+  z-index: 1;
+  margin-top: 96px;
   display: flex;
   flex-wrap: wrap;
-  gap: 24px 48px;
-  margin-top: 8px;
+  gap: 32px 48px;
+  align-items: flex-start;
 }
 
-.stat-item {
+.metric {
   display: flex;
-  flex-direction: column; /* Beschriftung sitzt unter der Zahl, nicht daneben */
+  gap: 16px;
   align-items: flex-start;
+}
+
+.metric-icon {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  color: #000;
+}
+
+.metric-body {
+  display: flex;
+  flex-direction: column;
   gap: 4px;
 }
 
-.stat-n {
+.metric-n {
   font-family: var(--fh);
-  font-size: clamp(2.2rem, 3.5vw, 3rem);
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1;
-  min-width: 100px;
-}
-.stat-n em {
-  font-style: normal;
-  font-size: 0.8em;
-  color: var(--lime);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #000;
 }
 
-.stat-l {
-  font-family: var(--fh);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--dim);
+.metric-l {
+  font-family: var(--fb);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--ink);
+  text-transform: capitalize;
 }
 
 /* ── Highlights-Sektion ──
-   4 Karten in einer Reihe (kein Grid), wie auf der Framer-Referenz. */
+   Kopf (Tag + Überschrift) zentriert, 16px Abstand, dann 4 Karten in einer
+   Reihe. Framer "Highlights Card": weiße Karte (#F3F3F3), 1px-Rahmen +
+   Offset-Schatten in Silber, keine Rundung, Kopfzeile [Label — Nummer],
+   darunter Bild, darunter Fließtext. */
+.hl-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 450px;
+  margin: 0 auto 64px;
+}
+.hl-header .label {
+  margin-bottom: 0;
+}
+.hl-header .heading {
+  margin-bottom: 0;
+  text-align: center;
+}
+
 .highlights-grid {
   display: flex;
   flex-wrap: nowrap;
-  gap: 20px;
-  margin-top: 48px;
+  gap: 24px;
 }
 
 .hl-card {
   flex: 1;
   background: #f3f3f3;
-  border: 1px solid rgba(0, 0, 0, 0.1); /* macht jede Karte als eigene Box erkennbar, auch bei minimalem Gap */
+  border: 1px solid var(--silver);
+  box-shadow: var(--shadow-hard);
   padding: 24px;
-  border-radius: 5px;
+  border-radius: 0;
   display: flex;
   flex-direction: column;
   gap: 24px;
+  text-align: left; /* #highlights .container zentriert nur den Kopf, nicht die Karten */
 }
 .hl-card p {
-  font-size: 15px;
-  color: var(--muted);
-  line-height: 1.65;
+  font-family: var(--fb);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--ink);
+  text-transform: capitalize; /* Framer "Body"-Preset: Title Case */
+}
+
+.hl-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
 }
 
 .hl-label {
+  flex: 1;
   font-family: var(--fh);
   font-size: 24px;
   font-weight: 600;
-  color: #111;
-}
-
-/* Platzhalter-Visual pro Karte (die Referenz hat hier ein eigenes Bild
-   pro Highlight — bis echte Grafiken da sind, ein klar erkennbarer
-   Platzhalter, gleiches Grid-Pattern-Prinzip wie .gallery-inner, nur in
-   einer für den hellen Kartenhintergrund passenden Variante). */
-.hl-visual {
-  width: 100%;
-  aspect-ratio: 1/1;
-  border-radius: var(--r);
-  background: #e8e8e8;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
-  background-size: 24px 24px;
+  line-height: 1.3;
+  color: #000;
 }
 
 .hl-num {
   font-family: var(--fh);
-  font-size: 2.5rem;
+  font-size: 40px;
   font-weight: 600;
-  color: #d2d2d2;
-  line-height: 1;
+  line-height: 1.2;
+  color: var(--silver);
+}
+
+/* Karten-Bild (Framer: 1fr breit, 210px hoch, leichte Grün-Tönung). */
+.hl-visual {
+  width: 100%;
+  height: 210px;
+  overflow: hidden;
+}
+.hl-visual img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+  filter: hue-rotate(7deg);
 }
 
 /* ── Team-Sektion ── */
@@ -950,19 +1098,85 @@ img {
 }
 
 /* ============================================================
+   SCROLL-REVEAL
+   Blendet Sektions-Inhalte beim Hereinscrollen ein (Fade + leichter
+   Versatz / Scale), analog zu den "appear"-Effekten der Framer-Referenz.
+
+   Die Trigger-Klassen (.reveal / .reveal--scale / .reveal--stagger)
+   werden per JavaScript gesetzt (initReveal() in js/satellite.js) — ohne
+   JS bleibt alles regulär sichtbar (Progressive Enhancement). Unter
+   prefers-reduced-motion greift keine der Versteck-Regeln.
+   ============================================================ */
+@media (prefers-reduced-motion: no-preference) {
+  /* Einzelnes Element */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: var(--reveal-delay, 0s);
+    will-change: opacity, transform;
+  }
+  .reveal--scale {
+    transform: scale(0.93);
+  }
+  .reveal--left {
+    transform: translateX(-20px);
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+  /* Container, dessen direkte Kinder gestaffelt nachziehen */
+  .reveal--stagger > * {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+  .reveal--stagger.is-visible > * {
+    opacity: 1;
+    transform: none;
+  }
+  .reveal--stagger.is-visible > *:nth-child(2) {
+    transition-delay: 0.08s;
+  }
+  .reveal--stagger.is-visible > *:nth-child(3) {
+    transition-delay: 0.16s;
+  }
+  .reveal--stagger.is-visible > *:nth-child(4) {
+    transition-delay: 0.24s;
+  }
+  .reveal--stagger.is-visible > *:nth-child(5) {
+    transition-delay: 0.32s;
+  }
+  /* Scroll-gekoppelte Farb-Enthüllung der Sektions-Überschriften
+     (Framer-Komponente "TextReveal": Grau -> Schwarz, wortweise, über
+     ~400 px Scroll-Weg). Die Wort-<span>s + Farben setzt initHeadingReveal()
+     in js/satellite.js; hier nur ein minimaler Übergang gegen Frame-Sprünge.
+     Grundzustand ohne JS / bei reduced-motion: die reguläre Textfarbe. */
+  .heading .rw {
+    transition: color 0.06s linear;
+  }
+}
+/* ============================================================
    RESPONSIVE ANPASSUNGEN (Tablet- und Mobile-Breakpoints)
    ============================================================ */
-/* Tablet: Grids werden einspaltig, breite Team-Karte wird schmal */
+/* Tablet: Grids/Reihen werden einspaltig, breite Team-Karte wird schmal */
+@media (max-width: 960px) {
+  .highlights-grid {
+    flex-direction: column;
+  }
+  .hl-visual {
+    height: 240px;
+  }
+}
 @media (max-width: 860px) {
-  .about-grid, .contact-grid {
+  .contact-grid {
     grid-template-columns: 1fr;
     gap: 48px;
   }
   .team-card--wide {
     grid-column: span 1;
-    flex-direction: column;
-  }
-  .highlights-grid {
     flex-direction: column;
   }
   .gallery-grid {
@@ -975,25 +1189,39 @@ img {
   .gallery-inner {
     height: 200px;
   }
+  /* Hero-Titelzeile stapeln, Info-Block unter die Überschrift */
+  .hero-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 28px;
+  }
+  .hero-aside {
+    width: 100%;
+  }
+  .hero-container {
+    gap: clamp(40px, 8vh, 90px);
+  }
+  /* Dekorative Satelliten-Grafik nicht mehr aus dem Bild ragen lassen */
+  .about-satellite {
+    right: -30%;
+    opacity: 0.5;
+  }
 }
-/* Mobile: Hero-Texte gestapelt (nicht überlappend), kleinere Abstände */
+/* Mobile: kleinere Abstände */
 @media (max-width: 600px) {
   .container {
     padding: 0 20px;
   }
-  .hero-text-left {
-    left: 24px;
-    right: 24px;
-    bottom: 190px;
-  }
-  .hero-text-right {
-    left: 24px;
-    right: 24px;
-    bottom: 24px;
-    width: auto;
+  .hero-container {
+    padding: 0 20px;
+    bottom: 28px;
   }
   .hero-headline {
-    font-size: clamp(2.2rem, 11vw, 4rem);
+    font-size: clamp(2.2rem, 11vw, 3.25rem);
+  }
+  .metrics {
+    margin-top: 56px;
+    gap: 24px 32px;
   }
   .footer-inner {
     flex-direction: column;
