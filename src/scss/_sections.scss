@@ -1,3 +1,5 @@
+@use 'mixins' as *;
+
 /* ============================================================
    INHALTS-SEKTIONEN (About, Highlights, Team, Gallery, Contact, Footer)
    ============================================================ */
@@ -45,11 +47,7 @@
 .section {
   .heading      { color: #111; }
   .body-text    { color: #4a4a4a; }
-  .team-card    { background: #fff; }
-  .team-card h3 { color: #111; }
-  .team-init    { color: #111; }
   .link-arrow   { border-bottom-color: rgba(60,140,50,0.5); }
-  .team-grid { background: #ddd; } /* nur noch fürs Team-Grid nötig (füllt leere Zellen bei ungerader Mitgliederzahl); Highlights ist jetzt flex mit vollständig befüllten Karten, braucht das nicht mehr */
 }
 
 /* ── About-Sektion ──
@@ -221,60 +219,100 @@
   }
 }
 
-/* ── Team-Sektion ── */
-.team-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1px;
-  background: var(--border);
-  border: 1px solid var(--border);
-  margin-top: 48px;
+/* ── Team- / "Speakers"-Sektion ──
+   Framer: zentrierter Kopf, dann eine hervorgehobene Person mittig, danach
+   Reihen à 4 Personen-Karten. Karte = abgedunkeltes Hochkant-Portrait mit
+   weißen Eckwinkeln, darunter linksbündig Name + Rolle + feine Linie. */
+#team {
+  border-top: none;
+  background: linear-gradient(rgb(99,110,126) 0%, rgb(238,238,238) 60.7%);
+
+  > .container { text-align: center; }
 }
-.team-card {
-  background: var(--bg);
-  padding: 28px 24px;
+
+.team-header {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  transition: background var(--t);
-
-  &:hover { background: rgba(207,255,100,0.03); }
-
-  p { font-size: 12px; color: var(--dim); }
-
-  h3 {
-    font-family: var(--fh);
-    font-size: 15px; font-weight: 600;
-    color: var(--text); margin: 3px 0;
-    text-transform: uppercase;
-  }
-}
-.team-card--wide {
-  grid-column: span 2;
-  flex-direction: row;
   align-items: center;
-  gap: 20px;
+  gap: 16px;
+  max-width: 450px;
+  margin: 0 auto 64px;
 
-  .team-init {
-    width: 56px; height: 56px;
-    border-color: rgba(207,255,100,0.3);
-    background: rgba(207,255,100,0.05);
+  .label   { margin-bottom: 0; }
+  .heading { margin-bottom: 0; text-align: center; }
+}
+
+.team-featured {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 64px;
+}
+.team-featured .person { width: min(268px, 70vw); }
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+
+  & + & { margin-top: 64px; }
+}
+
+.person {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+.person-photo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 0.89 / 1;
+  overflow: hidden;
+  background: #2b2f36;   /* Fallback, falls (noch) kein Foto gesetzt ist */
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.75);   /* Framer: Portrait leicht abgedunkelt */
+  }
+
+  /* weiße Eckwinkel, ~16px eingerückt (Framer: "Border"-Komponente, invertiert) */
+  &::after {
+    --bracket: rgba(255, 255, 255, 0.6);
+    content: '';
+    position: absolute;
+    inset: 16px;
+    pointer-events: none;
+    @include corner-brackets(11px);
   }
 }
-.team-init {
-  width: 44px; height: 44px;
-  border-radius: 50%;
-  border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
+.person-name {
   font-family: var(--fh);
-  font-size: 12px; font-weight: 700;
-  color: var(--text);
-  flex-shrink: 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #000;
+  text-transform: capitalize;
 }
-.team-role {
-  font-size: 10px; font-weight: 600;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--dim); display: block;
+.person-role {
+  font-family: var(--fb);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: #7a7a7a;
+  text-transform: capitalize;
+}
+.person-line {
+  height: 1px;
+  width: 100%;
+  background: #7a7a7a;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .person-line { transform: none; }
 }
 
 /* ── Gallery-Grid (auf der Startseite und der Gallery-Seite) ── */

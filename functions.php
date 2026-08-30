@@ -42,6 +42,43 @@ function satellite_arrow_icon() {
 		. '</svg>';
 }
 
+/**
+ * Gibt eine Personen-Karte der Team-Sektion als Block-Markup aus
+ * (Foto oder dunkler Platzhalter mit Eckwinkeln, Name, Rolle, feine Linie).
+ * Foto: images/people/<datei> — nur wenn die Datei vorhanden ist.
+ *
+ * @param array $person name, role, photo (Dateiname unter images/people/).
+ */
+function satellite_person_card( $person ) {
+	$name      = isset( $person['name'] ) ? $person['name'] : '';
+	$role      = isset( $person['role'] ) ? $person['role'] : '';
+	$photo     = isset( $person['photo'] ) ? $person['photo'] : '';
+	$photo_rel = 'images/people/' . $photo;
+	$has_photo = $photo && file_exists( get_template_directory() . '/' . $photo_rel );
+	?>
+	<!-- wp:group {"className":"person","layout":{"type":"default"}} -->
+	<div class="wp-block-group person">
+		<?php if ( $has_photo ) : ?>
+		<!-- wp:image {"className":"person-photo"} -->
+		<figure class="wp-block-image person-photo"><img src="<?php echo esc_url( get_template_directory_uri() . '/' . $photo_rel ); ?>" alt="<?php echo esc_attr( $name ); ?>" /></figure>
+		<!-- /wp:image -->
+		<?php else : ?>
+		<!-- wp:html -->
+		<div class="person-photo" role="img" aria-label="<?php echo esc_attr( $name ); ?>"></div>
+		<!-- /wp:html -->
+		<?php endif; ?>
+		<!-- wp:paragraph {"className":"person-name"} -->
+		<p class="person-name"><?php echo esc_html( $name ); ?></p>
+		<!-- /wp:paragraph -->
+		<!-- wp:paragraph {"className":"person-role"} -->
+		<p class="person-role"><?php echo esc_html( $role ); ?></p>
+		<!-- /wp:paragraph -->
+		<!-- wp:html --><div class="person-line" aria-hidden="true"></div><!-- /wp:html -->
+	</div>
+	<!-- /wp:group -->
+	<?php
+}
+
 function satellite_enqueue_assets() {
 	wp_enqueue_style(
 		'satellite-fonts',

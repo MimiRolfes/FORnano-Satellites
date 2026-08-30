@@ -2,14 +2,14 @@
    RESPONSIVE ANPASSUNGEN (Tablet- und Mobile-Breakpoints)
    ============================================================ */
 
-/* Tablet: Grids/Reihen werden einspaltig, breite Team-Karte wird schmal */
+/* Tablet: Grids/Reihen werden schmaler */
 @media (max-width: 960px) {
   .highlights-grid { flex-direction: column; }
   .hl-visual { height: 240px; }
+  .team-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
 }
 @media (max-width: 860px) {
   .contact-grid { grid-template-columns: 1fr; gap: 48px; }
-  .team-card--wide { grid-column: span 1; flex-direction: column; }
   .gallery-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
   .gallery-item--tall { grid-row: span 1; }
   .gallery-inner { height: 200px; }
@@ -22,11 +22,12 @@
   /* Dekorative Satelliten-Grafik nicht mehr aus dem Bild ragen lassen */
   .about-satellite { right: -30%; opacity: 0.5; }
 }
-/* Mobile: kleinere Abstände */
+/* Mobile: kleinere Abstände, Personen 1-spaltig */
 @media (max-width: 600px) {
   .container { padding: 0 20px; }
   .hero-container { padding: 0 20px; bottom: 28px; }
   .hero-headline { font-size: clamp(2.2rem, 11vw, 3.25rem); }
   .metrics { margin-top: 56px; gap: 24px 32px; }
+  .team-grid { grid-template-columns: 1fr; max-width: 320px; margin-left: auto; margin-right: auto; }
   .footer-inner { flex-direction: column; }
 }

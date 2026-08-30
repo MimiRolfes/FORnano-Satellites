@@ -290,7 +290,10 @@ backdrop.addEventListener('click', () => {
     ['.about-titles', 'scale'],
     ['.metrics', 'stagger'],
     ['.hl-header', 'scale'],
-    ['.highlights-grid', 'stagger']
+    ['.highlights-grid', 'stagger'],
+    ['.team-header', 'scale'],
+    ['.team-featured', 'scale'],
+    ['.team-grid', 'stagger']
   ];
 
   var els = [];
@@ -339,7 +342,7 @@ backdrop.addEventListener('click', () => {
 // Ohne JS oder bei prefers-reduced-motion bleibt die reguläre Textfarbe.
 (function initHeadingReveal() {
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var headings = document.querySelectorAll('#about .heading, #highlights .heading');
+  var headings = document.querySelectorAll('#about .heading, #highlights .heading, #team .heading');
   if (reduce || !headings.length) return;
 
   var FROM = [150, 150, 150]; // Framer "Grey 60"

@@ -1,0 +1,26 @@
+/* ============================================================
+   Sass-Mixins (nur Helfer, erzeugen selbst kein CSS)
+   ============================================================ */
+
+/* Vier einzelne L-förmige Eckwinkel (Framer-Komponente "Elements/Border")
+   als 8 Hintergrund-Verläufe — 2 pro Ecke. Farbe über die Custom-Property
+   --bracket steuerbar (damit sie je Kontext auf hellem/dunklem Grund
+   angepasst werden kann). */
+@mixin corner-brackets($len: 9px, $w: 1px) {
+  background-image:
+    linear-gradient(var(--bracket), var(--bracket)), linear-gradient(var(--bracket), var(--bracket)),
+    linear-gradient(var(--bracket), var(--bracket)), linear-gradient(var(--bracket), var(--bracket)),
+    linear-gradient(var(--bracket), var(--bracket)), linear-gradient(var(--bracket), var(--bracket)),
+    linear-gradient(var(--bracket), var(--bracket)), linear-gradient(var(--bracket), var(--bracket));
+  background-repeat: no-repeat;
+  background-position:
+    top left, top left,
+    top right, top right,
+    bottom left, bottom left,
+    bottom right, bottom right;
+  background-size:
+    #{$len} #{$w}, #{$w} #{$len},
+    #{$len} #{$w}, #{$w} #{$len},
+    #{$len} #{$w}, #{$w} #{$len},
+    #{$len} #{$w}, #{$w} #{$len};
+}

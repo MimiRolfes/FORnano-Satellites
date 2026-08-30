@@ -47,6 +47,10 @@
   .reveal--stagger.is-visible > *:nth-child(4) { transition-delay: 0.24s; }
   .reveal--stagger.is-visible > *:nth-child(5) { transition-delay: 0.32s; }
 
+  /* Feine Linie unter den Personen-Karten zieht mit dem Karten-Reveal ein */
+  .reveal.is-visible .person-line,
+  .reveal--stagger.is-visible .person-line { transform: scaleX(1); }
+
   /* Scroll-gekoppelte Farb-Enthüllung der Sektions-Überschriften
      (Framer-Komponente "TextReveal": Grau -> Schwarz, wortweise, über
      ~400 px Scroll-Weg). Die Wort-<span>s + Farben setzt initHeadingReveal()

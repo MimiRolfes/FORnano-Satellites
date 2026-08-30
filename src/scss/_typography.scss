@@ -1,14 +1,13 @@
+@use 'mixins' as *;
+
 /* ── Kleine Kategorie-Labels / "Section Tag" (z. B. "ABOUT", "HIGHLIGHTS") ──
    Framer-Komponente "Elements/Section Tag": Chakra Petch 500, 15px, kein
    Tracking, Farbe Grey 100 (#525252), min-width 80px, Padding 5px 12px.
    KEIN durchgehender Rahmen — 4 einzelne L-förmige Eckwinkel (Framer-
-   Komponente "Elements/Border", Variante "Small", ~10px, Deckkraft 0,74),
-   umgesetzt als 8 Hintergrund-Verläufe (je 2 pro Ecke). Auf dunklen
+   Komponente "Elements/Border", Variante "Small"). Auf dunklen
    Kopfbereichen werden Text + Winkel aufgehellt (siehe #about, .page-hero-text). */
 .label {
-  --bracket: rgba(0, 0, 0, 0.45);   /* Farbe der Eckwinkel */
-  --bracket-len: 9px;
-  --bracket-w: 1px;
+  --bracket: rgba(0, 0, 0, 0.45);
 
   display: inline-flex;
   align-items: center;
@@ -24,22 +23,7 @@
   color: var(--ink);
   margin-bottom: 16px;
 
-  background-image:
-    linear-gradient(var(--bracket), var(--bracket)), linear-gradient(var(--bracket), var(--bracket)),
-    linear-gradient(var(--bracket), var(--bracket)), linear-gradient(var(--bracket), var(--bracket)),
-    linear-gradient(var(--bracket), var(--bracket)), linear-gradient(var(--bracket), var(--bracket)),
-    linear-gradient(var(--bracket), var(--bracket)), linear-gradient(var(--bracket), var(--bracket));
-  background-repeat: no-repeat;
-  background-position:
-    top left, top left,
-    top right, top right,
-    bottom left, bottom left,
-    bottom right, bottom right;
-  background-size:
-    var(--bracket-len) var(--bracket-w), var(--bracket-w) var(--bracket-len),
-    var(--bracket-len) var(--bracket-w), var(--bracket-w) var(--bracket-len),
-    var(--bracket-len) var(--bracket-w), var(--bracket-w) var(--bracket-len),
-    var(--bracket-len) var(--bracket-w), var(--bracket-w) var(--bracket-len);
+  @include corner-brackets;
 }
 
 /* ── Sektions-Überschriften (Framer-Komponente "TextReveal") ──

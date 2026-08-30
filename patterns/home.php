@@ -225,40 +225,62 @@ $satellite_hl_dir     = $satellite_theme_uri . '/images/highlights';
 </section>
 <!-- /wp:group -->
 
-<!-- TEAM-SEKTION (noch Template-Platzhalter — wird beim Umbau auf die
-     Framer-„Speakers"-Sektion ersetzt) -->
-<section class="section" id="team">
-	<div class="container">
-		<p class="label">Supervision</p>
-		<h2 class="heading">About Us</h2>
-		<div class="team-grid">
-			<div class="team-card team-card--wide">
-				<div class="team-init">PF</div>
-				<div>
-					<span class="team-role">Prof</span>
-					<h3>Fey</h3>
-					<p>FAU Erlangen-N&uuml;rnberg</p>
-				</div>
-			</div>
-			<div class="team-card">
-				<div class="team-init">R</div>
-				<div><span class="team-role">Student</span><h3>Richard</h3></div>
-			</div>
-			<div class="team-card">
-				<div class="team-init">F</div>
-				<div><span class="team-role">Student</span><h3>Flo</h3></div>
-			</div>
-			<div class="team-card">
-				<div class="team-init">Y</div>
-				<div><span class="team-role">Student</span><h3>Yumyum</h3></div>
-			</div>
-			<div class="team-card">
-				<div class="team-init">K</div>
-				<div><span class="team-role">Student</span><h3>Khaled</h3></div>
-			</div>
+<?php
+/*
+ * Personen der Team-Sektion. Fotos liegen (falls vorhanden) unter
+ * images/people/<datei> — nicht im Repo, daher file_exists()-Prüfung:
+ * ohne Foto zeigt die Karte einen dunklen Platzhalter mit Eckwinkeln.
+ * Namen, Rollen und Fotos sind im Website-Editor bearbeitbar.
+ */
+$satellite_team_featured = array(
+	'name'  => 'Prof. Fey',
+	'role'  => 'Academic supervision',
+	'photo' => 'fey.jpg',
+);
+$satellite_team = array(
+	array( 'name' => 'Richard', 'role' => 'Student', 'photo' => 'richard.jpg' ),
+	array( 'name' => 'Flo',     'role' => 'Student', 'photo' => 'flo.jpg' ),
+	array( 'name' => 'Yumyum',  'role' => 'Student', 'photo' => 'yumyum.jpg' ),
+	array( 'name' => 'Khaled',  'role' => 'Student', 'photo' => 'khaled.jpg' ),
+);
+// satellite_person_card() ist in functions.php definiert.
+?>
+<!-- wp:group {"tagName":"section","className":"section","anchor":"team","layout":{"type":"default"}} -->
+<section class="wp-block-group section" id="team">
+
+	<!-- wp:group {"className":"container","layout":{"type":"default"}} -->
+	<div class="wp-block-group container">
+
+		<!-- wp:group {"className":"team-header","layout":{"type":"default"}} -->
+		<div class="wp-block-group team-header">
+			<!-- wp:paragraph {"className":"label"} -->
+			<p class="label">The Team</p>
+			<!-- /wp:paragraph -->
+			<!-- wp:heading {"className":"heading"} -->
+			<h2 class="wp-block-heading heading">The people behind the project</h2>
+			<!-- /wp:heading -->
 		</div>
+		<!-- /wp:group -->
+
+		<!-- wp:group {"className":"team-featured","layout":{"type":"default"}} -->
+		<div class="wp-block-group team-featured">
+			<?php satellite_person_card( $satellite_team_featured ); ?>
+		</div>
+		<!-- /wp:group -->
+
+		<!-- wp:group {"className":"team-grid","layout":{"type":"default"}} -->
+		<div class="wp-block-group team-grid">
+			<?php foreach ( $satellite_team as $satellite_member ) {
+				satellite_person_card( $satellite_member );
+			} ?>
+		</div>
+		<!-- /wp:group -->
+
 	</div>
+	<!-- /wp:group -->
+
 </section>
+<!-- /wp:group -->
 
 <!-- KONTAKT-SEKTION (noch Template-Platzhalter) -->
 <section class="section" id="contact">
