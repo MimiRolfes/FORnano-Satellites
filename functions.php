@@ -79,6 +79,70 @@ function satellite_person_card( $person ) {
 	<?php
 }
 
+/**
+ * Gibt die Sticky-Gruppenleiste eines Arbeitspakete-Blocks aus (Framer:
+ * "Day N Details" — links/Mitte/rechts, Blur-Hintergrund, Rahmen unten).
+ *
+ * @param array $group range (z. B. "TP1–TP2"), theme (Kurztitel).
+ */
+function satellite_timeline_bar( $group ) {
+	$range = isset( $group['range'] ) ? $group['range'] : '';
+	$theme = isset( $group['theme'] ) ? $group['theme'] : '';
+	?>
+	<div class="timeline-bar">
+		<!-- wp:paragraph {"className":"timeline-bar-range"} -->
+		<p class="timeline-bar-range"><?php echo esc_html( $range ); ?></p>
+		<!-- /wp:paragraph -->
+		<!-- wp:paragraph {"className":"timeline-bar-theme"} -->
+		<p class="timeline-bar-theme"><?php echo esc_html( $theme ); ?></p>
+		<!-- /wp:paragraph -->
+		<!-- wp:paragraph {"className":"timeline-bar-meta"} -->
+		<p class="timeline-bar-meta">FORnano Satellites</p>
+		<!-- /wp:paragraph -->
+	</div>
+	<?php
+}
+
+/**
+ * Gibt einen Zeitleisten-Eintrag der Arbeitspakete-Sektion als Block-Markup
+ * aus (abwechselnd links/rechts per :nth-child(even) in _timeline.scss).
+ * Punkt + eigenes Linien-Segment gehören zu diesem Eintrag (siehe
+ * _timeline.scss — keine gemeinsame durchgehende Linie über alle Einträge).
+ *
+ * @param array $item title, text, dark (optional — true ab dem Punkt, wo
+ *                     die Karte auf dem hellen Verlaufsteil liegt und
+ *                     dunklen statt hellen Text braucht).
+ */
+function satellite_timeline_item( $item ) {
+	$title     = isset( $item['title'] ) ? $item['title'] : '';
+	$text      = isset( $item['text'] ) ? $item['text'] : '';
+	$card_cls  = 'timeline-card' . ( ! empty( $item['dark'] ) ? ' timeline-card--dark' : '' );
+	?>
+	<!-- Reines Listen-Element (Layout/Semantik) — kein Block-Wrapper, da
+	     "li" kein gültiger Group-Block-Tag ist. Die Inhalte darin (Titel,
+	     Text) bleiben als echte Blöcke editierbar. -->
+	<li class="timeline-item">
+		<!-- wp:html --><div class="timeline-spacer" aria-hidden="true"></div><!-- /wp:html -->
+		<!-- wp:html -->
+		<div class="timeline-dot-col">
+			<span class="timeline-dot"></span>
+			<span class="timeline-line-seg" aria-hidden="true"></span>
+		</div>
+		<!-- /wp:html -->
+		<!-- wp:group {"className":"<?php echo esc_attr( $card_cls ); ?>","layout":{"type":"default"}} -->
+		<div class="wp-block-group <?php echo esc_attr( $card_cls ); ?>">
+			<!-- wp:heading {"level":3} -->
+			<h3 class="wp-block-heading"><?php echo esc_html( $title ); ?></h3>
+			<!-- /wp:heading -->
+			<!-- wp:paragraph -->
+			<p><?php echo esc_html( $text ); ?></p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:group -->
+	</li>
+	<?php
+}
+
 function satellite_enqueue_assets() {
 	wp_enqueue_style(
 		'satellite-fonts',

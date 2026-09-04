@@ -11,6 +11,18 @@
 @media (max-width: 860px) {
   .contact-grid { grid-template-columns: 1fr; gap: 48px; }
   .gallery-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+
+  /* Zeitleiste: Zickzack wird einspaltig, Punkt + Linie rutschen an den linken Rand */
+  .timeline-item { grid-template-columns: 32px 1fr; }
+  .timeline-spacer { display: none; }
+  .timeline-dot-col,
+  .timeline-item:nth-child(even) .timeline-dot-col { grid-column: 1; }
+  .timeline-card,
+  .timeline-item:nth-child(even) .timeline-card { grid-column: 2; }
+  .timeline-bar { flex-wrap: wrap; row-gap: 4px; }
+  .timeline-bar-range,
+  .timeline-bar-theme,
+  .timeline-bar-meta { flex: 1 1 100%; text-align: left; }
   .gallery-item--tall { grid-row: span 1; }
   .gallery-inner { height: 200px; }
 

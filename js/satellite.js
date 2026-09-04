@@ -293,7 +293,11 @@ backdrop.addEventListener('click', () => {
     ['.highlights-grid', 'stagger'],
     ['.team-header', 'scale'],
     ['.team-featured', 'scale'],
-    ['.team-grid', 'stagger']
+    ['.team-grid', 'stagger'],
+    ['.wp-header', 'scale']
+    // .timeline-item wird NICHT hier eingetragen: die Arbeitspakete-Timeline
+    // hat eine eigene, kontinuierlich scroll-gekoppelte Animation statt
+    // eines einmaligen Ein-/Ausblendens, siehe initTimelineScroll() unten.
   ];
 
   var els = [];
@@ -336,18 +340,22 @@ backdrop.addEventListener('click', () => {
 })();
 
 // ── Überschriften-Farb-Enthüllung ─────────────────────────────
-// Framer-Komponente "TextReveal": die Sektions-Überschrift (About,
-// Highlights) startet grau (#969696) und färbt sich beim Scrollen Wort
-// für Wort nach Schwarz, verteilt über ~400 px Scroll-Weg.
-// Ohne JS oder bei prefers-reduced-motion bleibt die reguläre Textfarbe.
+// Framer-Komponente "TextReveal": die Sektions-Überschrift startet in
+// einem Grauton und färbt sich beim Scrollen Wort für Wort in die
+// Ziel-Farbe, verteilt über ~400 px Scroll-Weg (Framer "fullRevealDistance").
+// Auf hellen Sektionen (About, Highlights, Team) Grau -> Schwarz; auf der
+// sehr dunklen Arbeitspakete-Sektion Dunkelgrau -> Weiß (Framer verwendet
+// dort ebenfalls ein anderes Farbpaar). Ohne JS oder bei
+// prefers-reduced-motion bleibt die reguläre Textfarbe.
 (function initHeadingReveal() {
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var headings = document.querySelectorAll('#about .heading, #highlights .heading, #team .heading');
-  if (reduce || !headings.length) return;
+  if (reduce) return;
 
-  var FROM = [150, 150, 150]; // Framer "Grey 60"
-  var TO = [0, 0, 0];         // Framer "Black 100"
-  var DISTANCE = 400;         // Framer "fullRevealDistance"
+  var DISTANCE = 400; // Framer "fullRevealDistance"
+  var CONFIGS = [
+    { selector: '#about .heading, #highlights .heading, #team .heading', from: [150, 150, 150], to: [0, 0, 0] },       // Grey 60 -> Black 100
+    { selector: '#work-packages .heading', from: [82, 82, 82], to: [250, 250, 250] }                                   // Grey 100 -> White 100
+  ];
 
   function wrapWords(el) {
     Array.prototype.slice.call(el.childNodes).forEach(function (node) {
@@ -369,10 +377,12 @@ backdrop.addEventListener('click', () => {
   }
 
   var items = [];
-  headings.forEach(function (h) {
-    wrapWords(h);
-    var words = h.querySelectorAll('.rw');
-    if (words.length) items.push({ words: words, ref: h });
+  CONFIGS.forEach(function (config) {
+    document.querySelectorAll(config.selector).forEach(function (h) {
+      wrapWords(h);
+      var words = h.querySelectorAll('.rw');
+      if (words.length) items.push({ words: words, ref: h, from: config.from, to: config.to });
+    });
   });
   if (!items.length) return;
 
@@ -387,10 +397,47 @@ backdrop.addEventListener('click', () => {
       for (var i = 0; i < n; i++) {
         var wp = Math.max(0, Math.min(1, p * n - i));
         item.words[i].style.color =
-          'rgb(' + lerp(FROM[0], TO[0], wp) + ',' +
-                   lerp(FROM[1], TO[1], wp) + ',' +
-                   lerp(FROM[2], TO[2], wp) + ')';
+          'rgb(' + lerp(item.from[0], item.to[0], wp) + ',' +
+                   lerp(item.from[1], item.to[1], wp) + ',' +
+                   lerp(item.from[2], item.to[2], wp) + ')';
       }
+    });
+  }
+
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(function () { update(); ticking = false; });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  update();
+})();
+
+// ── Arbeitspakete-Timeline: scroll-gekoppelte Enthüllung ───────
+// Framer-Agenda-Sektion: jeder Eintrag hat seinen EIGENEN Punkt + eigenes
+// Linien-Segment (siehe _timeline.scss) und füllt sich individuell, sobald
+// er beim Scrollen erreicht wird — kontinuierlich, reversibel in beide
+// Richtungen (kein einmaliges Ein-/Ausblenden). Die Sticky-Gruppenleisten
+// brauchen dafür kein JavaScript: durch die .timeline-group-Klammer pro
+// Gruppe löst position:sticky sie ganz von allein ab (siehe CSS). Ohne JS
+// oder bei prefers-reduced-motion bleibt alles regulär sichtbar.
+(function initTimelineScroll() {
+  var items = document.querySelectorAll('.timeline-item');
+  if (!items.length) return;
+
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) {
+    items.forEach(function (item) { item.classList.add('is-visible'); });
+    return;
+  }
+
+  function update() {
+    var triggerY = window.innerHeight * 0.8;
+    items.forEach(function (item) {
+      var rect = item.getBoundingClientRect();
+      item.classList.toggle('is-visible', rect.top <= triggerY);
     });
   }
 

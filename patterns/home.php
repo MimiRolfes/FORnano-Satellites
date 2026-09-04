@@ -282,6 +282,109 @@ $satellite_team = array(
 </section>
 <!-- /wp:group -->
 
+<?php
+/*
+ * Arbeitspakete (TP1–TP6), Quelle: fornano.pinsker.ai ("Arbeitspakete").
+ * Titel übersetzt, Beschreibungen inhaltlich unverändert. Framer gliedert
+ * diese Sektion in 3 Sticky-Gruppenleisten (dort: Tag 1/2/3 einer
+ * Konferenz-Agenda) — die Gruppen-Struktur wurde 1:1 übernommen, aber
+ * neutral befüllt: 3 Zweier-Paare der echten Arbeitspakete mit einem
+ * beschreibenden Thementitel statt Tag/Datum. Keine Termine/Phasen erfunden
+ * (siehe _timeline.scss für die ausführliche Begründung).
+ */
+$satellite_work_package_groups = array(
+	array(
+		'range' => 'TP1–TP2',
+		'theme' => 'Concept & Architecture',
+		'items' => array(
+			array(
+				'title' => 'TP1 — System concept for small satellites',
+				'text'  => 'Development of a comprehensive system concept for the automated, configurable production of nanosatellites through modularization and standardization.',
+			),
+			array(
+				'title' => 'TP2 — Computer architecture for on-board computers (OBC)',
+				'text'  => 'Establishing and testing a new architecture concept for the on-board computer, based on the open RISC-V instruction set and FPGA hardware.',
+			),
+		),
+	),
+	array(
+		'range' => 'TP3–TP4',
+		'theme' => 'Manufacturing & Applications',
+		'items' => array(
+			array(
+				'title' => 'TP3 — Automated assembly system for nanosatellites',
+				'text'  => 'Concept, development and prototype implementation of assembly and interconnection technology plus automated assembly processes, using System-in-Package technology.',
+			),
+			array(
+				'title' => 'TP4 — Applications of small satellites',
+				'text'  => 'Identifying and developing application scenarios for the new generation of nanosatellites, with a focus on Earth observation, telecommunications and atmospheric measurements.',
+			),
+		),
+	),
+	array(
+		'range' => 'TP5–TP6',
+		'theme' => 'Communication & Platform',
+		'items' => array(
+			array(
+				'title' => 'TP5 — Communication with small satellites',
+				'text'  => 'Developing innovative communication systems for reliable data exchange with nanosatellites, including optical communication technologies.',
+				'dark'  => true,
+			),
+			array(
+				'title' => 'TP6 — Knowledge-based web configurator',
+				'text'  => 'Developing an intelligent platform for the digital configuration and design of nanosatellite missions, including automated generation of manufacturing instructions.',
+				'dark'  => true,
+			),
+		),
+	),
+);
+?>
+<!-- wp:group {"tagName":"section","className":"section","anchor":"work-packages","layout":{"type":"default"}} -->
+<section class="wp-block-group section" id="work-packages">
+
+	<!-- wp:group {"className":"container","layout":{"type":"default"}} -->
+	<div class="wp-block-group container">
+
+		<!-- wp:group {"className":"wp-header","layout":{"type":"default"}} -->
+		<div class="wp-block-group wp-header">
+			<!-- wp:paragraph {"className":"label"} -->
+			<p class="label">Timeline</p>
+			<!-- /wp:paragraph -->
+			<!-- wp:heading {"className":"heading"} -->
+			<h2 class="wp-block-heading heading">Get to know our work packages</h2>
+			<!-- /wp:heading -->
+		</div>
+		<!-- /wp:group -->
+
+		<!-- Reine Struktur (Layout/Semantik) — bewusst kein einzelner
+		     wp:html-Wrapper um die ganze Liste: das würde die darin
+		     verschachtelten wp:group/wp:heading/wp:paragraph-Blöcke der
+		     einzelnen Karten (siehe satellite_timeline_item()) zu einem
+		     einzigen, nicht mehr editierbaren HTML-Klumpen zusammenfassen.
+		     "ol"/"div" hier sind daher unverpackt, wie schon bei .timeline
+		     und .timeline-item weiter oben. -->
+		<div class="wp-groups">
+		<?php foreach ( $satellite_work_package_groups as $satellite_wp_group ) : ?>
+			<!-- .timeline-group klammert Leiste + Zeitleiste dieser Gruppe —
+			     das begrenzt den Sticky-Gültigkeitsbereich der Leiste auf
+			     genau diese Gruppe (siehe _timeline.scss). -->
+			<div class="timeline-group">
+				<?php satellite_timeline_bar( $satellite_wp_group ); ?>
+				<ol class="timeline">
+				<?php foreach ( $satellite_wp_group['items'] as $satellite_wp_item ) : ?>
+					<?php satellite_timeline_item( $satellite_wp_item ); ?>
+				<?php endforeach; ?>
+				</ol>
+			</div>
+		<?php endforeach; ?>
+		</div>
+
+	</div>
+	<!-- /wp:group -->
+
+</section>
+<!-- /wp:group -->
+
 <!-- KONTAKT-SEKTION (noch Template-Platzhalter) -->
 <section class="section" id="contact">
 	<div class="container">
