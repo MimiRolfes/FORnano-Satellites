@@ -294,7 +294,9 @@ backdrop.addEventListener('click', () => {
     ['.team-header', 'scale'],
     ['.team-featured', 'scale'],
     ['.team-grid', 'stagger'],
-    ['.wp-header', 'scale']
+    ['.wp-header', 'scale'],
+    ['.sponsors-header', 'scale'],
+    ['.sponsors-grid', 'stagger']
     // .timeline-item wird NICHT hier eingetragen: die Arbeitspakete-Timeline
     // hat eine eigene, kontinuierlich scroll-gekoppelte Animation statt
     // eines einmaligen Ein-/Ausblendens, siehe initTimelineScroll() unten.
@@ -353,7 +355,7 @@ backdrop.addEventListener('click', () => {
 
   var DISTANCE = 400; // Framer "fullRevealDistance"
   var CONFIGS = [
-    { selector: '#about .heading, #highlights .heading, #team .heading', from: [150, 150, 150], to: [0, 0, 0] },       // Grey 60 -> Black 100
+    { selector: '#about .heading, #highlights .heading, #team .heading, #sponsors .heading', from: [150, 150, 150], to: [0, 0, 0] }, // Grey 60 -> Black 100
     { selector: '#work-packages .heading', from: [82, 82, 82], to: [250, 250, 250] }                                   // Grey 100 -> White 100
   ];
 
@@ -450,4 +452,25 @@ backdrop.addEventListener('click', () => {
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
   update();
+})();
+
+// Footer: E-Mail-Link kopiert die Adresse statt den Mail-Client zu öffnen
+// (mailto bleibt als Fallback erhalten, falls JS oder die Clipboard-API fehlt).
+(function initCopyEmail() {
+  document.querySelectorAll('.footer-copy-email').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      if (!navigator.clipboard) return; // mailto-Fallback greift
+      e.preventDefault();
+      var email = link.getAttribute('data-email');
+      navigator.clipboard.writeText(email).then(function () {
+        var original = link.getAttribute('title');
+        link.classList.add('is-copied');
+        link.setAttribute('title', 'Copied!');
+        setTimeout(function () {
+          link.classList.remove('is-copied');
+          link.setAttribute('title', original);
+        }, 1500);
+      });
+    });
+  });
 })();

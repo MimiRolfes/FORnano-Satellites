@@ -47,8 +47,13 @@ Text Domain: satellite
   --t: 0.2s ease;
 }
 
+/* overflow-x:hidden auf BEIDEN html und body — nur auf body reicht nicht:
+   das <html>-Element bestimmt den Root-Scroller, body allein hat absichtlich
+   nach außen ragende Dekorationselemente (z. B. .about-satellite) nicht
+   zuverlässig abgeschnitten (bestehender, bisher unbehobener Bug). */
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -176,9 +181,13 @@ img {
   pointer-events: none;
 }
 
-/* ── 600px breiter Container mit Abstand oben ── */
+/* ── 600px breiter Container mit Abstand oben ──
+   width:100% + max-width statt einer starren Breite, sonst überragt der
+   Container auf schmalen Viewports die Seite und erzeugt horizontales
+   Scrollen (bestehender, bisher unbehobener Bug). */
 .nav-wrap {
-  width: 600px;
+  width: 100%;
+  max-width: 600px;
   height: -moz-min-content;
   height: min-content;
   display: flex;
@@ -535,41 +544,45 @@ img {
   position: relative;
   transition: border-color 0.3s ease;
   cursor: pointer;
-  /* Sichtbarer Button-Text — bestimmt die Button-Größe */
+  /* Sichtbarer Button-Text (echtes Markup statt attr(data-label), damit das
+     Pfeil-Icon als SVG statt als Unicode-Zeichen gerendert wird — sonst
+     wählen Handy-Browser dafür ein anderes Fallback-Font mit sichtbar
+     anderer Pfeilform als Desktop-Browser). Bestimmt die Button-Größe. */
 }
-.btn-about::before {
-  content: attr(data-label);
-  display: block;
+.btn-about .btn-about-face {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   padding: 10px 20px;
   color: #000;
   position: relative;
   z-index: 1;
   transition: transform 0.3s ease;
 }
+.btn-about .btn-about-face .btn-arrow {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
 .btn-about {
   /* Blaue Füllung schiebt sich von unten rein (Hover-Effekt) */
 }
-.btn-about::after {
-  content: attr(data-label);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 20px;
+.btn-about .btn-about-face--hover {
   color: #fff;
   background: var(--blue);
   position: absolute;
   inset: 0;
   z-index: 2;
   transform: translateY(100%);
-  transition: transform 0.3s ease;
 }
 .btn-about:hover, .btn-about:focus-visible {
   border-color: var(--ink);
 }
-.btn-about:hover::before, .btn-about:focus-visible::before {
+.btn-about:hover .btn-about-face:not(.btn-about-face--hover), .btn-about:focus-visible .btn-about-face:not(.btn-about-face--hover) {
   transform: translateY(-100%);
 }
-.btn-about:hover::after, .btn-about:focus-visible::after {
+.btn-about:hover .btn-about-face--hover, .btn-about:focus-visible .btn-about-face--hover {
   transform: translateY(0);
 }
 
@@ -616,6 +629,12 @@ img {
 .page-hero-text .label {
   color: #f3f3f3;
   --bracket: rgba(255,255,255,0.4);
+}
+
+/* Top-Level (nicht verschachtelt), damit die Responsive-Regel (gleiche
+   Spezifität, später importiert) sie bei ≤809px zuverlässig überschreibt. */
+.btn-label-short {
+  display: none;
 }
 
 /* ============================================================
@@ -708,9 +727,10 @@ img {
   top: 50%;
   right: clamp(-140px, -7vw, -40px);
   width: clamp(280px, 42vw, 520px);
+  max-width: none;
   aspect-ratio: 1/1;
-  -o-object-fit: contain;
-     object-fit: contain;
+  -o-object-fit: fill;
+     object-fit: fill;
   z-index: 0;
   pointer-events: none;
   will-change: transform;
@@ -1044,93 +1064,217 @@ img {
   filter: saturate(1);
 }
 
-/* ── Contact-Sektion ── */
-.contact-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: start;
+/* ── Sponsors-Sektion ──
+   Framer: eigener Gold→Schwarz-Verlauf, zentrierter Header + 3-spaltiges
+   Karten-Raster ("Cards/Logo Card": helle Verlaufskarte, 1px Rahmen,
+   Signatur-Schatten, 4px Grid-Abstand). Ohne rechtlich geklärte Partner-
+   Logos zeigt jede Karte den Organisationsnamen als Text-Wordmark — genau
+   wie Framers eigene "FAU"- und "DIEHL"-Karten es bereits als Text tun. */
+#sponsors {
+  border-top: none;
+  background: linear-gradient(180deg, rgb(252, 215, 135) 0%, rgb(0, 0, 0) 100%);
 }
 
-.contact-links {
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  overflow: hidden;
-  margin-top: 8px;
-}
-
-.contact-row {
+.sponsors-header {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  padding: 20px 24px;
-  border-bottom: 1px solid var(--border);
-  font-size: 14px;
-  transition: background var(--t);
   gap: 16px;
+  max-width: 450px;
+  margin: 0 auto 64px;
+  text-align: center;
 }
-.contact-row:last-child {
-  border-bottom: none;
-}
-.contact-row:hover {
-  background: rgba(207, 255, 100, 0.03);
-}
-
-.contact-lbl {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+.sponsors-header .heading {
+  margin-bottom: 0;
+  text-align: center;
   text-transform: uppercase;
-  color: var(--dim);
 }
 
-/* ── Footer ── */
-/* (Fußbereich am Ende jeder Seite) */
-.footer {
-  border-top: 1px solid var(--border);
-  padding: 40px 0;
-  background: var(--bg);
+.sponsors-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
 }
 
-.footer-inner {
+.sponsor-card {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 180px;
+  padding: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: linear-gradient(294deg, #fafafa 0%, #eeeeee 100%);
+  box-shadow: var(--shadow-hard);
+  text-align: center;
+}
+
+.sponsor-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 160px;
+}
+.sponsor-logo img {
+  max-height: 40px;
+  width: auto;
+  max-width: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+.sponsor-logo--placeholder {
+  height: 40px;
+  width: 100%;
+  border: 1px dashed rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+/* ── Footer ──
+   Framer: radial-gradient Braun→Grün→Schwarz, 3 "Glas"-Karten (Marke |
+   Seiten+Nav / Credit gestapelt), großes dekoratives "Vision"-Wortbild
+   unten (Lizenz ungeklärt, siehe .gitignore — Footer funktioniert auch
+   ohne die Datei, siehe file_exists() in site-footer.php). */
+.footer {
+  position: relative;
+  overflow: hidden;
+  padding: 80px 40px 40px;
+  background: radial-gradient(137% 58% at 53% 105%, #522e07 0%, rgba(59, 117, 55, 0.83) 34.5%, #000 62.6%, #000 100%);
+}
+
+.footer-grid {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.footer-card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.15);
+  padding: 20px;
+}
+
+.footer-brand {
+  flex: 0.4 1 0;
+  display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: flex-start;
   gap: 24px;
-  flex-wrap: wrap;
 }
 
 .footer-logo {
+  display: block;
   font-family: var(--fh);
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+  line-height: 1.2;
+  font-weight: 600;
   text-transform: uppercase;
-  color: var(--text);
-  margin-bottom: 16px;
-}
-
-.footer-links {
-  display: flex;
-  gap: 24px;
-}
-.footer-links a {
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgb(150, 150, 150); /* var(--dim) is below WCAG AA 4.5:1 on this dark background */
-  transition: color var(--t);
-}
-.footer-links a:hover {
   color: var(--lime);
 }
 
-.footer-credit {
-  font-size: 12px;
-  letter-spacing: 0.12em;
+.footer-tagline {
+  font-family: var(--fb);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--fog);
+}
+
+.footer-side {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-pages {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.footer-pages-label {
+  font-family: var(--fh);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: rgb(150, 150, 150); /* var(--dim) is below WCAG AA 4.5:1 on this dark background */
-  align-self: flex-end;
+  color: var(--fog); /* statt Framers dunklerem Grey 80 — WCAG AA auf dem fast schwarzen Verlaufsteil */
+}
+
+.footer-nav {
+  display: flex;
+  gap: 16px;
+}
+.footer-nav a {
+  font-family: var(--fh);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+  transition: color var(--t);
+}
+.footer-nav a:hover {
+  color: var(--lime);
+}
+
+.footer-credit-card {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 10px;
+  text-align: right;
+}
+
+.footer-credit {
+  font-family: var(--fb);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+
+.footer-social {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.footer-social-link {
+  display: flex;
+  color: var(--silver);
+  transition: color var(--t);
+}
+.footer-social-link svg {
+  width: 18px;
+  height: 18px;
+}
+.footer-social-link:hover {
+  color: var(--lime);
+}
+
+.footer-copy-email.is-copied {
+  color: var(--lime);
+}
+
+.footer-wordmark {
+  display: block;
+  width: 100%;
+  max-width: 1200px;
+  aspect-ratio: 7.57/1;
+  height: auto;
+  -o-object-fit: contain;
+     object-fit: contain;
+  margin: 40px auto 0;
+  opacity: 0.53;
+  pointer-events: none;
 }
 
 /* ============================================================
@@ -1169,7 +1313,7 @@ img {
    ============================================================ */
 #work-packages {
   border-top: none;
-  background: linear-gradient(180deg, rgb(5, 8, 22) 24.1%, rgb(11, 31, 77) 70.3%, rgba(255, 107, 54, 0.86) 94.8%, rgba(255, 209, 102, 0.77) 100%);
+  background: linear-gradient(180deg, rgb(5, 8, 22) 24.1%, rgb(11, 31, 77) 70.3%, rgb(255, 128, 82) 94.8%, rgb(255, 220, 137) 100%);
 }
 #work-packages > .container {
   text-align: center;
@@ -1473,12 +1617,28 @@ img {
   }
 }
 /* ============================================================
-   RESPONSIVE ANPASSUNGEN (Tablet- und Mobile-Breakpoints)
+   RESPONSIVE ANPASSUNGEN
+
+   Framer definiert für die Home-Seite genau zwei Breakpoints
+   (per Projekt-Inspektion bestätigt): Tablet ab max-width 1199px,
+   Phone ab max-width 809px. Diese zwei Werte sind bewusst 1:1
+   übernommen, statt eigener Zwischenwerte — bei mehreren Sektionen
+   (Sponsors-Grid, Zeitleiste, Footer) hätten eigene Breakpoints wie
+   860px den Umbruch zu früh ausgelöst (Framer behält z. B. das
+   3-spaltige Sponsors-Grid und das Zickzack der Zeitleiste über den
+   GESAMTEN Tablet-Bereich bis 809px). 600px bleibt als zusätzliche
+   Fein-Justierung für Abstände/Schriftgrößen auf sehr kleinen
+   Phones — dafür hat Framer selbst keinen separaten Breakpoint,
+   sondern skaliert dort selbst fließend (clamp()-artig).
    ============================================================ */
-/* Tablet: Grids/Reihen werden schmaler */
-@media (max-width: 960px) {
+/* Tablet (810–1199px): Header/Footer stapeln, Grids werden 2-spaltig,
+   Zeitleiste und Sponsors-Grid bleiben unverändert wie am Desktop. */
+@media (max-width: 1199px) {
   .highlights-grid {
-    flex-direction: column;
+    flex-wrap: wrap;
+  }
+  .hl-card {
+    flex: 1 1 calc(50% - 12px);
   }
   .hl-visual {
     height: 240px;
@@ -1487,11 +1647,50 @@ img {
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
   }
+  /* Hero-Titelzeile stapeln, Info-Block unter die Überschrift */
+  .hero-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 28px;
+  }
+  .hero-aside {
+    width: 100%;
+  }
+  .hero-container {
+    gap: clamp(40px, 8vh, 90px);
+  }
+  /* Footer: Marke + Karten-Spalte stapeln sich */
+  .footer-grid {
+    flex-direction: column;
+  }
+  .footer-brand {
+    flex-basis: auto;
+  }
 }
-@media (max-width: 860px) {
-  .contact-grid {
+/* Phone (≤809px): alle Grids werden 1-spaltig, Zeitleiste verliert das
+   Zickzack, Hero-Text zentriert sich (wie in Framers Phone-Variante). */
+@media (max-width: 809px) {
+  .highlights-grid {
+    flex-direction: column;
+  }
+  .hl-card {
+    flex: 1 1 auto;
+  }
+  .team-grid {
     grid-template-columns: 1fr;
-    gap: 48px;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  /* Featured Person-Karte (Prof. Fey) sonst kleiner als die Grid-Karten
+     darunter, weil ihre Breite fest auf 268px/70vw für die Desktop-Reihe
+     ausgelegt ist — hier auf dieselbe Breite wie die Grid-Karten bringen */
+  .team-featured .person {
+    width: 100%;
+    max-width: 320px;
+  }
+  .sponsors-grid {
+    grid-template-columns: 1fr;
   }
   .gallery-grid {
     grid-template-columns: 1fr;
@@ -1528,25 +1727,97 @@ img {
   .gallery-inner {
     height: 200px;
   }
-  /* Hero-Titelzeile stapeln, Info-Block unter die Überschrift */
+  /* Hero: Text + Button zentrieren sich statt linksbündig zu bleiben */
   .hero-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 28px;
+    align-items: center;
+  }
+  .hero-headline {
+    text-align: center;
   }
   .hero-aside {
-    width: 100%;
+    text-align: center;
   }
-  .hero-container {
-    gap: clamp(40px, 8vh, 90px);
-  }
-  /* Dekorative Satelliten-Grafik nicht mehr aus dem Bild ragen lassen */
+  /* Framers Phone-Variante zeigt die Satelliten-Grafik deutlich größer,
+     tiefer versetzt und voll deckend — bewusster Per-Breakpoint-Override,
+     kein fließender Wert. Direkt an Framers Rohdaten gemessen (live DOM
+     + Node-Attribut centerAnchorY:63.57%): 438px breit auf 390px Viewport
+     (~112vw), rechte Kante ~66% über den Rand hinaus, vertikale Mitte bei
+     ~64% statt 50%, volle Deckkraft (nicht 0.5 wie am Desktop). */
   .about-satellite {
-    right: -30%;
-    opacity: 0.5;
+    left: 40vw;
+    right: auto;
+    width: 112vw;
+    top: 68%;
+    opacity: 1;
+  }
+  /* Nav: weniger seitliches Innenpolster, sonst bleibt auf schmalen Phones
+     kaum Platz für Logo + Plus-Button */
+  .nav-wrap {
+    padding: 16px 20px 0;
+  }
+  .nav-dropdown {
+    left: 20px;
+    right: 20px;
+  }
+  /* About: Framers Phone-Variante zentriert Label + Überschrift, stapelt
+     die Kennzahlen einspaltig statt in einer Reihe, und verschiebt den
+     Button ans Ende (nach den Kennzahlen statt direkt unter der
+     Überschrift). .about-head wird mit display:contents "aufgelöst",
+     damit Titel und Button zu echten Geschwistern von .metrics werden
+     und sich per order neu anordnen lassen. */
+  .about {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .about-head {
+    display: contents;
+  }
+  .about-titles {
+    order: 1;
+    align-items: center;
+    text-align: center;
+  }
+  .metrics {
+    order: 2;
+    align-self: flex-start; /* nicht wie Titel/Button zentrieren — Framer hält die Kennzahlen linksbündig am Container-Rand */
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 40px;
+  }
+  .btn-about {
+    order: 3;
+    margin-top: 40px;
+  }
+  /* Framer kürzt den Button-Text in der Phone-Variante ("About the
+     project" -> "About"), damit der Button nicht die ganze Zeile
+     einnimmt — hier per CSS nachgebildet statt Text zu duplizieren. */
+  .btn-label-full {
+    display: none;
+  }
+  .btn-label-short {
+    display: inline;
+  }
+  /* Footer: Framers Phone-Variante stapelt die Pages-Links statt sie in
+     einer Reihe zu zeigen, und richtet den Credit-Text links statt rechts
+     aus (beides erst ab Phone, nicht schon am Tablet — dort bleibt beides
+     wie am Desktop). */
+  .footer-pages {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .footer-nav {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .footer-credit-card {
+    align-items: flex-start;
+    text-align: left;
   }
 }
-/* Mobile: kleinere Abstände, Personen 1-spaltig */
+/* Sehr kleine Phones: nur noch Fein-Justierung von Abständen/Schrift,
+   keine weiteren Layout-/Spalten-Änderungen. */
 @media (max-width: 600px) {
   .container {
     padding: 0 20px;
@@ -1562,13 +1833,7 @@ img {
     margin-top: 56px;
     gap: 24px 32px;
   }
-  .team-grid {
-    grid-template-columns: 1fr;
-    max-width: 320px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .footer-inner {
-    flex-direction: column;
+  .footer {
+    padding: 56px 20px 32px;
   }
 }

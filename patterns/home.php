@@ -54,7 +54,10 @@ $satellite_hl_dir     = $satellite_theme_uri . '/images/highlights';
 				<!-- /wp:paragraph -->
 
 				<!-- wp:html -->
-				<a href="#about" class="btn-about" data-label="ABOUT &#8599;" aria-label="Jump to the about section"></a>
+				<a href="#about" class="btn-about" aria-label="Jump to the about section">
+					<span class="btn-about-face">ABOUT <?php echo satellite_arrow_up_right_icon(); ?></span>
+					<span class="btn-about-face btn-about-face--hover">ABOUT <?php echo satellite_arrow_up_right_icon(); ?></span>
+				</a>
 				<!-- /wp:html -->
 
 			</div>
@@ -104,7 +107,10 @@ $satellite_hl_dir     = $satellite_theme_uri . '/images/highlights';
 			<!-- /wp:group -->
 
 			<!-- wp:html -->
-			<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="btn-about" data-label="ABOUT THE PROJECT &#8599;" aria-label="About the project"></a>
+			<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="btn-about" aria-label="About the project">
+				<span class="btn-about-face">ABOUT<span class="btn-label-full"> THE PROJECT</span><span class="btn-label-short"> US</span> <?php echo satellite_arrow_up_right_icon(); ?></span>
+				<span class="btn-about-face btn-about-face--hover">ABOUT<span class="btn-label-full"> THE PROJECT</span><span class="btn-label-short"> US</span> <?php echo satellite_arrow_up_right_icon(); ?></span>
+			</a>
 			<!-- /wp:html -->
 
 		</div>
@@ -118,7 +124,7 @@ $satellite_hl_dir     = $satellite_theme_uri . '/images/highlights';
 				<!-- wp:html --><?php echo satellite_arrow_icon(); ?><!-- /wp:html -->
 				<!-- wp:group {"className":"metric-body","layout":{"type":"default"}} -->
 				<div class="wp-block-group metric-body">
-					<!-- wp:paragraph {"className":"metric-n"} --><p class="metric-n">100%</p><!-- /wp:paragraph -->
+					<!-- wp:paragraph {"className":"metric-n"} --><p class="metric-n">322</p><!-- /wp:paragraph -->
 					<!-- wp:paragraph {"className":"metric-l"} --><p class="metric-l">Hours of Work</p><!-- /wp:paragraph -->
 				</div>
 				<!-- /wp:group -->
@@ -130,7 +136,7 @@ $satellite_hl_dir     = $satellite_theme_uri . '/images/highlights';
 				<!-- wp:html --><?php echo satellite_arrow_icon(); ?><!-- /wp:html -->
 				<!-- wp:group {"className":"metric-body","layout":{"type":"default"}} -->
 				<div class="wp-block-group metric-body">
-					<!-- wp:paragraph {"className":"metric-n"} --><p class="metric-n">20+</p><!-- /wp:paragraph -->
+					<!-- wp:paragraph {"className":"metric-n"} --><p class="metric-n">173247</p><!-- /wp:paragraph -->
 					<!-- wp:paragraph {"className":"metric-l"} --><p class="metric-l">Lines of Code</p><!-- /wp:paragraph -->
 				</div>
 				<!-- /wp:group -->
@@ -385,20 +391,54 @@ $satellite_work_package_groups = array(
 </section>
 <!-- /wp:group -->
 
-<!-- KONTAKT-SEKTION (noch Template-Platzhalter) -->
-<section class="section" id="contact">
-	<div class="container">
-		<div class="contact-grid">
-			<div>
-				<p class="label">Contact</p>
-				<h2 class="heading">Get in Touch</h2>
-			</div>
-			<div class="contact-links">
-				<a href="mailto:info@example.org" class="contact-row">
-					<span class="contact-lbl">Email</span>
-					<span>info@example.org</span>
-				</a>
-			</div>
+<?php
+/*
+ * SPONSOREN-SEKTION (Framer: "Sponsers"). Framers eigene Karten zeigen
+ * teils echte, teils erfundene Platzhalter-Logos (Logoipsum, "LOQO" …) —
+ * das übernehmen wir nicht (siehe CLAUDE.md: keine erfundenen Partner/
+ * Logos). Stattdessen die auf fornano.pinsker.ai bestätigten Träger/
+ * Kern-Institute der Universitäten, als Text-Wordmark-Karten (wie
+ * Framers eigene "FAU"/"DIEHL"-Karten es auch als reinen Text tun).
+ * Die dort zusätzlich gelisteten ~13 Industriepartner sind auf der
+ * Quellseite nur als Logo ohne auslesbaren Namen vorhanden und daher
+ * hier (noch) nicht einzeln aufgeführt.
+ */
+$satellite_sponsors = array(
+	array( 'name' => 'FAU Erlangen-Nürnberg', 'logo' => 'fau.svg' ),
+	array( 'name' => 'Julius-Maximilians-Universität Würzburg', 'logo' => 'jmu.svg' ),
+	array( 'name' => 'DLR – Deutsches Zentrum für Luft- und Raumfahrt', 'logo' => 'dlr.svg' ),
+	array( 'name' => 'Zentrum für Telematik e.V. (ZfT)', 'logo' => 'zft.svg' ),
+	array( 'name' => 'FAPS – Lehrstuhl für Fertigungsautomatisierung', 'logo' => 'faps.svg' ),
+	array( 'name' => 'Bayerische Forschungsstiftung', 'logo' => 'bfs.svg' ),
+);
+?>
+<!-- wp:group {"tagName":"section","className":"section","anchor":"sponsors","layout":{"type":"default"}} -->
+<section class="wp-block-group section" id="sponsors">
+
+	<!-- wp:group {"className":"container","layout":{"type":"default"}} -->
+	<div class="wp-block-group container">
+
+		<!-- wp:group {"className":"sponsors-header","layout":{"type":"default"}} -->
+		<div class="wp-block-group sponsors-header">
+			<!-- wp:paragraph {"className":"label"} -->
+			<p class="label">Sponsors</p>
+			<!-- /wp:paragraph -->
+			<!-- wp:heading {"className":"heading"} -->
+			<h2 class="wp-block-heading heading">Our Partners in Science and Industry</h2>
+			<!-- /wp:heading -->
 		</div>
+		<!-- /wp:group -->
+
+		<!-- wp:group {"className":"sponsors-grid","layout":{"type":"default"}} -->
+		<div class="wp-block-group sponsors-grid">
+			<?php foreach ( $satellite_sponsors as $satellite_sponsor ) : ?>
+				<?php satellite_sponsor_card( $satellite_sponsor ); ?>
+			<?php endforeach; ?>
+		</div>
+		<!-- /wp:group -->
+
 	</div>
+	<!-- /wp:group -->
+
 </section>
+<!-- /wp:group -->

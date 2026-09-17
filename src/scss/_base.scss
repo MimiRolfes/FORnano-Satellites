@@ -31,7 +31,11 @@
   --t:        0.2s ease;
 }
 
-html { scroll-behavior: smooth; }
+/* overflow-x:hidden auf BEIDEN html und body — nur auf body reicht nicht:
+   das <html>-Element bestimmt den Root-Scroller, body allein hat absichtlich
+   nach außen ragende Dekorationselemente (z. B. .about-satellite) nicht
+   zuverlässig abgeschnitten (bestehender, bisher unbehobener Bug). */
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body {
   background: var(--bg);
   color: var(--text);

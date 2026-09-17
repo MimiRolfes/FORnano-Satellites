@@ -43,6 +43,18 @@ function satellite_arrow_icon() {
 }
 
 /**
+ * Pfeil-Icon (↗) für Buttons wie "About the project" — als SVG statt als
+ * Unicode-Zeichen (U+2197), da Handy-Browser dafür ein anderes Fallback-Font
+ * mit sichtbar anderer Pfeilform nutzen als Desktop-Browser. SVG rendert
+ * überall identisch.
+ */
+function satellite_arrow_up_right_icon() {
+	return '<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">'
+		. '<path d="M7 17 17 7M7 7h10v10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
+		. '</svg>';
+}
+
+/**
  * Gibt eine Personen-Karte der Team-Sektion als Block-Markup aus
  * (Foto oder dunkler Platzhalter mit Eckwinkeln, Name, Rolle, feine Linie).
  * Foto: images/people/<datei> — nur wenn die Datei vorhanden ist.
@@ -74,6 +86,37 @@ function satellite_person_card( $person ) {
 		<p class="person-role"><?php echo esc_html( $role ); ?></p>
 		<!-- /wp:paragraph -->
 		<!-- wp:html --><div class="person-line" aria-hidden="true"></div><!-- /wp:html -->
+	</div>
+	<!-- /wp:group -->
+	<?php
+}
+
+/**
+ * Gibt eine Partner-/Förderer-Karte der Sponsoren-Sektion aus (Framer:
+ * "Cards/Logo Card"). Eigene Logo-Datei unter images/sponsors/<logo> ablegen
+ * oder im Website-Editor per Bild-Block ersetzen — ohne Datei zeigt die
+ * Karte einen Platzhalter-Rahmen, damit die Sektion beim Testen ohne echte
+ * Logos trotzdem vollständig aussieht.
+ *
+ * @param array $sponsor name, logo (Dateiname in images/sponsors/, optional).
+ */
+function satellite_sponsor_card( $sponsor ) {
+	$name     = isset( $sponsor['name'] ) ? $sponsor['name'] : '';
+	$logo     = isset( $sponsor['logo'] ) ? $sponsor['logo'] : '';
+	$logo_rel = 'images/sponsors/' . $logo;
+	$has_logo = $logo && file_exists( get_template_directory() . '/' . $logo_rel );
+	?>
+	<!-- wp:group {"className":"sponsor-card","layout":{"type":"default"}} -->
+	<div class="wp-block-group sponsor-card">
+		<?php if ( $has_logo ) : ?>
+		<!-- wp:image {"className":"sponsor-logo"} -->
+		<figure class="wp-block-image sponsor-logo"><img src="<?php echo esc_url( get_template_directory_uri() . '/' . $logo_rel ); ?>" alt="<?php echo esc_attr( $name ); ?>" /></figure>
+		<!-- /wp:image -->
+		<?php else : ?>
+		<!-- wp:html -->
+		<div class="sponsor-logo sponsor-logo--placeholder" role="img" aria-label="<?php echo esc_attr( $name ); ?>"></div>
+		<!-- /wp:html -->
+		<?php endif; ?>
 	</div>
 	<!-- /wp:group -->
 	<?php

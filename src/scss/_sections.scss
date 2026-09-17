@@ -63,8 +63,9 @@
   top: 50%;
   right: clamp(-140px, -7vw, -40px);
   width: clamp(280px, 42vw, 520px);
+  max-width: none; // sonst kappt der globale img{max-width:100%}-Reset (_base.scss) die Phone-Breite (112vw) auf 100% des Containers
   aspect-ratio: 1 / 1;
-  object-fit: contain;
+  object-fit: fill; // Framers eigener Wert (direkt aus dem Element ausgelesen) — zeigt den ganzen Rumpf nase-bis-heck ohne Beschnitt, dafür leicht verzerrt gestaucht; weder "contain" (Rumpf landet außerhalb des sichtbaren Bereichs) noch "cover" (schneidet die Nase ab) stimmen hier
   z-index: 0;
   pointer-events: none;
   will-change: transform;
@@ -350,79 +351,181 @@
   img { transform: scale(1.04); filter: saturate(1); }
 }
 
-/* ── Contact-Sektion ── */
-.contact-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: start;
+/* ── Sponsors-Sektion ──
+   Framer: eigener Gold→Schwarz-Verlauf, zentrierter Header + 3-spaltiges
+   Karten-Raster ("Cards/Logo Card": helle Verlaufskarte, 1px Rahmen,
+   Signatur-Schatten, 4px Grid-Abstand). Ohne rechtlich geklärte Partner-
+   Logos zeigt jede Karte den Organisationsnamen als Text-Wordmark — genau
+   wie Framers eigene "FAU"- und "DIEHL"-Karten es bereits als Text tun. */
+#sponsors {
+  border-top: none;
+  background: linear-gradient(180deg, rgb(252, 215, 135) 0%, rgb(0, 0, 0) 100%);
 }
-.contact-links {
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  overflow: hidden;
-  margin-top: 8px;
-}
-.contact-row {
+.sponsors-header {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  padding: 20px 24px;
-  border-bottom: 1px solid var(--border);
-  font-size: 14px;
-  transition: background var(--t);
   gap: 16px;
+  max-width: 450px;
+  margin: 0 auto 64px;
+  text-align: center;
 
-  &:last-child { border-bottom: none; }
-  &:hover { background: rgba(207,255,100,0.03); }
+  .heading { margin-bottom: 0; text-align: center; text-transform: uppercase; }
 }
-.contact-lbl {
-  font-size: 10px; font-weight: 600;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--dim);
+.sponsors-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
 }
-
-/* ── Footer ── */
-/* (Fußbereich am Ende jeder Seite) */
-.footer {
-  border-top: 1px solid var(--border);
-  padding: 40px 0;
-  background: var(--bg);
-}
-.footer-inner {
+.sponsor-card {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 180px;
+  padding: 24px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: linear-gradient(294deg, #fafafa 0%, #eeeeee 100%);
+  box-shadow: var(--shadow-hard);
+  text-align: center;
+}
+.sponsor-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 160px;
+
+  img { max-height: 40px; width: auto; max-width: 100%; object-fit: contain; }
+}
+.sponsor-logo--placeholder {
+  height: 40px;
+  width: 100%;
+  border: 1px dashed rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+/* ── Footer ──
+   Framer: radial-gradient Braun→Grün→Schwarz, 3 "Glas"-Karten (Marke |
+   Seiten+Nav / Credit gestapelt), großes dekoratives "Vision"-Wortbild
+   unten (Lizenz ungeklärt, siehe .gitignore — Footer funktioniert auch
+   ohne die Datei, siehe file_exists() in site-footer.php). */
+.footer {
+  position: relative;
+  overflow: hidden;
+  padding: 80px 40px 40px;
+  background: radial-gradient(137% 58% at 53% 105%, #522e07 0%, rgba(59, 117, 55, 0.83) 34.5%, #000 62.6%, #000 100%);
+}
+.footer-grid {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+.footer-card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.15);
+  padding: 20px;
+}
+.footer-brand {
+  flex: 0.4 1 0; // Framer: width 0.4fr neben .footer-side 1fr (Summe 1.4fr) — nicht starre 40%
+  display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: flex-start;
   gap: 24px;
-  flex-wrap: wrap;
 }
 .footer-logo {
+  display: block;
   font-family: var(--fh);
-  font-size: 22px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-size: clamp(1.4rem, 2.2vw, 1.85rem); // "FORnano Satellite" ist länger als Framers "Satellite" — kleiner, damit die Karte nicht unnötig hoch wird
+  line-height: 1.2;
+  font-weight: 600;
   text-transform: uppercase;
-  color: var(--text);
-  margin-bottom: 16px;
+  color: var(--lime);
 }
-.footer-links {
+.footer-tagline {
+  font-family: var(--fb);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--fog);
+}
+.footer-side {
+  flex: 1 1 0;
   display: flex;
-  gap: 24px;
+  flex-direction: column;
+  gap: 8px;
+}
+.footer-pages {
+  flex: 0 0 auto; // eigene Inhaltshöhe behalten — nur die Credit-Karte gleicht unten aus (siehe .footer-credit-card)
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.footer-pages-label {
+  font-family: var(--fh);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fog); /* statt Framers dunklerem Grey 80 — WCAG AA auf dem fast schwarzen Verlaufsteil */
+}
+.footer-nav {
+  display: flex;
+  gap: 16px;
 
   a {
-    font-size: 12px;
-    letter-spacing: 0.1em;
+    font-family: var(--fh);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: rgb(150,150,150); /* var(--dim) is below WCAG AA 4.5:1 on this dark background */
+    color: var(--text);
     transition: color var(--t);
 
     &:hover { color: var(--lime); }
   }
 }
-.footer-credit {
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgb(150,150,150); /* var(--dim) is below WCAG AA 4.5:1 on this dark background */
-  align-self: flex-end;
+.footer-credit-card {
+  flex: 1 1 auto; // nimmt die restliche Höhe von .footer-side (== Höhe der Marken-Karte, per align-items:stretch) — dadurch endet die rechte Spalte immer exakt so tief wie die linke, unabhängig von der jeweiligen Textlänge
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 10px;
+  text-align: right;
 }
+.footer-credit {
+  font-family: var(--fb);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--silver);
+}
+.footer-social {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.footer-social-link {
+  display: flex;
+  color: var(--silver);
+  transition: color var(--t);
+
+  svg { width: 18px; height: 18px; }
+  &:hover { color: var(--lime); }
+}
+.footer-copy-email.is-copied { color: var(--lime); }
+.footer-wordmark {
+  display: block;
+  width: 100%;
+  max-width: 1200px;
+  aspect-ratio: 7.57 / 1; // Framers exakte Box (148px / bis zu 1120px Breite)
+  height: auto;
+  object-fit: contain; // Bilddatei hat ein anderes natives Seitenverhältnis als die Box — contain verkleinert das ganze Wortbild statt es anzuschneiden
+  margin: 40px auto 0; // Framers exakter Stack-Gap zwischen Karten-Reihe und Wortbild
+  opacity: 0.53;
+  pointer-events: none;
+}
+

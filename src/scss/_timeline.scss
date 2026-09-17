@@ -37,12 +37,18 @@
 
 #work-packages {
   border-top: none;
+  // Framers letzte 2 Stops sind halbtransparent (0.86/0.77) und blenden dort
+  // mit Weiß (Framers Seitenhintergrund) zu einem hellen Gold — bei uns ist
+  // der body-Hintergrund aber Schwarz, was den Übergang zu #sponsors sichtbar
+  // abdunkelte. Fix: dieselben Farben fest als Weiß-Mischung ausrechnen und
+  // opak setzen, damit das Ergebnis unabhängig vom Seitenhintergrund gleich
+  // aussieht — und nahtlos in #sponsors' rgb(252,215,135)-Start übergeht.
   background: linear-gradient(
     180deg,
     rgb(5, 8, 22) 24.1%,
     rgb(11, 31, 77) 70.3%,
-    rgba(255, 107, 54, 0.86) 94.8%,
-    rgba(255, 209, 102, 0.77) 100%
+    rgb(255, 128, 82) 94.8%,
+    rgb(255, 220, 137) 100%
   );
 
   > .container { text-align: center; }
