@@ -39,24 +39,33 @@ $satellite_hl_dir     = $satellite_theme_uri . '/images/highlights';
 		<div class="wp-block-group hero-row">
 
 			<!-- wp:heading {"level":1,"className":"hero-headline"} -->
-			<h1 class="wp-block-heading hero-headline">A <span class="accent">Better View</span><br>From Above</h1>
+			<h1 class="wp-block-heading hero-headline" lang="en">A <span class="accent">Better View</span><br>From Above</h1>
+			<!-- /wp:heading -->
+			<!-- wp:heading {"level":1,"className":"hero-headline"} -->
+			<h1 class="wp-block-heading hero-headline" lang="de">Ein <span class="accent">besserer Blick</span><br>von oben</h1>
 			<!-- /wp:heading -->
 
 			<!-- wp:group {"className":"hero-aside","layout":{"type":"default"}} -->
 			<div class="wp-block-group hero-aside">
 
 				<!-- wp:paragraph {"className":"hero-eyebrow"} -->
-				<p class="hero-eyebrow">A project from FAU students</p>
+				<p class="hero-eyebrow" lang="en">A project from FAU students</p>
+				<!-- /wp:paragraph -->
+				<!-- wp:paragraph {"className":"hero-eyebrow"} -->
+				<p class="hero-eyebrow" lang="de">Ein Projekt von FAU-Studierenden</p>
 				<!-- /wp:paragraph -->
 
 				<!-- wp:paragraph {"className":"hero-eyebrow"} -->
-				<p class="hero-eyebrow">Supervision by Prof. Fey</p>
+				<p class="hero-eyebrow" lang="en">Supervision by Prof. Fey</p>
+				<!-- /wp:paragraph -->
+				<!-- wp:paragraph {"className":"hero-eyebrow"} -->
+				<p class="hero-eyebrow" lang="de">Betreuung durch Prof. Fey</p>
 				<!-- /wp:paragraph -->
 
 				<!-- wp:html -->
 				<a href="#about" class="btn-about" aria-label="Jump to the about section">
-					<span class="btn-about-face">ABOUT <?php echo satellite_arrow_up_right_icon(); ?></span>
-					<span class="btn-about-face btn-about-face--hover">ABOUT <?php echo satellite_arrow_up_right_icon(); ?></span>
+					<span class="btn-about-face"><span lang="en">ABOUT</span><span lang="de">ÜBER UNS</span> <?php echo satellite_arrow_up_right_icon(); ?></span>
+					<span class="btn-about-face btn-about-face--hover"><span lang="en">ABOUT</span><span lang="de">ÜBER UNS</span> <?php echo satellite_arrow_up_right_icon(); ?></span>
 				</a>
 				<!-- /wp:html -->
 
@@ -96,11 +105,17 @@ $satellite_hl_dir     = $satellite_theme_uri . '/images/highlights';
 			<div class="wp-block-group about-titles">
 
 				<!-- wp:paragraph {"className":"label"} -->
-				<p class="label">About</p>
+				<p class="label" lang="en">About</p>
+				<!-- /wp:paragraph -->
+				<!-- wp:paragraph {"className":"label"} -->
+				<p class="label" lang="de">Über uns</p>
 				<!-- /wp:paragraph -->
 
 				<!-- wp:heading {"className":"heading"} -->
-				<h2 class="wp-block-heading heading">Watching the clouds with our satellite. Find out more about the project.</h2>
+				<h2 class="wp-block-heading heading" lang="en">Watching the clouds with our satellite. Find out more about the project.</h2>
+				<!-- /wp:heading -->
+				<!-- wp:heading {"className":"heading"} -->
+				<h2 class="wp-block-heading heading" lang="de">Wolken beobachten mit unserem Satelliten. Erfahre mehr über das Projekt.</h2>
 				<!-- /wp:heading -->
 
 			</div>
@@ -108,8 +123,14 @@ $satellite_hl_dir     = $satellite_theme_uri . '/images/highlights';
 
 			<!-- wp:html -->
 			<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>" class="btn-about" aria-label="About the project">
-				<span class="btn-about-face">ABOUT<span class="btn-label-full"> THE PROJECT</span><span class="btn-label-short"> US</span> <?php echo satellite_arrow_up_right_icon(); ?></span>
-				<span class="btn-about-face btn-about-face--hover">ABOUT<span class="btn-label-full"> THE PROJECT</span><span class="btn-label-short"> US</span> <?php echo satellite_arrow_up_right_icon(); ?></span>
+				<span class="btn-about-face">
+					<span lang="en" class="btn-label-full">ABOUT THE PROJECT</span><span lang="en" class="btn-label-short">ABOUT US</span><span lang="de" class="btn-label-full">ÜBER DAS PROJEKT</span><span lang="de" class="btn-label-short">ÜBER UNS</span>
+					<?php echo satellite_arrow_up_right_icon(); ?>
+				</span>
+				<span class="btn-about-face btn-about-face--hover">
+					<span lang="en" class="btn-label-full">ABOUT THE PROJECT</span><span lang="en" class="btn-label-short">ABOUT US</span><span lang="de" class="btn-label-full">ÜBER DAS PROJEKT</span><span lang="de" class="btn-label-short">ÜBER UNS</span>
+					<?php echo satellite_arrow_up_right_icon(); ?>
+				</span>
 			</a>
 			<!-- /wp:html -->
 
@@ -125,7 +146,8 @@ $satellite_hl_dir     = $satellite_theme_uri . '/images/highlights';
 				<!-- wp:group {"className":"metric-body","layout":{"type":"default"}} -->
 				<div class="wp-block-group metric-body">
 					<!-- wp:paragraph {"className":"metric-n"} --><p class="metric-n">322</p><!-- /wp:paragraph -->
-					<!-- wp:paragraph {"className":"metric-l"} --><p class="metric-l">Hours of Work</p><!-- /wp:paragraph -->
+					<!-- wp:paragraph {"className":"metric-l"} --><p class="metric-l" lang="en">Hours of Work</p><!-- /wp:paragraph -->
+					<!-- wp:paragraph {"className":"metric-l"} --><p class="metric-l" lang="de">Arbeitsstunden</p><!-- /wp:paragraph -->
 				</div>
 				<!-- /wp:group -->
 			</div>
@@ -137,7 +159,8 @@ $satellite_hl_dir     = $satellite_theme_uri . '/images/highlights';
 				<!-- wp:group {"className":"metric-body","layout":{"type":"default"}} -->
 				<div class="wp-block-group metric-body">
 					<!-- wp:paragraph {"className":"metric-n"} --><p class="metric-n">173247</p><!-- /wp:paragraph -->
-					<!-- wp:paragraph {"className":"metric-l"} --><p class="metric-l">Lines of Code</p><!-- /wp:paragraph -->
+					<!-- wp:paragraph {"className":"metric-l"} --><p class="metric-l" lang="en">Lines of Code</p><!-- /wp:paragraph -->
+					<!-- wp:paragraph {"className":"metric-l"} --><p class="metric-l" lang="de">Zeilen Code</p><!-- /wp:paragraph -->
 				</div>
 				<!-- /wp:group -->
 			</div>
@@ -149,7 +172,8 @@ $satellite_hl_dir     = $satellite_theme_uri . '/images/highlights';
 				<!-- wp:group {"className":"metric-body","layout":{"type":"default"}} -->
 				<div class="wp-block-group metric-body">
 					<!-- wp:paragraph {"className":"metric-n"} --><p class="metric-n">50+</p><!-- /wp:paragraph -->
-					<!-- wp:paragraph {"className":"metric-l"} --><p class="metric-l">Tests run through</p><!-- /wp:paragraph -->
+					<!-- wp:paragraph {"className":"metric-l"} --><p class="metric-l" lang="en">Tests run through</p><!-- /wp:paragraph -->
+					<!-- wp:paragraph {"className":"metric-l"} --><p class="metric-l" lang="de">Durchgeführte Tests</p><!-- /wp:paragraph -->
 				</div>
 				<!-- /wp:group -->
 			</div>
@@ -173,10 +197,16 @@ $satellite_hl_dir     = $satellite_theme_uri . '/images/highlights';
 		<!-- wp:group {"className":"hl-header","layout":{"type":"default"}} -->
 		<div class="wp-block-group hl-header">
 			<!-- wp:paragraph {"className":"label"} -->
-			<p class="label">Highlights</p>
+			<p class="label" lang="en">Highlights</p>
+			<!-- /wp:paragraph -->
+			<!-- wp:paragraph {"className":"label"} -->
+			<p class="label" lang="de">Highlights</p>
 			<!-- /wp:paragraph -->
 			<!-- wp:heading {"className":"heading"} -->
-			<h2 class="wp-block-heading heading">Highlights of our<br>Work process</h2>
+			<h2 class="wp-block-heading heading" lang="en">Highlights of our<br>Work process</h2>
+			<!-- /wp:heading -->
+			<!-- wp:heading {"className":"heading"} -->
+			<h2 class="wp-block-heading heading" lang="de">Highlights unseres<br>Arbeitsprozesses</h2>
 			<!-- /wp:heading -->
 		</div>
 		<!-- /wp:group -->
@@ -193,20 +223,20 @@ $satellite_hl_dir     = $satellite_theme_uri . '/images/highlights';
 			 * (wp:image "hl-visual") oder als Datei in images/highlights/ setzen.
 			 */
 			$satellite_highlights = array(
-				array( '01', 'System-in-Package', 'hl-01.png', 'System-in-Package technology packs high-performance electronics into a compact satellite footprint.' ),
-				array( '02', 'Automated Fabrication', 'hl-02.png', 'A fully digitalized, automated manufacturing process for building nanosatellites in Bavaria.' ),
-				array( '03', 'Bavarian Excellence', 'hl-03.png', 'Leading Bavarian universities and industry partners collaborate to advance nanosatellite technology.' ),
-				array( '04', 'Broad Applications', 'hl-04.png', 'Applications ranging from Earth observation to IoT connectivity and scientific research.' ),
+				array( '01', 'System-in-Package', 'System-in-Package', 'hl-01.png', 'System-in-Package technology packs high-performance electronics into a compact satellite footprint.', 'Die System-in-Package-Technologie packt Hochleistungselektronik auf kleinstem Raum in den Satelliten.' ),
+				array( '02', 'Automated Fabrication', 'Automatisierte Fertigung', 'hl-02.png', 'A fully digitalized, automated manufacturing process for building nanosatellites in Bavaria.', 'Ein vollständig digitalisierter, automatisierter Fertigungsprozess für den Bau von Kleinstsatelliten in Bayern.' ),
+				array( '03', 'Bavarian Excellence', 'Bayerische Exzellenz', 'hl-03.png', 'Leading Bavarian universities and industry partners collaborate to advance nanosatellite technology.', 'Führende bayerische Universitäten und Industriepartner arbeiten gemeinsam an der Weiterentwicklung der Kleinstsatelliten-Technologie.' ),
+				array( '04', 'Broad Applications', 'Vielfältige Anwendungen', 'hl-04.png', 'Applications ranging from Earth observation to IoT connectivity and scientific research.', 'Anwendungen von Erdbeobachtung über IoT-Konnektivität bis hin zu wissenschaftlicher Forschung.' ),
 			);
 			foreach ( $satellite_highlights as $satellite_hl ) :
-				list( $satellite_hl_num, $satellite_hl_title, $satellite_hl_img, $satellite_hl_text ) = $satellite_hl;
+				list( $satellite_hl_num, $satellite_hl_title, $satellite_hl_title_de, $satellite_hl_img, $satellite_hl_text, $satellite_hl_text_de ) = $satellite_hl;
 				$satellite_hl_has_img = file_exists( $satellite_theme_path . '/images/highlights/' . $satellite_hl_img );
 				?>
 				<!-- wp:group {"className":"hl-card","layout":{"type":"default"}} -->
 				<div class="wp-block-group hl-card">
 					<!-- wp:html -->
 					<div class="hl-top">
-						<h3 class="hl-label"><?php echo esc_html( $satellite_hl_title ); ?></h3>
+						<h3 class="hl-label"><span lang="en"><?php echo esc_html( $satellite_hl_title ); ?></span><span lang="de"><?php echo esc_html( $satellite_hl_title_de ); ?></span></h3>
 						<span class="hl-num"><?php echo esc_html( $satellite_hl_num ); ?></span>
 					</div>
 					<!-- /wp:html -->
@@ -216,7 +246,7 @@ $satellite_hl_dir     = $satellite_theme_uri . '/images/highlights';
 					<!-- /wp:image -->
 					<?php endif; ?>
 					<!-- wp:paragraph -->
-					<p><?php echo esc_html( $satellite_hl_text ); ?></p>
+					<p><span lang="en"><?php echo esc_html( $satellite_hl_text ); ?></span><span lang="de"><?php echo esc_html( $satellite_hl_text_de ); ?></span></p>
 					<!-- /wp:paragraph -->
 				</div>
 				<!-- /wp:group -->
@@ -239,9 +269,10 @@ $satellite_hl_dir     = $satellite_theme_uri . '/images/highlights';
  * Namen, Rollen und Fotos sind im Website-Editor bearbeitbar.
  */
 $satellite_team_featured = array(
-	'name'  => 'Prof. Fey',
-	'role'  => 'Academic supervision',
-	'photo' => 'fey.jpg',
+	'name'    => 'Prof. Fey',
+	'role'    => 'Academic supervision',
+	'role_de' => 'Wissenschaftliche Betreuung',
+	'photo'   => 'fey.jpg',
 );
 $satellite_team = array(
 	array( 'name' => 'Richard', 'role' => 'Student', 'photo' => 'richard.jpg' ),
@@ -260,10 +291,16 @@ $satellite_team = array(
 		<!-- wp:group {"className":"team-header","layout":{"type":"default"}} -->
 		<div class="wp-block-group team-header">
 			<!-- wp:paragraph {"className":"label"} -->
-			<p class="label">The Team</p>
+			<p class="label" lang="en">The Team</p>
+			<!-- /wp:paragraph -->
+			<!-- wp:paragraph {"className":"label"} -->
+			<p class="label" lang="de">Das Team</p>
 			<!-- /wp:paragraph -->
 			<!-- wp:heading {"className":"heading"} -->
-			<h2 class="wp-block-heading heading">The people behind the project</h2>
+			<h2 class="wp-block-heading heading" lang="en">The people behind the project</h2>
+			<!-- /wp:heading -->
+			<!-- wp:heading {"className":"heading"} -->
+			<h2 class="wp-block-heading heading" lang="de">Die Menschen hinter dem Projekt</h2>
 			<!-- /wp:heading -->
 		</div>
 		<!-- /wp:group -->
@@ -300,46 +337,61 @@ $satellite_team = array(
  */
 $satellite_work_package_groups = array(
 	array(
-		'range' => 'TP1–TP2',
-		'theme' => 'Concept & Architecture',
-		'items' => array(
+		'range'    => 'TP1–TP2',
+		'theme'    => 'Concept & Architecture',
+		'theme_de' => 'Konzept & Architektur',
+		'items'    => array(
 			array(
-				'title' => 'TP1 — System concept for small satellites',
-				'text'  => 'Development of a comprehensive system concept for the automated, configurable production of nanosatellites through modularization and standardization.',
+				'title'    => 'TP1 — System concept for small satellites',
+				'title_de' => 'TP1 – Systemkonzept für Kleinsatelliten',
+				'text'     => 'Development of a comprehensive system concept for the automated, configurable production of nanosatellites through modularization and standardization.',
+				'text_de'  => 'Entwicklung eines umfassenden Systemkonzepts für die automatisierte, konfigurierbare Fertigung von Kleinstsatelliten durch Modularisierung und Standardisierung.',
 			),
 			array(
-				'title' => 'TP2 — Computer architecture for on-board computers (OBC)',
-				'text'  => 'Establishing and testing a new architecture concept for the on-board computer, based on the open RISC-V instruction set and FPGA hardware.',
-			),
-		),
-	),
-	array(
-		'range' => 'TP3–TP4',
-		'theme' => 'Manufacturing & Applications',
-		'items' => array(
-			array(
-				'title' => 'TP3 — Automated assembly system for nanosatellites',
-				'text'  => 'Concept, development and prototype implementation of assembly and interconnection technology plus automated assembly processes, using System-in-Package technology.',
-			),
-			array(
-				'title' => 'TP4 — Applications of small satellites',
-				'text'  => 'Identifying and developing application scenarios for the new generation of nanosatellites, with a focus on Earth observation, telecommunications and atmospheric measurements.',
+				'title'    => 'TP2 — Computer architecture for on-board computers (OBC)',
+				'title_de' => 'TP2 – Rechnerarchitektur für Bordcomputer (OBC)',
+				'text'     => 'Establishing and testing a new architecture concept for the on-board computer, based on the open RISC-V instruction set and FPGA hardware.',
+				'text_de'  => 'Aufbau und Erprobung eines neuen Architekturkonzepts für den Bordcomputer auf Basis der offenen RISC-V-Befehlssatzarchitektur und FPGA-Hardware.',
 			),
 		),
 	),
 	array(
-		'range' => 'TP5–TP6',
-		'theme' => 'Communication & Platform',
-		'items' => array(
+		'range'    => 'TP3–TP4',
+		'theme'    => 'Manufacturing & Applications',
+		'theme_de' => 'Fertigung & Anwendungen',
+		'items'    => array(
 			array(
-				'title' => 'TP5 — Communication with small satellites',
-				'text'  => 'Developing innovative communication systems for reliable data exchange with nanosatellites, including optical communication technologies.',
-				'dark'  => true,
+				'title'    => 'TP3 — Automated assembly system for nanosatellites',
+				'title_de' => 'TP3 – Automatisiertes Montagesystem für Kleinstsatelliten',
+				'text'     => 'Concept, development and prototype implementation of assembly and interconnection technology plus automated assembly processes, using System-in-Package technology.',
+				'text_de'  => 'Konzeption, Entwicklung und prototypische Umsetzung von Aufbau- und Verbindungstechnik sowie automatisierten Montageprozessen auf Basis der System-in-Package-Technologie.',
 			),
 			array(
-				'title' => 'TP6 — Knowledge-based web configurator',
-				'text'  => 'Developing an intelligent platform for the digital configuration and design of nanosatellite missions, including automated generation of manufacturing instructions.',
-				'dark'  => true,
+				'title'    => 'TP4 — Applications of small satellites',
+				'title_de' => 'TP4 – Anwendungen von Kleinsatelliten',
+				'text'     => 'Identifying and developing application scenarios for the new generation of nanosatellites, with a focus on Earth observation, telecommunications and atmospheric measurements.',
+				'text_de'  => 'Identifikation und Entwicklung von Anwendungsszenarien für die neue Generation von Kleinstsatelliten mit Schwerpunkt auf Erdbeobachtung, Telekommunikation und atmosphärischen Messungen.',
+			),
+		),
+	),
+	array(
+		'range'    => 'TP5–TP6',
+		'theme'    => 'Communication & Platform',
+		'theme_de' => 'Kommunikation & Plattform',
+		'items'    => array(
+			array(
+				'title'    => 'TP5 — Communication with small satellites',
+				'title_de' => 'TP5 – Kommunikation mit Kleinsatelliten',
+				'text'     => 'Developing innovative communication systems for reliable data exchange with nanosatellites, including optical communication technologies.',
+				'text_de'  => 'Entwicklung innovativer Kommunikationssysteme für den zuverlässigen Datenaustausch mit Kleinstsatelliten, einschließlich optischer Kommunikationstechnologien.',
+				'dark'     => true,
+			),
+			array(
+				'title'    => 'TP6 — Knowledge-based web configurator',
+				'title_de' => 'TP6 – Wissensbasierter Web-Konfigurator',
+				'text'     => 'Developing an intelligent platform for the digital configuration and design of nanosatellite missions, including automated generation of manufacturing instructions.',
+				'text_de'  => 'Entwicklung einer intelligenten Plattform für die digitale Konfiguration und Auslegung von Kleinstsatelliten-Missionen, einschließlich automatisierter Erstellung von Fertigungsanweisungen.',
+				'dark'     => true,
 			),
 		),
 	),
@@ -354,10 +406,16 @@ $satellite_work_package_groups = array(
 		<!-- wp:group {"className":"wp-header","layout":{"type":"default"}} -->
 		<div class="wp-block-group wp-header">
 			<!-- wp:paragraph {"className":"label"} -->
-			<p class="label">Timeline</p>
+			<p class="label" lang="en">Timeline</p>
+			<!-- /wp:paragraph -->
+			<!-- wp:paragraph {"className":"label"} -->
+			<p class="label" lang="de">Zeitachse</p>
 			<!-- /wp:paragraph -->
 			<!-- wp:heading {"className":"heading"} -->
-			<h2 class="wp-block-heading heading">Get to know our work packages</h2>
+			<h2 class="wp-block-heading heading" lang="en">Get to know our work packages</h2>
+			<!-- /wp:heading -->
+			<!-- wp:heading {"className":"heading"} -->
+			<h2 class="wp-block-heading heading" lang="de">Lerne unsere Arbeitspakete kennen</h2>
 			<!-- /wp:heading -->
 		</div>
 		<!-- /wp:group -->
@@ -421,10 +479,16 @@ $satellite_sponsors = array(
 		<!-- wp:group {"className":"sponsors-header","layout":{"type":"default"}} -->
 		<div class="wp-block-group sponsors-header">
 			<!-- wp:paragraph {"className":"label"} -->
-			<p class="label">Sponsors</p>
+			<p class="label" lang="en">Sponsors</p>
+			<!-- /wp:paragraph -->
+			<!-- wp:paragraph {"className":"label"} -->
+			<p class="label" lang="de">Sponsoren</p>
 			<!-- /wp:paragraph -->
 			<!-- wp:heading {"className":"heading"} -->
-			<h2 class="wp-block-heading heading">Our Partners in Science and Industry</h2>
+			<h2 class="wp-block-heading heading" lang="en">Our Partners in Science and Industry</h2>
+			<!-- /wp:heading -->
+			<!-- wp:heading {"className":"heading"} -->
+			<h2 class="wp-block-heading heading" lang="de">Unsere Partner aus Wissenschaft und Wirtschaft</h2>
 			<!-- /wp:heading -->
 		</div>
 		<!-- /wp:group -->

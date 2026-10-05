@@ -3,25 +3,48 @@ const toggle = document.getElementById('nav-toggle');
 const dropdown = document.getElementById('nav-dropdown');
 const backdrop = document.getElementById('nav-backdrop');
 
-toggle.addEventListener('click', () => {
-  toggle.classList.toggle('open');
-  dropdown.classList.toggle('open');
-  backdrop.classList.toggle('open');
+function setNav(open) {
+  toggle.classList.toggle('open', open);
+  dropdown.classList.toggle('open', open);
+  backdrop.classList.toggle('open', open);
+  toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+toggle.addEventListener('click', () => setNav(!dropdown.classList.contains('open')));
+dropdown.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setNav(false)));
+backdrop.addEventListener('click', () => setNav(false));
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && dropdown.classList.contains('open')) { setNav(false); toggle.focus(); }
 });
 
-dropdown.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => {
-    toggle.classList.remove('open');
-    dropdown.classList.remove('open');
-    backdrop.classList.remove('open');
+// ── Sprachumschalter (DE/EN) ──────────────────────────────────
+// Jeder Text existiert doppelt im Markup (siehe satellite_i18n() in
+// functions.php); hier wird nur [data-lang] auf <html> gesetzt/gemerkt,
+// die eigentliche Sichtbarkeit regelt reines CSS ([lang]-Selektoren).
+(function initLanguageToggle() {
+  var STORAGE_KEY = 'satellite-lang';
+  var buttons = document.querySelectorAll('.lang-toggle-btn');
+  if (!buttons.length) return;
+
+  function apply(lang) {
+    document.documentElement.setAttribute('data-lang', lang);
+    buttons.forEach(function (btn) {
+      btn.setAttribute('aria-pressed', btn.getAttribute('data-lang') === lang ? 'true' : 'false');
+    });
+  }
+
+  var saved = 'en';
+  try { saved = localStorage.getItem(STORAGE_KEY) === 'de' ? 'de' : 'en'; } catch (e) {}
+  apply(saved);
+
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var lang = btn.getAttribute('data-lang');
+      apply(lang);
+      try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
+    });
   });
-});
-
-backdrop.addEventListener('click', () => {
-  toggle.classList.remove('open');
-  dropdown.classList.remove('open');
-  backdrop.classList.remove('open');
-});
+})();
 
 // ── Nova WebGL-Orb ────────────────────────────────────────────
 // Animierte, leuchtende Kugel im Hero-Bereich, gerendert per WebGL-Shader
@@ -296,7 +319,8 @@ backdrop.addEventListener('click', () => {
     ['.team-grid', 'stagger'],
     ['.wp-header', 'scale'],
     ['.sponsors-header', 'scale'],
-    ['.sponsors-grid', 'stagger']
+    ['.sponsors-grid', 'stagger'],
+    ['.gallery-item', 'scale']
     // .timeline-item wird NICHT hier eingetragen: die Arbeitspakete-Timeline
     // hat eine eigene, kontinuierlich scroll-gekoppelte Animation statt
     // eines einmaligen Ein-/Ausblendens, siehe initTimelineScroll() unten.
@@ -355,7 +379,7 @@ backdrop.addEventListener('click', () => {
 
   var DISTANCE = 400; // Framer "fullRevealDistance"
   var CONFIGS = [
-    { selector: '#about .heading, #highlights .heading, #team .heading, #sponsors .heading', from: [150, 150, 150], to: [0, 0, 0] }, // Grey 60 -> Black 100
+    { selector: '#about .heading, #highlights .heading, #team .heading, #sponsors .heading, #overview .heading, #tech-stack .heading, #visuals .heading', from: [150, 150, 150], to: [0, 0, 0] }, // Grey 60 -> Black 100
     { selector: '#work-packages .heading', from: [82, 82, 82], to: [250, 250, 250] }                                   // Grey 100 -> White 100
   ];
 
@@ -473,4 +497,107 @@ backdrop.addEventListener('click', () => {
       });
     });
   });
+})();
+
+// About-Seite, Tech-Stack: Framers Scroll-Pin-Stapel-Effekt — jede Karte ist
+// sticky und weicht (Skalierung + leichter Versatz nach oben) zurück, sobald
+// die jeweils nächste(n) Karte(n) von unten heranscrollen. Framer schaltet
+// das pro Karte hart um (spring-physics bei Erreichen eines Scroll-Ziels);
+// hier stattdessen kontinuierlich an den Scroll gekoppelt, wie auch
+// initTimelineScroll/initHeadingReveal es in diesem Projekt machen.
+(function initTechStackScroll() {
+  var cards = document.querySelectorAll('.tech-card');
+  if (cards.length < 2) return;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return;
+
+  var DISTANCE = 200; // px Scrollstrecke, bis eine Karte als "angekommen" gilt
+
+  function progressFor(card) {
+    var trigger = window.innerHeight / 2;
+    var top = card.getBoundingClientRect().top;
+    return Math.max(0, Math.min(1, (trigger - top) / DISTANCE));
+  }
+
+  var phone = window.matchMedia('(max-width: 809px)');
+
+  function update() {
+    if (phone.matches) { // Phone: Karten nicht sticky (siehe _responsive.scss) — kein Stapel-Effekt
+      cards.forEach(function (c) { c.style.transform = ''; });
+      return;
+    }
+    var progress = [];
+    for (var i = 0; i < cards.length; i++) progress[i] = progressFor(cards[i]);
+
+    for (var i = 0; i < cards.length - 1; i++) {
+      var scale = 1;
+      var y = 0;
+      for (var j = i + 1; j < cards.length; j++) {
+        scale -= 0.1 * progress[j];
+        y -= 10 * progress[j];
+      }
+      cards[i].style.transform = 'translateY(' + y.toFixed(1) + 'px) scale(' + scale.toFixed(3) + ')';
+    }
+  }
+
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(function () { update(); ticking = false; });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  update();
+})();
+
+
+// About-Seite, Header: Überschrift erscheint Zeichen für Zeichen (Framer
+// "textEffect": opacity/y/blur, getriggert beim Sichtbarwerden, einmalig).
+(function initAboutHeroReveal() {
+  var titles = document.querySelectorAll('.about-hero-title');
+  if (!titles.length) return;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  titles.forEach(function (title) {
+    if (reduce) { title.classList.add('is-visible'); return; }
+    var text = title.textContent;
+    title.setAttribute('aria-label', text);
+    title.textContent = '';
+    var i = 0;
+    text.split(/(\s+)/).forEach(function (part) {
+      if (/^\s+$/.test(part)) { title.appendChild(document.createTextNode(part)); return; }
+      var word = document.createElement('span');
+      word.style.display = 'inline-block';
+      word.setAttribute('aria-hidden', 'true');
+      part.split('').forEach(function (ch) {
+        var c = document.createElement('span');
+        c.className = 'rc';
+        c.textContent = ch;
+        c.style.transitionDelay = (0.05 * i++) + 's';
+        word.appendChild(c);
+      });
+      title.appendChild(word);
+    });
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { title.classList.add('is-visible'); io.disconnect(); }
+      });
+    }, { threshold: 0.5 });
+    io.observe(title);
+  });
+})();
+
+// About-Seite, Overview: Framer "Fade Switching Image Card" — Bilder wechseln
+// alle 5 s mit weicher Überblendung (CSS-Transition, 2 s).
+(function initFadeCard() {
+  var imgs = document.querySelectorAll('#fade-card .fade-card-img');
+  if (imgs.length < 2) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var current = 0;
+  setInterval(function () {
+    imgs[current].classList.remove('is-active');
+    current = (current + 1) % imgs.length;
+    imgs[current].classList.add('is-active');
+  }, 5000);
 })();

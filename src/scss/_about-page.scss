@@ -1,0 +1,350 @@
+@use 'mixins' as *;
+
+/* ============================================================
+   ABOUT-SEITE (/about/) — Framer: "Header" + "About" + "Cool Stuff"
+   Alle Maße direkt an Framers veröffentlichter Seite gemessen
+   (Desktop 1200px / Tablet 810px / Phone 390px). Tablet-/Phone-
+   Abweichungen stehen in _responsive.scss.
+   ============================================================ */
+
+/* ── Seiten-Header (Framer "Header": 400px, schwarzer Grund, Bild bei
+   59 % Deckkraft, darüber ein weiß verwischter Glow, der den Header nach
+   unten ins helle Grau der Overview-Sektion überblendet) ── */
+.about-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; // Framer: Titelblock mittig bei y≈238 (Padding 116/40)
+  height: 400px;
+  padding: 116px 40px 40px;
+  overflow: hidden;
+  background: #000;
+}
+.about-hero-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.about-hero-img {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -126px;
+  width: 100%;
+  height: calc(100% + 190px);
+  object-fit: cover;
+  opacity: 0.59;
+  /* Framer: onMount-Appear, scale 1.65 -> 1, 3 s */
+  animation: about-hero-zoom 3s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-hero-img { animation: none; }
+  .fade-card-img { transition: none; transform: none; }
+}
+@keyframes about-hero-zoom {
+  from { transform: scale(1.65); }
+  to   { transform: scale(1); }
+}
+.about-hero-glow {
+  position: absolute;
+  left: 50%;
+  bottom: -359px;
+  width: 2239px;
+  height: 433px;
+  transform: translateX(-50%);
+  border-radius: 999px;
+  background: #eee;
+  filter: blur(62px);
+}
+.about-hero-titles {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+}
+.about-hero-title {
+  margin: 0;
+  font-family: var(--fh);
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: #f3f3f3;
+}
+.about-hero-sub {
+  max-width: 340px;
+  margin: 0 auto;
+  font-family: var(--fb);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+  text-transform: uppercase;
+  color: var(--lime); // Framer (Gallery): Lime auf dem dunklen Bild
+}
+/* About: der Titel ist zweizeilig, der Untertitel landet dort auf dem hellen Glow */
+.about-hero--glow .about-hero-sub { max-width: none; color: rgb(48, 48, 48); }
+/* Framer "textEffect": Überschrift erscheint Zeichen für Zeichen
+   (opacity 0->1, y 10px->0, blur 10px->0). Die Zeichen-Spans setzt
+   js/satellite.js (initAboutHeroReveal). */
+.about-hero-title .rc {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(10px);
+  filter: blur(10px);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.3), filter 0.5s ease;
+}
+.about-hero-title.is-visible .rc { opacity: 1; transform: none; filter: none; }
+
+/* ── Overview (Framer "About": Verlauf grau, Padding 120/40) ── */
+#overview {
+  border-top: none;
+  padding: 140px 40px 120px;
+  background: linear-gradient(180deg, rgb(210, 210, 210) 0%, rgb(234, 234, 234) 51.2%, rgb(214, 214, 214) 100%);
+}
+.overview {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.overview-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 450px;
+  margin: 0 auto 66px;
+  text-align: center;
+
+  .label { margin-bottom: 0; }
+  .heading { margin-bottom: 0; text-align: center; line-height: 1.2; }
+}
+
+/* Framer "Fade Switching Image Card": 8px Innenabstand, Bilder im Format
+   1,86:1 wechseln alle 5 s mit 2 s Überblendung (js/satellite.js,
+   initFadeCard); darüber die "Border"-Eckwinkel. */
+.fade-card {
+  position: relative;
+  padding: 8px;
+  margin-bottom: 50px;
+
+  &::after {
+    --bracket: rgba(80, 80, 80, 0.75);
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    @include corner-brackets(14px);
+  }
+}
+.fade-card-frame {
+  position: relative;
+  aspect-ratio: 1.86 / 1;
+  overflow: hidden;
+  background: #000;
+}
+.fade-card-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.1);
+  transition: opacity 2s cubic-bezier(0.44, 0, 0.56, 1), transform 2.5s cubic-bezier(0.12, 0.23, 0.5, 1);
+
+  &.is-active { opacity: 1; transform: scale(1); }
+}
+
+/* Inhalt ist in Framer um 5 % je Seite eingerückt (56 px bei 1120 px). */
+.overview-body {
+  width: 90%;
+  margin: 0 auto;
+}
+.overview-columns {
+  display: flex;
+  gap: 58px;
+  margin-bottom: 64px;
+
+  > * { flex: 1; min-width: 0; }
+}
+.overview-col-heading {
+  margin: 0;
+  font-family: var(--fh);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: #000;
+}
+.overview-col-text {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  /* Framer "Body": 16px, Grau. Framers Versalien-je-Wort-Stil (capitalize)
+     entfällt hier bewusst: er ist für echte Fließtexte schwer lesbar. */
+  .body-text {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+}
+.overview-images {
+  display: flex;
+  gap: 14px;
+}
+.overview-image {
+  flex: 1;
+  min-width: 0;
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+  margin: 0;
+
+  img { width: 100%; height: 100%; object-fit: cover; display: block; }
+}
+
+/* Gerundete Panels (Framer: 555 x 617, Radius 156, Abstand 10) */
+.overview-feature {
+  display: flex;
+  gap: 10px;
+  height: 617px;
+  margin-top: 24px;
+}
+.overview-feature-media,
+.overview-feature-card {
+  flex: 0 0 calc(50% - 5px); // exakt je eine Hälfte; Padding der Karte darf die Basis nicht verschieben
+  min-width: 0;
+  border-radius: 156px;
+  overflow: hidden;
+  margin: 0;
+}
+.overview-feature-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.overview-feature-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 124px;
+  background: #fff;
+
+  p { margin: 0; font-family: var(--fb); font-size: 16px; line-height: 1.4; color: #000; }
+}
+
+/* ── Tech Stack (Framer "Cool Stuff": Verlauf hellgrau -> schwarz) ── */
+#tech-stack {
+  border-top: none;
+  padding: 120px 40px 80px;
+  overflow: clip;
+  background: linear-gradient(180deg, rgb(215, 215, 215) 0%, rgb(0, 0, 0) 100%);
+}
+.tech-stack-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 64px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.tech-stack-header {
+  position: sticky;
+  top: 180px;
+  flex: 0 1 436px;
+  min-width: 0;
+  padding: 5px 22px 0; // Framer: Header 392 px breit, 22 px eingerückt
+
+  .label { margin-bottom: 12px; }
+  .heading { margin-bottom: 0; text-transform: uppercase; text-align: left; line-height: 1.17; }
+}
+.tech-cards {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 160px;
+  padding-top: 40px;
+}
+/* Framer "Cool Stuff Card" (horizontal): helle Karte mit hartem Schatten,
+   jede klebt etwas tiefer (180/200/220) und weicht beim Stapeln zurück
+   (js/satellite.js, initTechStackScroll). */
+.tech-card {
+  position: sticky;
+  top: 180px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 320px;
+  padding: 24px;
+  background: #f3f3f3;
+  box-shadow: 4px 4px 0 0 rgb(210, 210, 210);
+  transform-origin: top center;
+  will-change: transform;
+  transition: box-shadow 0.3s ease, background-color 0.3s ease;
+
+  &:nth-child(2) { top: 200px; }
+  &:nth-child(3) { top: 220px; }
+  &:nth-child(4) { top: 240px; }
+  &:nth-child(5) { top: 260px; }
+  &:nth-child(6) { top: 280px; }
+}
+.tech-card-icon {
+  flex: 0 0 278px;
+  width: 278px;
+  height: 272px;
+  object-fit: contain;
+  margin: 0;
+}
+.tech-card-icon--fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+
+  svg { width: 96px; height: 96px; }
+}
+.tech-card-body { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.tech-card-num { margin: 0; font-family: var(--fh); font-size: 15px; font-weight: 500; letter-spacing: 0.02em; color: var(--ink); }
+.tech-card-title { margin: 0; font-family: var(--fh); font-size: 22px; font-weight: 600; line-height: 1.3; text-transform: uppercase; color: #000; }
+.tech-card-text { margin: 0; font-family: var(--fb); font-size: 16px; line-height: 1.4; color: var(--ink); }
+
+/* Teilprojekt-Karten sind komplett klickbar: der Titel-Link wird per ::after
+   über die ganze Karte gezogen (ein Link pro Karte für Tastatur/Screenreader);
+   "Mehr erfahren" ist nur die Optik des Buttons. */
+.tech-card-link {
+  color: inherit;
+  text-decoration: none;
+
+  &::after { content: ''; position: absolute; inset: 0; z-index: 1; }
+  &:focus-visible { outline: none; }
+  &:focus-visible::after { outline: 2px solid var(--blue); outline-offset: 3px; }
+}
+.tech-card-more {
+  margin-top: 12px;
+  pointer-events: none; // Klicks gehen an den Karten-Link (::after); die Button-Flächen (z-index 1/2) lägen sonst darüber
+}
+.tech-card-icon { transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+/* Hover/Fokus der gewählten Karte: Schatten wächst und wird blau (Farbe des
+   Button-Hovers), Karte hellt auf, Icon vergrößert sich leicht, der Button
+   füllt sich wie auf der Startseite. Kein transform an der Karte selbst —
+   das gehört dem Stapel-Effekt (js/satellite.js). */
+.tech-card:hover,
+.tech-card:focus-within {
+  background: #fff;
+  box-shadow: 8px 8px 0 0 var(--blue);
+
+  .tech-card-icon { transform: scale(1.05); }
+  .tech-card-more {
+    border-color: var(--ink);
+    .btn-about-face:not(.btn-about-face--hover) { transform: translateY(-100%); }
+    .btn-about-face--hover { transform: translateY(0); }
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tech-card,
+  .tech-card-icon { transition: none; }
+}

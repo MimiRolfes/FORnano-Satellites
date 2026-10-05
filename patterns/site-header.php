@@ -21,12 +21,17 @@
 			<div class="nav-left">
 				<a class="nav-logo" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php bloginfo( 'name' ); ?></a>
 			</div>
-			<div class="nav-plus" id="nav-toggle"><span class="nav-plus-icon">+</span></div>
+			<div class="lang-toggle" role="group" aria-label="Language / Sprache">
+				<button type="button" class="lang-toggle-btn" data-lang="en">EN</button>
+				<button type="button" class="lang-toggle-btn" data-lang="de">DE</button>
+			</div>
+			<button type="button" class="nav-plus" id="nav-toggle" aria-expanded="false" aria-controls="nav-dropdown" aria-label="<?php esc_attr_e( 'Menu', 'satellite' ); ?>"><span class="nav-plus-icon" aria-hidden="true">+</span></button>
 		</div>
-		<div class="nav-dropdown" id="nav-dropdown">
-			<a href="<?php echo esc_url( home_url( '/' ) ); ?>">HOME</a>
-			<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">ABOUT THE PROJECT</a>
-			<a href="<?php echo esc_url( home_url( '/gallery/' ) ); ?>">GALLERY</a>
-		</div>
+		<nav class="nav-dropdown" id="nav-dropdown" aria-label="<?php esc_attr_e( 'Main', 'satellite' ); ?>">
+			<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php satellite_i18n_text( 'HOME', 'STARTSEITE' ); ?></a>
+			<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>"><?php satellite_i18n_text( 'ABOUT THE PROJECT', 'ÜBER DAS PROJEKT' ); ?></a>
+			<a href="<?php echo esc_url( home_url( '/gallery/' ) ); ?>"><?php satellite_i18n_text( 'GALLERY', 'GALERIE' ); ?></a>
+			<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>"><?php satellite_i18n_text( 'CONTACT', 'KONTAKT' ); ?></a>
+		</nav>
 	</div>
 </header>

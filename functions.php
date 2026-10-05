@@ -83,7 +83,7 @@ function satellite_person_card( $person ) {
 		<p class="person-name"><?php echo esc_html( $name ); ?></p>
 		<!-- /wp:paragraph -->
 		<!-- wp:paragraph {"className":"person-role"} -->
-		<p class="person-role"><?php echo esc_html( $role ); ?></p>
+		<p class="person-role"><?php satellite_i18n_text( $role, isset( $person['role_de'] ) ? $person['role_de'] : $role ); ?></p>
 		<!-- /wp:paragraph -->
 		<!-- wp:html --><div class="person-line" aria-hidden="true"></div><!-- /wp:html -->
 	</div>
@@ -129,15 +129,16 @@ function satellite_sponsor_card( $sponsor ) {
  * @param array $group range (z. B. "TP1–TP2"), theme (Kurztitel).
  */
 function satellite_timeline_bar( $group ) {
-	$range = isset( $group['range'] ) ? $group['range'] : '';
-	$theme = isset( $group['theme'] ) ? $group['theme'] : '';
+	$range    = isset( $group['range'] ) ? $group['range'] : '';
+	$theme    = isset( $group['theme'] ) ? $group['theme'] : '';
+	$theme_de = isset( $group['theme_de'] ) ? $group['theme_de'] : $theme;
 	?>
 	<div class="timeline-bar">
 		<!-- wp:paragraph {"className":"timeline-bar-range"} -->
 		<p class="timeline-bar-range"><?php echo esc_html( $range ); ?></p>
 		<!-- /wp:paragraph -->
 		<!-- wp:paragraph {"className":"timeline-bar-theme"} -->
-		<p class="timeline-bar-theme"><?php echo esc_html( $theme ); ?></p>
+		<p class="timeline-bar-theme"><?php satellite_i18n_text( $theme, $theme_de ); ?></p>
 		<!-- /wp:paragraph -->
 		<!-- wp:paragraph {"className":"timeline-bar-meta"} -->
 		<p class="timeline-bar-meta">FORnano Satellites</p>
@@ -158,7 +159,9 @@ function satellite_timeline_bar( $group ) {
  */
 function satellite_timeline_item( $item ) {
 	$title     = isset( $item['title'] ) ? $item['title'] : '';
+	$title_de  = isset( $item['title_de'] ) ? $item['title_de'] : $title;
 	$text      = isset( $item['text'] ) ? $item['text'] : '';
+	$text_de   = isset( $item['text_de'] ) ? $item['text_de'] : $text;
 	$card_cls  = 'timeline-card' . ( ! empty( $item['dark'] ) ? ' timeline-card--dark' : '' );
 	?>
 	<!-- Reines Listen-Element (Layout/Semantik) — kein Block-Wrapper, da
@@ -175,16 +178,261 @@ function satellite_timeline_item( $item ) {
 		<!-- wp:group {"className":"<?php echo esc_attr( $card_cls ); ?>","layout":{"type":"default"}} -->
 		<div class="wp-block-group <?php echo esc_attr( $card_cls ); ?>">
 			<!-- wp:heading {"level":3} -->
-			<h3 class="wp-block-heading"><?php echo esc_html( $title ); ?></h3>
+			<h3 class="wp-block-heading"><span lang="en"><?php echo esc_html( $title ); ?></span><span lang="de"><?php echo esc_html( $title_de ); ?></span></h3>
 			<!-- /wp:heading -->
 			<!-- wp:paragraph -->
-			<p><?php echo esc_html( $text ); ?></p>
+			<p><span lang="en"><?php echo esc_html( $text ); ?></span><span lang="de"><?php echo esc_html( $text_de ); ?></span></p>
 			<!-- /wp:paragraph -->
 		</div>
 		<!-- /wp:group -->
 	</li>
 	<?php
 }
+
+/**
+ * Sprachumschalter (DE/EN): gibt einen Textblock in BEIDEN Sprachen aus,
+ * je als eigener, im Block-Editor bearbeitbarer wp:paragraph/wp:heading-
+ * Block. Sichtbarkeit wird per [lang]-Attribut + CSS/JS umgeschaltet
+ * (siehe _base.scss "[lang]"-Regeln und js/satellite.js initLanguageToggle()).
+ * Beide Sprachen sind Pflicht — es gibt bewusst keinen Fallback auf nur
+ * eine Sprache, damit im Editor nie eine Übersetzung fehlt.
+ *
+ * @param string $en    Englischer Text (Pflicht).
+ * @param string $de    Deutscher Text (Pflicht).
+ * @param string $tag   HTML-Tag: p, h1, h2, h3, h4.
+ * @param string $class Zusätzliche CSS-Klasse(n), z. B. "heading".
+ */
+function satellite_i18n( $en, $de, $tag = 'p', $class = '' ) {
+	$is_heading = (bool) preg_match( '/^h[1-6]$/', $tag );
+	$block_type = $is_heading ? 'heading' : 'paragraph';
+	$level      = $is_heading ? (int) substr( $tag, 1 ) : null;
+	$css_class  = trim( 'wp-block-' . $block_type . ' ' . $class );
+
+	foreach ( array( 'en' => $en, 'de' => $de ) as $lang => $text ) {
+		$attrs = array( 'className' => trim( $class ) );
+		if ( $level && 2 !== $level ) {
+			$attrs['level'] = $level;
+		}
+		?>
+		<!-- wp:<?php echo esc_html( $block_type ); ?> <?php echo wp_json_encode( $attrs ); ?> -->
+		<<?php echo esc_html( $tag ); ?> lang="<?php echo esc_attr( $lang ); ?>" class="<?php echo esc_attr( $css_class ); ?>"><?php echo esc_html( $text ); ?></<?php echo esc_html( $tag ); ?>>
+		<!-- /wp:<?php echo esc_html( $block_type ); ?> -->
+		<?php
+	}
+}
+
+/**
+ * Sprachumschalter, Inline-Variante: für kurze Textstücke INNERHALB eines
+ * bestehenden Elements (Nav-Link, Button-Beschriftung) — ohne eigene
+ * Block-Umschließung, da im Editor als Teil des umgebenden Textes
+ * bearbeitbar. Beide Sprachen Pflicht, siehe satellite_i18n().
+ */
+function satellite_i18n_text( $en, $de ) {
+	printf(
+		'<span lang="en">%1$s</span><span lang="de">%2$s</span>',
+		esc_html( $en ),
+		esc_html( $de )
+	);
+}
+
+/**
+ * Seiten-Header der Unterseiten (Impressum, Datenschutz, Kontakt): gleicher
+ * Aufbau wie der Header der About-Seite (400px, Bild + heller Glow, Titel
+ * erscheint Zeichen für Zeichen). Titel zweisprachig (beide Pflicht).
+ *
+ * @param string $title_en Englischer Titel.
+ * @param string $title_de Deutscher Titel.
+ * @param string|array $sub Zeile unter dem Titel: Text (sprachneutral) oder array( EN, DE ).
+ */
+function satellite_page_hero( $title_en, $title_de, $sub = 'FORnano Satellites' ) {
+	$img = get_template_directory() . '/images/gallery/nebula-flow.jpg';
+	?>
+	<header class="about-hero">
+		<div class="about-hero-bg" aria-hidden="true">
+			<?php if ( file_exists( $img ) ) : ?>
+			<img class="about-hero-img" alt="" src="<?php echo esc_url( get_template_directory_uri() . '/images/gallery/nebula-flow.jpg' ); ?>" />
+			<?php endif; ?>
+			<div class="about-hero-glow"></div>
+		</div>
+		<div class="about-hero-titles">
+			<!-- wp:heading {"level":1,"className":"about-hero-title"} -->
+			<h1 class="wp-block-heading about-hero-title" lang="en"><?php echo esc_html( $title_en ); ?></h1>
+			<!-- /wp:heading -->
+			<!-- wp:heading {"level":1,"className":"about-hero-title"} -->
+			<h1 class="wp-block-heading about-hero-title" lang="de"><?php echo esc_html( $title_de ); ?></h1>
+			<!-- /wp:heading -->
+			<?php foreach ( is_array( $sub ) ? array( 'en' => $sub[0], 'de' => $sub[1] ) : array( '' => $sub ) as $lang => $text ) : ?>
+			<!-- wp:paragraph {"className":"about-hero-sub"} -->
+			<p class="about-hero-sub"<?php echo $lang ? ' lang="' . esc_attr( $lang ) . '"' : ''; ?>><?php echo esc_html( $text ); ?></p>
+			<!-- /wp:paragraph -->
+			<?php endforeach; ?>
+		</div>
+	</header>
+	<?php
+}
+
+/**
+ * Gibt eine Liste von Textbausteinen als echte Gutenberg-Blöcke aus (für die
+ * Rechtstexte, damit sie im Site-Editor als Überschriften/Absätze/Listen
+ * bearbeitbar sind). Einträge: array( 'h2'|'h3'|'p'|'ul', Text bzw. Liste ).
+ * Zeilenumbrüche in 'p' werden zu <br> (Adressblöcke).
+ */
+function satellite_render_text_blocks( $items ) {
+	foreach ( $items as $item ) {
+		list( $type, $text ) = $item;
+		if ( 'ul' === $type ) {
+			echo "<!-- wp:list -->\n<ul class=\"wp-block-list\">";
+			foreach ( $text as $li ) {
+				echo "<!-- wp:list-item --><li>" . esc_html( $li ) . "</li><!-- /wp:list-item -->";
+			}
+			echo "</ul>\n<!-- /wp:list -->\n";
+		} elseif ( 'p' === $type ) {
+			echo "<!-- wp:paragraph -->\n<p>" . nl2br( esc_html( $text ) ) . "</p>\n<!-- /wp:paragraph -->\n";
+		} else {
+			$level = (int) substr( $type, 1 );
+			$attrs = 2 === $level ? '' : ' ' . wp_json_encode( array( 'level' => $level ) );
+			echo "<!-- wp:heading{$attrs} -->\n<{$type} class=\"wp-block-heading\">" . esc_html( $text ) . "</{$type}>\n<!-- /wp:heading -->\n";
+		}
+	}
+}
+
+/**
+ * Kontaktformular (templates/page-contact.html → patterns/contact-page.php).
+ * Das Formular postet an admin-post.php; die Mail geht an die unter
+ * Einstellungen → Allgemein hinterlegte Administrations-E-Mail-Adresse, oder
+ * an eine andere, wenn der Filter "satellite_contact_recipient" gesetzt wird.
+ * Schutz: Nonce + Honeypot-Feld; alle Eingaben werden bereinigt.
+ */
+function satellite_handle_contact_form() {
+	$back = wp_get_referer() ? wp_get_referer() : home_url( '/contact/' );
+	$back = remove_query_arg( 'contact', $back );
+
+	if ( ! isset( $_POST['satellite_contact_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['satellite_contact_nonce'] ) ), 'satellite_contact' ) ) {
+		wp_safe_redirect( add_query_arg( 'contact', 'error', $back ) );
+		exit;
+	}
+	// Honeypot: echte Besucher lassen das (per CSS versteckte) Feld leer.
+	if ( ! empty( $_POST['satellite_website'] ) ) {
+		wp_safe_redirect( add_query_arg( 'contact', 'sent', $back ) );
+		exit;
+	}
+
+	$name    = sanitize_text_field( wp_unslash( $_POST['satellite_name'] ?? '' ) );
+	$email   = sanitize_email( wp_unslash( $_POST['satellite_email'] ?? '' ) );
+	$org     = sanitize_text_field( wp_unslash( $_POST['satellite_org'] ?? '' ) );
+	$subject = sanitize_text_field( wp_unslash( $_POST['satellite_subject'] ?? '' ) );
+	$message = sanitize_textarea_field( wp_unslash( $_POST['satellite_message'] ?? '' ) );
+
+	if ( '' === $name || ! is_email( $email ) || '' === $subject || '' === $message ) {
+		wp_safe_redirect( add_query_arg( 'contact', 'invalid', $back ) );
+		exit;
+	}
+
+	$to      = apply_filters( 'satellite_contact_recipient', get_option( 'admin_email' ) );
+	$body    = "Name: $name\nE-Mail: $email\nOrganisation: $org\n\n$message";
+	$headers = array( 'Reply-To: ' . $name . ' <' . $email . '>' );
+	$sent    = wp_mail( $to, '[FORnano Satellites] ' . $subject, $body, $headers );
+
+	wp_safe_redirect( add_query_arg( 'contact', $sent ? 'sent' : 'error', $back ) );
+	exit;
+}
+add_action( 'admin_post_nopriv_satellite_contact', 'satellite_handle_contact_form' );
+add_action( 'admin_post_satellite_contact', 'satellite_handle_contact_form' );
+
+/**
+ * Teilprojekte (TP1–TP6): eigener Beitragstyp "work_package" (URL
+ * /work-packages/tp-1/ …), einfach gehalten: Überschrift, Text, optional ein
+ * Beitragsbild. Template: templates/single-work_package.html.
+ * Die Vorbelegung (Texte von fornano.pinsker.ai) liegt in
+ * inc/work-packages.php und wird beim Aktivieren des Themes einmalig als
+ * sechs Beiträge angelegt; danach wird alles im Editor gepflegt.
+ */
+function satellite_work_packages() {
+	return require get_template_directory() . '/inc/work-packages.php';
+}
+
+function satellite_register_work_package_type() {
+	register_post_type(
+		'work_package',
+		array(
+			'labels'       => array(
+				'name'          => __( 'Subprojects', 'satellite' ),
+				'singular_name' => __( 'Subproject', 'satellite' ),
+				'add_new_item'  => __( 'Add new subproject', 'satellite' ),
+				'edit_item'     => __( 'Edit subproject', 'satellite' ),
+			),
+			'public'       => true,
+			'show_in_rest' => true, // Block-Editor
+			'menu_icon'    => 'dashicons-networking',
+			'supports'     => array( 'title', 'editor', 'thumbnail', 'page-attributes' ),
+			'rewrite'      => array( 'slug' => 'work-packages' ),
+			'has_archive'  => false,
+		)
+	);
+}
+add_action( 'init', 'satellite_register_work_package_type' );
+
+/**
+ * Block-Markup eines Teilprojekts (zweisprachig: je Text ein EN- und ein
+ * DE-Block, Umschaltung über [lang], siehe satellite_i18n()). Die Überschrift
+ * des Beitrags selbst wird im Template nicht ausgegeben.
+ */
+function satellite_work_package_content( $n, $tp ) {
+	ob_start();
+	foreach ( array( 0 => 'en', 1 => 'de' ) as $i => $lang ) {
+		$label = 'en' === $lang ? 'Project lead' : 'Projektleitung';
+		?>
+<!-- wp:heading {"className":"work-package-title"} -->
+<h2 class="wp-block-heading work-package-title" lang="<?php echo esc_attr( $lang ); ?>"><?php echo esc_html( 'TP' . $n . ' · ' . $tp['title'][ $i ] ); ?></h2>
+<!-- /wp:heading -->
+<!-- wp:paragraph {"className":"work-package-lead"} -->
+<p class="work-package-lead" lang="<?php echo esc_attr( $lang ); ?>"><?php echo esc_html( $label . ': ' . $tp['lead'][ $i ] ); ?></p>
+<!-- /wp:paragraph -->
+		<?php
+	}
+	foreach ( $tp['body'] as $para ) {
+		foreach ( array( 0 => 'en', 1 => 'de' ) as $i => $lang ) {
+			?>
+<!-- wp:paragraph -->
+<p lang="<?php echo esc_attr( $lang ); ?>"><?php echo esc_html( $para[ $i ] ); ?></p>
+<!-- /wp:paragraph -->
+			<?php
+		}
+	}
+	return ob_get_clean();
+}
+
+/** Legt beim Aktivieren des Themes die sechs Teilprojekt-Beiträge an (nur fehlende). */
+function satellite_seed_work_packages() {
+	satellite_register_work_package_type();
+	foreach ( satellite_work_packages() as $n => $tp ) {
+		if ( get_page_by_path( 'tp-' . $n, OBJECT, 'work_package' ) ) {
+			continue;
+		}
+		wp_insert_post(
+			array(
+				'post_type'    => 'work_package',
+				'post_status'  => 'publish',
+				'post_name'    => 'tp-' . $n,
+				'post_title'   => 'TP' . $n . ': ' . $tp['title'][1],
+				'menu_order'   => $n,
+				'post_content' => satellite_work_package_content( $n, $tp ),
+			)
+		);
+	}
+	flush_rewrite_rules();
+}
+add_action( 'after_switch_theme', 'satellite_seed_work_packages' );
+
+/**
+ * Setzt [data-lang] auf <html> so früh wie möglich (vor dem ersten Render),
+ * damit wiederkehrende Besucher mit gespeicherter DE-Auswahl nicht kurz
+ * die englische Version aufblitzen sehen, bevor satellite.js geladen ist.
+ */
+function satellite_lang_flash_guard() {
+	echo "<script>(function(){try{if(localStorage.getItem('satellite-lang')==='de'){document.documentElement.setAttribute('data-lang','de');}}catch(e){}})();</script>\n";
+}
+add_action( 'wp_head', 'satellite_lang_flash_guard', 0 );
 
 function satellite_enqueue_assets() {
 	wp_enqueue_style(
@@ -201,7 +449,7 @@ function satellite_enqueue_assets() {
 	);
 	wp_enqueue_script(
 		'satellite-script',
-		get_template_directory_uri() . '/js/satellite.js',
+		get_template_directory_uri() . ( file_exists( get_template_directory() . '/js/satellite.min.js' ) ? '/js/satellite.min.js' : '/js/satellite.js' ),
 		array(),
 		wp_get_theme()->get( 'Version' ),
 		true

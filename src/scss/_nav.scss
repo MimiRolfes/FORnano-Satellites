@@ -114,6 +114,7 @@
   background: rgba(0,0,0,0.61);
   border: 1px solid #303030;
   color: var(--text);
+  font-family: inherit;
   font-size: 22px;
   font-weight: 300;
   cursor: pointer;
@@ -172,7 +173,8 @@
     transition: color var(--t);
 
     &:last-child { border-bottom: none; }
-    &:hover { color: var(--lime); }
+    &:hover,
+    &:focus-visible { color: var(--lime); }
   }
 }
 
@@ -204,4 +206,33 @@
 }
 .nav-plus.open .nav-plus-icon {
   transform: rotate(225deg) scale(1.15);
+}
+
+/* Sprachumschalter — gleiche Glas-Optik wie Logo/Plus-Button, sitzt
+   dazwischen: sichtbar, aber klein genug um nicht von der Navigation
+   abzulenken. */
+.lang-toggle {
+  display: flex;
+  height: 54px;
+  flex-shrink: 0;
+  background: rgba(0, 0, 0, 0.61);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid #303030;
+  overflow: hidden;
+}
+.lang-toggle-btn {
+  padding: 0 14px;
+  background: none;
+  border: none;
+  font-family: var(--fh);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--fog);
+  cursor: pointer;
+  transition: color var(--t), background var(--t);
+
+  &:hover { color: var(--text); }
+  &[aria-pressed="true"] { color: #000; background: var(--lime); }
 }

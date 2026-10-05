@@ -30,6 +30,24 @@
   /* Footer: Marke + Karten-Spalte stapeln sich */
   .footer-grid { flex-direction: column; }
   .footer-brand { flex-basis: auto; }
+
+  /* About-Seite (Tablet, an Framer gemessen): Header-Titel 48px, Text
+     unter Überschrift gestapelt, Bilder ~1,19:1, gerundete Panels
+     untereinander, Tech-Stack bleibt zweispaltig mit kleineren Karten. */
+  .about-hero { padding-top: 74px; } /* Framer Tablet: Titelblock-Mitte bei y≈217 */
+  .about-hero-title { font-size: 48px; }
+  .overview-columns { flex-direction: column; gap: 16px; margin-bottom: 48px; }
+  .overview-col-heading { font-size: 26px; }
+  .overview-image { aspect-ratio: 1.19 / 1; }
+  .overview-feature { flex-direction: column; height: auto; gap: 9px; }
+  .overview-feature-media,
+  .overview-feature-card { flex: none; height: 304px; }
+  .tech-stack-header { flex: 1 1 0; padding-left: 12px; padding-right: 12px; }
+  .tech-cards { flex: 0 1 416px; }
+  .tech-card { min-height: 220px; }
+  .tech-card-icon { flex-basis: 176px; width: 176px; height: 172px; }
+  .tech-card-title { font-size: 20px; }
+
 }
 
 /* Phone (≤809px): alle Grids werden 1-spaltig, Zeitleiste verliert das
@@ -43,7 +61,6 @@
      ausgelegt ist — hier auf dieselbe Breite wie die Grid-Karten bringen */
   .team-featured .person { width: 100%; max-width: 320px; }
   .sponsors-grid { grid-template-columns: 1fr; }
-  .gallery-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
 
   /* Zeitleiste: Zickzack wird einspaltig, Punkt + Linie rutschen an den linken Rand */
   .timeline-item { grid-template-columns: 32px 1fr; }
@@ -56,8 +73,6 @@
   .timeline-bar-range,
   .timeline-bar-theme,
   .timeline-bar-meta { flex: 1 1 100%; text-align: left; }
-  .gallery-item--tall { grid-row: span 1; }
-  .gallery-inner { height: 200px; }
 
   /* Hero: Text + Button zentrieren sich statt linksbündig zu bleiben */
   .hero-row { align-items: center; }
@@ -116,6 +131,27 @@
   .footer-pages { flex-direction: column; align-items: flex-start; }
   .footer-nav { flex-direction: column; gap: 8px; }
   .footer-credit-card { align-items: flex-start; text-align: left; }
+
+  /* About-Seite (Phone, an Framer gemessen) */
+  .about-hero { padding: 116px 20px 40px; }
+  .about-hero-title { font-size: 36px; }
+  #overview { padding: 100px 20px 80px; }
+  #tech-stack { padding: 100px 20px 80px; }
+  .overview-col-heading { font-size: 24px; }
+  .overview-images { flex-direction: column; }
+  .overview-image { aspect-ratio: 2 / 1; }
+  /* Kartentext ist länger als Framers Platzhalter: Karte wächst mit (min. 304 px), damit die Rundung (156 px) ihn nicht anschneidet */
+  .overview-feature-card { height: auto; min-height: 304px; padding: 88px 56px; }
+  .tech-stack-row { flex-direction: column; align-items: stretch; gap: 64px; }
+  .tech-stack-header { position: static; flex: none; text-align: center; padding: 0; }
+  .tech-stack-header .label { display: inline-flex; }
+  .tech-stack-header .heading { font-size: 28px; text-align: center; }
+  .tech-cards { gap: 60px; padding-top: 0; }
+  .tech-card { position: relative; flex-direction: column; align-items: stretch; min-height: 0; }
+  .tech-card:nth-child(n) { top: auto; }
+  .tech-card-icon { align-self: center; flex-basis: auto; width: 217px; height: 212px; }
+  .tech-card-title { font-size: 20px; }
+
 }
 
 /* Sehr kleine Phones: nur noch Fein-Justierung von Abständen/Schrift,

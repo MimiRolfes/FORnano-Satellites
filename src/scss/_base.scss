@@ -50,3 +50,17 @@ ul { list-style: none; }
 img { display: block; max-width: 100%; }
 
 .container { max-width: var(--max); margin: 0 auto; padding: 0 48px; }
+
+/* ── Sprachumschalter (DE/EN) ──
+   Jeder Text existiert doppelt (je ein [lang]-Element), siehe
+   satellite_i18n()/satellite_i18n_text() in functions.php. body-scoped,
+   NICHT [lang="de"] allein — sonst matcht das auch das <html lang="…">-
+   Attribut selbst (Dokumentsprache) und blendet die komplette Seite aus.
+   Nur ausblenden, nie aktiv zurück auf sichtbar setzen (kein
+   display:revert/unset) — sonst gewinnt diese Regel per Spezifität gegen
+   andere Regeln, die ein Element aus einem ANDEREN Grund ausblenden (z. B.
+   .btn-label-short je nach Breakpoint), und hebt deren display:none wieder
+   auf. So bleibt ein Element verborgen, sobald IRGENDEINE Regel es
+   ausblendet — unabhängig von der Reihenfolge. */
+html:not([data-lang="de"]) body [lang="de"] { display: none; }
+html[data-lang="de"] body [lang="en"] { display: none; }

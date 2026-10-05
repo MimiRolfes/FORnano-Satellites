@@ -202,42 +202,6 @@
   }
 }
 
-/* ── Kleinerer Hero für Unterseiten (About / Gallery) ── */
-.hero--page {
-  height: 60vh;
-  min-height: 420px;
-}
-.hero--page-plain {
-  background: radial-gradient(ellipse at 50% 30%, #101010 0%, #000 70%);
-}
-.page-hero-text {
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 16px;
-  padding: 0 24px;
-
-  /* Seiten-Hero-Titel folgen der Framer-"Heading 1" (groß), nicht der
-     32px-Sektionsüberschrift. */
-  .heading {
-    margin-bottom: 0;
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    text-transform: uppercase;
-    letter-spacing: 0;
-    line-height: 1.2;
-  }
-  .hero-eyebrow { color: var(--lime); line-height: 1.6; }
-  /* TODO: Beim About-/Gallery-Seiten-Umbau gegen die Framer-Referenz prüfen —
-     Section-Tag-Farbe ist eigentlich universell #525252, hier aber nur
-     aufgehellt lesbar auf dem fast schwarzen Seiten-Hero. */
-  .label { color: #f3f3f3; --bracket: rgba(255,255,255,0.4); }
-}
-
 /* Top-Level (nicht verschachtelt), damit die Responsive-Regel (gleiche
    Spezifität, später importiert) sie bei ≤809px zuverlässig überschreibt. */
 .btn-label-short { display: none; }

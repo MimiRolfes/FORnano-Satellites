@@ -1,0 +1,274 @@
+@use 'mixins' as *;
+
+/* ============================================================
+   UNTERSEITEN: Impressum, Datenschutz, Kontakt
+   Header = .about-hero (siehe _about-page.scss), darunter eine
+   helle Sektion im Verlauf der About-Overview.
+   ============================================================ */
+.page-text {
+  border-top: none;
+  padding: 120px 40px;
+  background: linear-gradient(180deg, rgb(210, 210, 210) 0%, rgb(234, 234, 234) 100%);
+}
+
+/* ── Rechtstexte: schmale Lesespalte ── */
+.page-text--plain { padding-top: 180px; min-height: 60vh; }
+.page-text-inner {
+  max-width: 760px;
+  margin: 0 auto;
+
+  h1 {
+    margin: 0 0 32px;
+    font-family: var(--fh);
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: #000;
+  }
+
+  h2 {
+    margin: 56px 0 16px;
+    font-family: var(--fh);
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: #000;
+    &:first-of-type { margin-top: 0; }
+  }
+  h3 {
+    margin: 32px 0 8px;
+    font-family: var(--fh);
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: #000;
+  }
+  p, li {
+    font-family: var(--fb);
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  p { margin: 0 0 16px; }
+  ul { margin: 0 0 16px; padding-left: 24px; }
+  a { color: #000; text-underline-offset: 3px; }
+}
+.page-text-note {
+  margin: 0 0 32px;
+  font-family: var(--fh);
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #000;
+}
+
+/* ── Teilprojekt-Seite: Überschrift, Text, optional ein Bild, Zurück-Button ── */
+.work-package-lead {
+  margin: 0 0 32px;
+  font-family: var(--fh);
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #000;
+}
+.work-package-image { margin: 0 0 40px; img { display: block; width: 100%; height: auto; } }
+.page-text-inner a.btn-about { text-decoration: none; }
+.not-found-home { margin-top: 24px; }
+.work-package-back {
+  // Der Seitenhintergrund beginnt bei rgb(210), genau der Schatten-Farbe der Landing-Buttons —
+  // dort wäre der Schatten unsichtbar, daher etwas dunkler (nur hier).
+  box-shadow: 4px 4px 0 0 rgb(150, 150, 150);
+  &--top { margin: 0 0 40px; }
+  &--bottom { margin: 40px 0 0; }
+}
+
+/* ── Kontakt: Formular + Infokarten ── */
+.contact-grid {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+.contact-form-card { flex: 1.4; }
+.contact-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+.contact-card {
+  min-width: 0;
+  padding: 32px;
+  background: #f3f3f3;
+  box-shadow: var(--shadow-hard);
+}
+.contact-heading {
+  margin: 0 0 12px;
+  font-family: var(--fh);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: #000;
+}
+.contact-intro,
+.contact-value {
+  margin: 0 0 20px;
+  font-family: var(--fb);
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--ink);
+
+  a { color: #000; text-underline-offset: 3px; }
+}
+.contact-label {
+  margin: 20px 0 4px;
+  font-family: var(--fh);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #000;
+}
+.contact-form { display: flex; flex-direction: column; gap: 20px; }
+.contact-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-family: var(--fh);
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: #000;
+  }
+  input,
+  textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    font-family: var(--fb);
+    font-size: 16px;
+    color: #000;
+    background: #fff;
+    border: 1px solid #7a7a7a;
+    border-radius: 0;
+    &:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+  }
+  textarea { min-height: 160px; resize: vertical; }
+}
+/* Honeypot: für Menschen unsichtbar, für Bots ein normales Feld */
+.contact-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.contact-privacy {
+  margin: 0;
+  font-family: var(--fb);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--ink);
+  a { color: #000; text-underline-offset: 3px; }
+}
+button.contact-submit {
+  align-self: flex-start;
+  margin-top: 0;
+  padding: 0;
+  appearance: none;
+  line-height: inherit; // <button> nutzt sonst "normal" und wäre niedriger als die Landing-Buttons (<a>)
+}
+.contact-notice {
+  margin: 0 0 20px;
+  padding: 14px 16px;
+  font-family: var(--fb);
+  font-size: 16px;
+  line-height: 1.4;
+  color: #000;
+  border: 1px solid #7a7a7a;
+  background: #fff;
+  &--sent { border-color: #2e7d32; }
+  &--invalid,
+  &--error { border-color: #b3261e; }
+}
+
+@media (max-width: 1199px) {
+  .contact-grid { flex-direction: column; align-items: stretch; }
+}
+@media (max-width: 809px) {
+  .page-text { padding: 80px 20px; }
+  .page-text-inner h2,
+  .contact-heading { font-size: 24px; }
+  .contact-card { padding: 24px 20px; }
+}
+
+/* ── Gallery (Framer: Verlauf hellgrau -> schwarz, zwei Spalten à 497 px,
+   Spaltenabstand 71 px, Bildabstand ~92 px, zweite Spalte 4 px tiefer) ── */
+#visuals {
+  border-top: none;
+  padding: 140px 40px 100px;
+  background: linear-gradient(180deg, rgb(209, 209, 209) 0%, rgb(0, 0, 0) 100%);
+}
+.gallery-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 405px;
+  margin: 0 auto 71px;
+  text-align: center;
+
+  .label { margin-bottom: 0; }
+  .heading { margin-bottom: 0; text-align: center; line-height: 1.2; }
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 71px;
+  align-items: start;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 30px 28px;
+}
+.gallery-col {
+  display: flex;
+  flex-direction: column;
+  gap: 92px;
+  &:last-child { margin-top: 4px; }
+}
+.gallery-item {
+  margin: 0;
+  overflow: hidden;
+  aspect-ratio: 497 / 796; // hohe Bilder
+  img { display: block; width: 100%; height: 100%; object-fit: cover; }
+}
+// Framer-Rhythmus je Spalte: breit(552) / hoch(796) / breit(552) bzw. 625 / hoch / hoch
+.gallery-col:first-child .gallery-item:nth-child(odd) { aspect-ratio: 497 / 552; }
+.gallery-col:last-child .gallery-item:first-child { aspect-ratio: 497 / 625; }
+
+@media (max-width: 1199px) {
+  #visuals { padding-left: 40px; padding-right: 40px; }
+  .gallery-grid { column-gap: 52px; padding: 30px 18px; }
+  .gallery-item,
+  .gallery-col:first-child .gallery-item:nth-child(odd),
+  .gallery-col:last-child .gallery-item:first-child { aspect-ratio: auto; height: 552px; }
+  .gallery-col:last-child .gallery-item:first-child { height: 625px; }
+}
+@media (max-width: 809px) {
+  #visuals { padding: 100px 20px 80px; }
+  .gallery-header { margin-bottom: 40px; }
+  .gallery-header .heading { font-size: 24px; }
+  .gallery-grid { display: flex; flex-direction: column; gap: 77px; padding: 30px 18px; }
+  .gallery-col { display: contents; }
+  .gallery-col:last-child .gallery-item:first-child,
+  .gallery-item { height: 552px; }
+  // Reihenfolge wieder 1–6 (Spalte 1 = ungerade, Spalte 2 = gerade Bilder)
+  .gallery-col:first-child .gallery-item:nth-child(1) { order: 1; }
+  .gallery-col:last-child  .gallery-item:nth-child(1) { order: 2; }
+  .gallery-col:first-child .gallery-item:nth-child(2) { order: 3; }
+  .gallery-col:last-child  .gallery-item:nth-child(2) { order: 4; }
+  .gallery-col:first-child .gallery-item:nth-child(3) { order: 5; }
+  .gallery-col:last-child  .gallery-item:nth-child(3) { order: 6; }
+}

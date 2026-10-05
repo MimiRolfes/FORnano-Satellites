@@ -22,22 +22,31 @@ $satellite_footer_wordmark = get_template_directory() . '/images/footer-vision.p
 		<div class="footer-card footer-brand">
 			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="footer-logo">FORnano Satellite</a>
 			<!-- wp:paragraph {"className":"footer-tagline"} -->
-			<p class="footer-tagline">Better vision with our projects at FAU</p>
+			<p class="footer-tagline" lang="en">Better vision with our projects at FAU</p>
+			<!-- /wp:paragraph -->
+			<!-- wp:paragraph {"className":"footer-tagline"} -->
+			<p class="footer-tagline" lang="de">Bessere Sicht mit unseren Projekten an der FAU</p>
 			<!-- /wp:paragraph -->
 		</div>
 
 		<div class="footer-side">
 			<div class="footer-card footer-pages">
-				<span class="footer-pages-label">Pages</span>
+				<span class="footer-pages-label"><?php satellite_i18n_text( 'Pages', 'Seiten' ); ?></span>
 				<nav class="footer-nav" aria-label="<?php esc_attr_e( 'Footer', 'satellite' ); ?>">
-					<a href="<?php echo esc_url( home_url( '/' ) ); ?>">Home</a>
-					<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>">About</a>
-					<a href="<?php echo esc_url( home_url( '/gallery/' ) ); ?>">Gallery</a>
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php satellite_i18n_text( 'Home', 'Startseite' ); ?></a>
+					<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>"><?php satellite_i18n_text( 'About', 'Über uns' ); ?></a>
+					<a href="<?php echo esc_url( home_url( '/gallery/' ) ); ?>"><?php satellite_i18n_text( 'Gallery', 'Galerie' ); ?></a>
+					<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>"><?php satellite_i18n_text( 'Contact', 'Kontakt' ); ?></a>
+					<a href="<?php echo esc_url( home_url( '/impressum/' ) ); ?>">Impressum</a>
+					<a href="<?php echo esc_url( home_url( '/datenschutz/' ) ); ?>"><?php satellite_i18n_text( 'Privacy', 'Datenschutz' ); ?></a>
 				</nav>
 			</div>
 			<div class="footer-card footer-credit-card">
 				<!-- wp:paragraph {"className":"footer-credit"} -->
-				<p class="footer-credit">Design by Milena Rolfes</p>
+				<p class="footer-credit" lang="en">Design by Milena Rolfes</p>
+				<!-- /wp:paragraph -->
+				<!-- wp:paragraph {"className":"footer-credit"} -->
+				<p class="footer-credit" lang="de">Design von Milena Rolfes</p>
 				<!-- /wp:paragraph -->
 				<!-- wp:html -->
 				<div class="footer-social">
