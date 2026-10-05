@@ -140,6 +140,7 @@
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid #303030;
+  border-bottom: 0; // die Trennlinie kommt von den Einträgen (siehe unten)
   overflow: hidden;
   opacity: 0;
   visibility: hidden;
@@ -161,7 +162,11 @@
     pointer-events: all;
   }
 
+  /* Einträge sind Absätze mit Link (je Sprache einer) — die Trennlinie hängt
+     am Absatz, damit sie auch bei ausgeblendeter Zweitsprache stimmt. */
+  > p { border-bottom: 1px solid #303030; }
   a {
+    display: block;
     font-family: var(--fh);
     font-size: 13px;
     font-weight: 600;
@@ -169,10 +174,8 @@
     text-transform: uppercase;
     color: var(--text);
     padding: 16px 20px;
-    border-bottom: 1px solid #303030;
     transition: color var(--t);
 
-    &:last-child { border-bottom: none; }
     &:hover,
     &:focus-visible { color: var(--lime); }
   }

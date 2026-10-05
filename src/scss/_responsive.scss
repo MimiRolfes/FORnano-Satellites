@@ -78,6 +78,7 @@
   .hero-row { align-items: center; }
   .hero-headline { text-align: center; }
   .hero-aside { text-align: center; }
+  .hero-aside .wp-block-buttons { justify-content: center; margin-top: 41px; } /* wie bisher auf dem Handy (Button zentriert) */
 
   /* Framers Phone-Variante zeigt die Satelliten-Grafik deutlich größer,
      tiefer versetzt und voll deckend — bewusster Per-Breakpoint-Override,
@@ -117,12 +118,12 @@
     align-items: flex-start;
     margin-top: 40px;
   }
-  .btn-about { order: 3; margin-top: 40px; }
+  .about-cta { order: 3; margin-top: 40px; }
   /* Framer kürzt den Button-Text in der Phone-Variante ("About the
      project" -> "About"), damit der Button nicht die ganze Zeile
      einnimmt — hier per CSS nachgebildet statt Text zu duplizieren. */
   .btn-label-full { display: none; }
-  .btn-label-short { display: inline; }
+  .btn-label-short { display: block; }
 
   /* Footer: Framers Phone-Variante stapelt die Pages-Links statt sie in
      einer Reihe zu zeigen, und richtet den Credit-Text links statt rechts

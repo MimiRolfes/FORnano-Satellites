@@ -1,3 +1,5 @@
+@use 'mixins' as *;
+
 /* ============================================================
    HERO-BEREICH (erster Abschnitt der Startseite, volle Bildschirmhöhe)
    ============================================================ */
@@ -15,8 +17,15 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center center;
+  margin: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    object-position: center center;
+  }
 }
 
 /* Dunkle Überlagerungen — Abdunklung + Vignette */
@@ -115,8 +124,10 @@
   pointer-events: none;
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55);   /* Lesbarkeit über wechselnden Bildbereichen (WCAG) */
 
-  .accent {
+  /* Akzent-Wörter = Text-Farbe "lime" aus der Werkzeugleiste (<mark>) */
+  mark {
     color: var(--lime);
+    background: none;
     text-shadow: 0 0 40px var(--lime-glow), 0 2px 14px rgba(0, 0, 0, 0.55);
   }
 }
@@ -126,6 +137,7 @@
   width: 300px;
   flex-shrink: 0;
   text-align: left;
+  padding-bottom: 7px; // wie bisher (der frühere Inline-Link hatte ~7px Zeilenabstand unter dem Button) — hält die Grundlinie zur Überschrift
 }
 
 .hero-eyebrow {
@@ -150,56 +162,89 @@
   background: var(--teal);
 }
 
-.btn-about {
+/* Landing-Button = Kern-Schaltfläche (Block "Schaltflächen") mit der Klasse
+   btn-about. Aussehen: Mixin landing-button (_mixins.scss). */
+.wp-block-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin: 32px 0 0; }
+.wp-block-button.btn-about { margin: 0; }
+.wp-block-button.btn-about .wp-block-button__link { @include landing-button; }
+
+/* Exakt wie auf der Landing Page (Framer): Der Button besteht aus zwei
+   Flächen — einer lime mit schwarzem Text und einer blauen mit weißem Text.
+   Beim Hover/Fokus schiebt sich die lime Fläche nach oben hinaus, die blaue von
+   unten herein. Im Editor steht nur ein Text; js/satellite.js (initButtons)
+   verpackt ihn auf der Website in diese zwei Flächen (.is-enhanced). Ohne
+   JavaScript bleibt die einfachere Füll-Variante oben. */
+.wp-block-button.btn-about .wp-block-button__link.is-enhanced {
+  display: flex;
+  position: static;
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  color: inherit;
+
+  &::after { content: none; }
+  &:hover,
+  &:focus-visible { color: inherit; background: none; border: 0; }
+  &:focus-visible { outline: none; }
+  &:focus-visible .btn-clip { outline: 2px solid var(--blue); outline-offset: 3px; }
+}
+.btn-clip {
+  position: relative;
   display: inline-block;
-  margin-top: 32px;
+  overflow: hidden;
+  vertical-align: top;
   background: var(--lime);
+  border: 1px solid #7a7a7a;
+  box-shadow: var(--shadow-hard);
+  transition: border-color 0.3s ease;
+}
+.btn-face {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 20px;
   font-family: var(--fh);
   font-size: 15px;
   font-weight: 500;
   letter-spacing: 0.1em;
+  line-height: 24px;
   text-transform: uppercase;
-  border-radius: 0;
-  border: 1px solid #7a7a7a;
-  box-shadow: var(--shadow-hard);
   white-space: nowrap;
-  overflow: hidden;
-  position: relative;
-  transition: border-color 0.3s ease;
-  cursor: pointer;
+  color: #000;
+  transition: transform 0.3s ease;
 
-  /* Sichtbarer Button-Text (echtes Markup statt attr(data-label), damit das
-     Pfeil-Icon als SVG statt als Unicode-Zeichen gerendert wird — sonst
-     wählen Handy-Browser dafür ein anderes Fallback-Font mit sichtbar
-     anderer Pfeilform als Desktop-Browser). Bestimmt die Button-Größe. */
-  .btn-about-face {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    padding: 10px 20px;
-    color: #000;
-    position: relative;
-    z-index: 1;
-    transition: transform 0.3s ease;
-
-    .btn-arrow { width: 14px; height: 14px; flex-shrink: 0; }
-  }
-  /* Blaue Füllung schiebt sich von unten rein (Hover-Effekt) */
-  .btn-about-face--hover {
-    color: #fff;
-    background: var(--blue);
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    transform: translateY(100%);
-  }
-  &:hover,
-  &:focus-visible {
-    border-color: var(--ink);
-    .btn-about-face:not(.btn-about-face--hover) { transform: translateY(-100%); }
-    .btn-about-face--hover { transform: translateY(0); }
-  }
+  &::after { @include button-arrow; }
+}
+.btn-face--hover {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  color: #fff;
+  background: var(--blue);
+  transform: translateY(100%);
+}
+.is-enhanced:hover .btn-clip,
+.is-enhanced:focus-visible .btn-clip,
+.tech-card:hover .tech-card-more .btn-clip,
+.contact-submit:hover .btn-clip,
+.contact-submit:focus-visible .btn-clip { border-color: var(--ink); }
+.is-enhanced:hover .btn-face:not(.btn-face--hover),
+.is-enhanced:focus-visible .btn-face:not(.btn-face--hover),
+.tech-card:hover .tech-card-more .btn-face:not(.btn-face--hover),
+.contact-submit:hover .btn-face:not(.btn-face--hover),
+.contact-submit:focus-visible .btn-face:not(.btn-face--hover) { transform: translateY(-100%); }
+.is-enhanced:hover .btn-face--hover,
+.is-enhanced:focus-visible .btn-face--hover,
+.tech-card:hover .tech-card-more .btn-face--hover,
+.contact-submit:hover .btn-face--hover,
+.contact-submit:focus-visible .btn-face--hover { transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .btn-face,
+  .btn-clip { transition: none; }
 }
 
 /* Top-Level (nicht verschachtelt), damit die Responsive-Regel (gleiche

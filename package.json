@@ -1,12 +1,12 @@
 {
   "name": "satellite-wp-theme",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
-  "description": "Build tooling for the Satellite WordPress theme \u2014 compiles src/scss/style.scss to style.css and minifies js/satellite.js to satellite.min.js via Sass, Autoprefixer and minification (per FAU RRZE theme requirements).",
+  "description": "Build tooling for the Satellite WordPress theme \u2014 compiles src/scss/style.scss to style.css (Sass, Autoprefixer, cssnano) and minifies js/src/*.js to js/*.min.js (terser).",
   "scripts": {
     "build:css": "node build-css.js",
     "watch:css": "node build-css.js --watch",
-    "build:js": "terser js/satellite.js --compress --mangle --output js/satellite.min.js",
+    "build:js": "node build-js.js",
     "build": "npm run build:css && npm run build:js"
   },
   "browserslist": [

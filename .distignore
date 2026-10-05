@@ -1,0 +1,12 @@
+# Dateien, die nicht ins ausgelieferte Theme gehören (Build-Werkzeuge, Quellen, Rohmaterial)
+.git
+.gitignore
+.distignore
+node_modules
+package.json
+package-lock.json
+build-css.js
+build-js.js
+Assets
+src
+js/src

@@ -1,0 +1,46 @@
+/*
+ * Zusätzliche Stile NUR für den Block-Editor (Seiten bearbeiten).
+ * Der Editor lädt außerdem fonts/fonts.css und style.css, sieht also aus wie die
+ * Website. Hier kommt dazu, was beim Bearbeiten helfen soll:
+ *  - jeder Text ist doppelt da (Englisch + Deutsch) -> kleine EN/DE-Marken
+ *  - leere Bild-Platzhalter bleiben anklickbar (auf der Website sind sie ausgeblendet)
+ *  - Bereiche, die auf der Website erst per Scrollen/Skript erscheinen, sind komplett sichtbar
+ */
+
+/* EN/DE-Marke an jedem Sprach-Block */
+.editor-styles-wrapper .lang-en,
+.editor-styles-wrapper .lang-de { position: relative; }
+.editor-styles-wrapper .lang-en::before,
+.editor-styles-wrapper .lang-de::before {
+	content: "EN";
+	position: absolute;
+	top: 0;
+	left: 0;
+	transform: translateY(-100%);
+	z-index: 50;
+	padding: 2px 5px;
+	font: 600 10px/1.2 system-ui, sans-serif;
+	letter-spacing: 0.05em;
+	color: #000;
+	background: #8fe388;
+	pointer-events: none;
+}
+.editor-styles-wrapper .lang-de::before { content: "DE"; background: #ffd479; }
+
+/* Leere Bild-Platzhalter und Logos/Icons: im Editor immer sichtbar */
+.editor-styles-wrapper .sponsor-logo,
+.editor-styles-wrapper .tech-card-icon { display: block !important; }
+.editor-styles-wrapper .sponsor-card .sponsor-name { display: block !important; opacity: 0.6; }
+.editor-styles-wrapper .hl-visual,
+.editor-styles-wrapper .person-photo { min-height: 120px; }
+
+/* Alle Bilder der Bildwechsel-Karte untereinander statt übereinander gestapelt */
+.editor-styles-wrapper .fade-card-frame { aspect-ratio: auto; display: flex; flex-direction: column; gap: 8px; }
+.editor-styles-wrapper .fade-card-img { position: relative; inset: auto; opacity: 1; transform: none; height: auto; }
+
+/* Dinge, die erst beim Scrollen "aufgehen", sind hier gleich voll sichtbar */
+.editor-styles-wrapper .timeline-card { opacity: 1; transform: none; }
+.editor-styles-wrapper .person-line { transform: none; }
+.editor-styles-wrapper .hero { height: auto; min-height: 720px; }
+.editor-styles-wrapper .nav { position: relative; }
+.editor-styles-wrapper .about-satellite { position: relative; top: auto; right: auto; transform: none; animation: none; margin: 0 auto; }

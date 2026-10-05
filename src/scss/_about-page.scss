@@ -34,7 +34,7 @@
   top: -126px;
   width: 100%;
   height: calc(100% + 190px);
-  object-fit: cover;
+  margin: 0;
   opacity: 0.59;
   /* Framer: onMount-Appear, scale 1.65 -> 1, 3 s */
   animation: about-hero-zoom 3s cubic-bezier(0.2, 0.8, 0.2, 1) both;
@@ -43,6 +43,8 @@
   .about-hero-img { animation: none; }
   .fade-card-img { transition: none; transform: none; }
 }
+/* Bild im Seitenkopf (Kern-Bild-Block): füllt die Figure */
+.about-hero-img img { width: 100%; height: 100%; max-width: none; object-fit: cover; }
 @keyframes about-hero-zoom {
   from { transform: scale(1.65); }
   to   { transform: scale(1); }
@@ -152,14 +154,16 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  max-width: none;
-  object-fit: cover;
+  margin: 0;
   opacity: 0;
   transform: scale(1.1);
   transition: opacity 2s cubic-bezier(0.44, 0, 0.56, 1), transform 2.5s cubic-bezier(0.12, 0.23, 0.5, 1);
 
   &.is-active { opacity: 1; transform: scale(1); }
+  img { width: 100%; height: 100%; max-width: none; object-fit: cover; }
 }
+/* Ohne JavaScript bleibt wenigstens das erste Bild sichtbar */
+.fade-card:not(.has-js) .fade-card-img:first-child { opacity: 1; transform: none; }
 
 /* Inhalt ist in Framer um 5 % je Seite eingerückt (56 px bei 1120 px). */
 .overview-body {
@@ -295,38 +299,31 @@
   flex: 0 0 278px;
   width: 278px;
   height: 272px;
-  object-fit: contain;
   margin: 0;
-}
-.tech-card-icon--fallback {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #000;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 
-  svg { width: 96px; height: 96px; }
+  img { width: 100%; height: 100%; max-width: none; object-fit: contain; }
 }
+/* Ohne Icon-Bild (Vorlagen-Grafik nicht im Repo) bekommt der Text die ganze Karte;
+   im Editor bleibt der leere Bild-Platzhalter zum Anklicken sichtbar (editor-style.css) */
+.tech-card-icon:not(:has(img[src])) { display: none; }
 .tech-card-body { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
 .tech-card-num { margin: 0; font-family: var(--fh); font-size: 15px; font-weight: 500; letter-spacing: 0.02em; color: var(--ink); }
 .tech-card-title { margin: 0; font-family: var(--fh); font-size: 22px; font-weight: 600; line-height: 1.3; text-transform: uppercase; color: #000; }
 .tech-card-text { margin: 0; font-family: var(--fb); font-size: 16px; line-height: 1.4; color: var(--ink); }
 
-/* Teilprojekt-Karten sind komplett klickbar: der Titel-Link wird per ::after
-   über die ganze Karte gezogen (ein Link pro Karte für Tastatur/Screenreader);
-   "Mehr erfahren" ist nur die Optik des Buttons. */
-.tech-card-link {
-  color: inherit;
-  text-decoration: none;
+/* Teilprojekt-Karten sind komplett klickbar: der Link der Schaltfläche
+   "Mehr erfahren" wird per ::before über die ganze Karte gezogen (ein Link pro
+   Karte für Tastatur und Screenreader). Dafür darf der Link selbst nicht
+   positioniert sein, sonst bezieht sich ::before auf ihn statt auf die Karte. */
+.tech-card-more { margin-top: 12px; }
+.tech-card-more .wp-block-button__link {
+  position: static;
 
-  &::after { content: ''; position: absolute; inset: 0; z-index: 1; }
+  &::before { content: ''; position: absolute; inset: 0; z-index: 1; }
   &:focus-visible { outline: none; }
-  &:focus-visible::after { outline: 2px solid var(--blue); outline-offset: 3px; }
+  &:focus-visible::before { outline: 2px solid var(--blue); outline-offset: 3px; }
 }
-.tech-card-more {
-  margin-top: 12px;
-  pointer-events: none; // Klicks gehen an den Karten-Link (::after); die Button-Flächen (z-index 1/2) lägen sonst darüber
-}
-.tech-card-icon { transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
 
 /* Hover/Fokus der gewählten Karte: Schatten wächst und wird blau (Farbe des
    Button-Hovers), Karte hellt auf, Icon vergrößert sich leicht, der Button
@@ -338,10 +335,11 @@
   box-shadow: 8px 8px 0 0 var(--blue);
 
   .tech-card-icon { transform: scale(1.05); }
-  .tech-card-more {
+  /* Button ohne JavaScript (Ausweich-Variante): Füllung wie beim Einzel-Hover */
+  .tech-card-more .wp-block-button__link:not(.is-enhanced) {
+    color: #fff;
+    background-size: 100% 100%;
     border-color: var(--ink);
-    .btn-about-face:not(.btn-about-face--hover) { transform: translateY(-100%); }
-    .btn-about-face--hover { transform: translateY(0); }
   }
 }
 @media (prefers-reduced-motion: reduce) {

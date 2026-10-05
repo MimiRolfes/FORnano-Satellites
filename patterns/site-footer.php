@@ -5,69 +5,82 @@
  * Categories: satellite
  * Inserter: no
  *
- * Deutsch: Fußbereich der Website, wird über parts/footer.html auf jeder
- * Seite eingebunden. Aufbau folgt der Framer-Referenz (Navigation/Footer-
- * Komponente): Marken-Karte (Logo + Tagline) neben zwei gestapelten Karten
- * (Seiten-Navigation, Design-Credit) vor einem dunklen Verlaufshintergrund.
+ * Deutsch: Fußbereich (wird über parts/footer.html auf jeder Seite eingebunden;
+ * bearbeitbar unter Design → Editor → Muster → Fußzeile). Aufbau nach Framer:
+ * Marken-Karte neben zwei gestapelten Karten (Seiten-Navigation, Design-Credit)
+ * vor dunklem Verlaufshintergrund.
  *
- * Das große "Vision"-Wortbild aus der Framer-Vorlage liegt (falls vorhanden)
- * lokal unter images/footer-vision.png — nicht im Repo, Lizenz ungeklärt
- * (siehe .gitignore). Ohne die Datei rendert der Footer sauber ohne sie.
+ * Alles besteht aus normalen Blöcken: Texte anklicken und ändern; Links über
+ * das Link-Symbol der Werkzeugleiste; die Symbole rechts unten sind ein
+ * "Social-Icons"-Block (Symbol anklicken → Adresse ändern oder weitere hinzufügen).
+ * Das große "Vision"-Wortbild liegt lokal unter images/footer-vision.png (nicht
+ * im Repo, Lizenz ungeklärt, siehe .gitignore) — ohne Datei entfällt es; im
+ * Editor lässt sich jederzeit ein eigenes Bild dort einfügen.
  */
-$satellite_footer_wordmark = get_template_directory() . '/images/footer-vision.png';
+$satellite_footer_links = array(
+	array( '/', 'Home', 'Startseite' ),
+	array( '/about/', 'About', 'Über uns' ),
+	array( '/gallery/', 'Gallery', 'Galerie' ),
+	array( '/contact/', 'Contact', 'Kontakt' ),
+	array( '/impressum/', 'Impressum', 'Impressum' ),
+	array( '/datenschutz/', 'Privacy', 'Datenschutz' ),
+);
 ?>
-<footer class="footer">
-	<div class="container footer-grid">
+<!-- wp:group {"tagName":"footer","className":"footer","layout":{"type":"default"}} -->
+<footer class="wp-block-group footer">
 
-		<div class="footer-card footer-brand">
-			<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="footer-logo">FORnano Satellite</a>
-			<!-- wp:paragraph {"className":"footer-tagline"} -->
-			<p class="footer-tagline" lang="en">Better vision with our projects at FAU</p>
-			<!-- /wp:paragraph -->
-			<!-- wp:paragraph {"className":"footer-tagline"} -->
-			<p class="footer-tagline" lang="de">Bessere Sicht mit unseren Projekten an der FAU</p>
-			<!-- /wp:paragraph -->
-		</div>
+<!-- wp:group {"className":"container footer-grid","layout":{"type":"default"}} -->
+<div class="wp-block-group container footer-grid">
 
-		<div class="footer-side">
-			<div class="footer-card footer-pages">
-				<span class="footer-pages-label"><?php satellite_i18n_text( 'Pages', 'Seiten' ); ?></span>
-				<nav class="footer-nav" aria-label="<?php esc_attr_e( 'Footer', 'satellite' ); ?>">
-					<a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php satellite_i18n_text( 'Home', 'Startseite' ); ?></a>
-					<a href="<?php echo esc_url( home_url( '/about/' ) ); ?>"><?php satellite_i18n_text( 'About', 'Über uns' ); ?></a>
-					<a href="<?php echo esc_url( home_url( '/gallery/' ) ); ?>"><?php satellite_i18n_text( 'Gallery', 'Galerie' ); ?></a>
-					<a href="<?php echo esc_url( home_url( '/contact/' ) ); ?>"><?php satellite_i18n_text( 'Contact', 'Kontakt' ); ?></a>
-					<a href="<?php echo esc_url( home_url( '/impressum/' ) ); ?>">Impressum</a>
-					<a href="<?php echo esc_url( home_url( '/datenschutz/' ) ); ?>"><?php satellite_i18n_text( 'Privacy', 'Datenschutz' ); ?></a>
-				</nav>
-			</div>
-			<div class="footer-card footer-credit-card">
-				<!-- wp:paragraph {"className":"footer-credit"} -->
-				<p class="footer-credit" lang="en">Design by Milena Rolfes</p>
-				<!-- /wp:paragraph -->
-				<!-- wp:paragraph {"className":"footer-credit"} -->
-				<p class="footer-credit" lang="de">Design von Milena Rolfes</p>
-				<!-- /wp:paragraph -->
-				<!-- wp:html -->
-				<div class="footer-social">
-					<a class="footer-social-link" href="https://github.com/MimiRolfes" target="_blank" rel="noopener" aria-label="GitHub">
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-					</a>
-					<a class="footer-social-link" href="https://milenarolfes.framer.website" target="_blank" rel="noopener" aria-label="Portfolio">
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z"/></svg>
-					</a>
-					<a class="footer-social-link footer-copy-email" href="mailto:milena.rolfes@web.de" data-email="milena.rolfes@web.de" aria-label="Copy email address" title="Copy email address">
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2Z"/><path d="m22 6-10 7L2 6"/></svg>
-					</a>
-				</div>
-				<!-- /wp:html -->
-			</div>
-		</div>
+<!-- wp:group {"className":"footer-card footer-brand","layout":{"type":"default"}} -->
+<div class="wp-block-group footer-card footer-brand">
+<!-- wp:site-title {"level":0,"className":"footer-logo"} /-->
 
-	</div>
+<?php satellite_i18n( 'Better vision with our projects at FAU', 'Bessere Sicht mit unseren Projekten an der FAU', 'p', 'footer-tagline' ); ?>
+</div>
+<!-- /wp:group -->
 
-	<?php if ( file_exists( $satellite_footer_wordmark ) ) : ?>
-	<img class="footer-wordmark" alt=""
-		src="<?php echo esc_url( get_template_directory_uri() . '/images/footer-vision.png' ); ?>" />
-	<?php endif; ?>
+<!-- wp:group {"className":"footer-side","layout":{"type":"default"}} -->
+<div class="wp-block-group footer-side">
+
+<!-- wp:group {"className":"footer-card footer-pages","layout":{"type":"default"}} -->
+<div class="wp-block-group footer-card footer-pages">
+<?php satellite_i18n( 'Pages', 'Seiten', 'p', 'footer-pages-label' ); ?>
+<!-- wp:group {"className":"footer-nav","layout":{"type":"default"}} -->
+<div class="wp-block-group footer-nav">
+<?php
+foreach ( $satellite_footer_links as $satellite_link ) {
+	foreach ( array( 'en' => $satellite_link[1], 'de' => $satellite_link[2] ) as $satellite_lang => $satellite_label ) {
+		echo '<!-- wp:paragraph ' . wp_json_encode( array( 'className' => 'lang-' . $satellite_lang ) ) . " -->\n";
+		echo '<p class="lang-' . esc_attr( $satellite_lang ) . '"><a href="' . esc_url( home_url( $satellite_link[0] ) ) . '">' . esc_html( $satellite_label ) . "</a></p>\n";
+		echo "<!-- /wp:paragraph -->\n\n";
+	}
+}
+?>
+</div>
+<!-- /wp:group -->
+</div>
+<!-- /wp:group -->
+
+<!-- wp:group {"className":"footer-card footer-credit-card","layout":{"type":"default"}} -->
+<div class="wp-block-group footer-card footer-credit-card">
+<?php satellite_i18n( 'Design by Milena Rolfes', 'Design von Milena Rolfes', 'p', 'footer-credit' ); ?>
+<!-- wp:social-links {"openInNewTab":true,"className":"is-style-logos-only footer-social"} -->
+<ul class="wp-block-social-links is-style-logos-only footer-social"><!-- wp:social-link {"url":"https://github.com/MimiRolfes","service":"github","label":"GitHub"} /-->
+
+<!-- wp:social-link {"url":"https://milenarolfes.framer.website","service":"chain","label":"Portfolio"} /-->
+
+<!-- wp:social-link {"url":"mailto:milena.rolfes@web.de","service":"mail","label":"Email"} /--></ul>
+<!-- /wp:social-links -->
+</div>
+<!-- /wp:group -->
+
+</div>
+<!-- /wp:group -->
+
+</div>
+<!-- /wp:group -->
+
+<?php satellite_image( 'images/footer-vision.png', 'footer-wordmark', '', false ); ?>
 </footer>
+<!-- /wp:group -->

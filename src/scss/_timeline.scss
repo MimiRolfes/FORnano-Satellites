@@ -227,11 +227,17 @@
   transition: color 0.4s ease;
 }
 
-/* Bei den letzten beiden Karten (TP5/TP6, hellster Verlaufsteil) wird nur
-   der Fließtext schwarz statt grau, damit er dort lesbar bleibt — die
-   Überschrift bleibt bewusst weiß wie bei allen anderen Karten. Klasse
-   kommt aus dem Arbeitspakete-Array in patterns/home.php. */
-.timeline-card--dark p { color: #000; }
+/* Die letzten beiden Karten (TP5/TP6) liegen auf dem Übergang Blau -> Orange/Gold des
+   Verlaufs. Klasse kommt aus dem Arbeitspakete-Array in patterns/home.php. */
+.timeline-card--dark p { color: #f3f3f3; }
+/* Auf den mittleren/hellen Verlaufstönen (Blau -> Orange) hätten weißer Titel und
+   Text zu wenig Kontrast: diese Karten bekommen eine dunkle Glasfläche (WCAG 2.2 AA,
+   FAU-Vorgabe). */
+.timeline-card--dark {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
 
 @media (prefers-reduced-motion: reduce) {
   .timeline-dot,

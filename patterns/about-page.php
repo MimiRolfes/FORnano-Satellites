@@ -1,32 +1,23 @@
 <?php
 /**
- * Title: About Page Content
+ * Title: Satellite – Über das Projekt
  * Slug: satellite/about-page
  * Categories: satellite
- * Inserter: no
+ * Description: Seite "Über das Projekt": Seitenkopf, Projektzusammenfassung mit Bildwechsel-Karte und die sechs Teilprojekt-Karten.
  *
- * Deutsch: Inhalt der "Über das Projekt"-Seite (templates/page-about.html).
- * Aufbau 1:1 nach Framers About-Seite ("Header" + "About" + "Cool Stuff"),
- * alle Texte zweisprachig (EN/DE, beide Pflicht — siehe satellite_i18n()).
- * Texte auf Basis von fornano.pinsker.ai (keine Framer-Platzhalter wie
- * "ICONIQ"/"Tool 1"/"Text über project").
+ * Deutsch: Inhalt der "Über das Projekt"-Seite. Beim Aktivieren des Themes
+ * wird daraus die Seite "About the project" angelegt. Aufbau 1:1 nach Framers
+ * About-Seite ("Header" + "About" + "Cool Stuff"); alle Texte zweisprachig
+ * (EN/DE, beide Pflicht, siehe satellite_i18n()) und als normale Blöcke
+ * editierbar; alle Bilder per "Ersetzen" austauschbar.
  *
- * Bilder: Framers Overview-Karte wechselt zwischen 4 Bildern; nur das erste
- * (Satellit) ist dort echter Inhalt, Bild 2–4 sind Konferenz-Stockfotos ohne
- * Projektbezug — dafür nutzen wir vorhandene Weltraum-Grafiken. Alle Bilder
- * per file_exists() abgesichert (siehe .gitignore: about-satellite.png und
- * images/tech/ liegen nicht im Repo, Lizenz der Vorlagen-Grafiken ungeklärt).
+ * Bilder: Die Bildwechsel-Karte (Framer "Fade Switching Image Card") wechselt
+ * zwischen den Bildern in ihrer Gruppe — Bilder lassen sich im Editor
+ * hinzufügen/entfernen. about-satellite.png und images/tech/ liegen nicht im
+ * Repo (Lizenz der Vorlagen-Grafiken ungeklärt, siehe .gitignore); fehlt eine
+ * Datei, entsteht ein leerer Bild-Platzhalter bzw. entfällt das Bild.
+ * Teilprojekt-Texte: inc/work-packages.php.
  */
-$satellite_theme_uri  = get_template_directory_uri();
-$satellite_theme_path = get_template_directory();
-
-$satellite_img = function ( $rel ) use ( $satellite_theme_path ) {
-	return file_exists( $satellite_theme_path . '/' . $rel );
-};
-$satellite_url = function ( $rel ) use ( $satellite_theme_uri ) {
-	return esc_url( $satellite_theme_uri . '/' . $rel );
-};
-
 $satellite_summary = array(
 	array(
 		'The aim of the "FORnanoSatellites" research consortium is to design a new generation of small satellites, referred to below as nanosatellites, weighing only a few kilograms, including a feasibility analysis of a fully digitalized value chain that is meant to lead, in the long term, to automated production of such satellites in Bavaria.',
@@ -46,189 +37,78 @@ $satellite_summary = array(
 	),
 );
 
-$satellite_fade_images = array_values( array_filter( array(
-	'images/about-satellite.png',
-	'images/gallery/earth-starfield.jpg',
-	'images/gallery/nebula-blue.png',
-	'images/gallery/nebula-flow.jpg',
-), $satellite_img ) );
-?>
-<!-- SEITEN-HEADER (Framer: "Header", 400px) -->
-<header class="about-hero about-hero--glow">
-	<div class="about-hero-bg" aria-hidden="true">
-		<?php if ( $satellite_img( 'images/gallery/nebula-flow.jpg' ) ) : ?>
-		<img class="about-hero-img" alt="" src="<?php echo $satellite_url( 'images/gallery/nebula-flow.jpg' ); ?>" />
-		<?php endif; ?>
-		<div class="about-hero-glow"></div>
-	</div>
-	<div class="about-hero-titles">
-		<!-- wp:heading {"level":1,"className":"about-hero-title"} -->
-		<h1 class="wp-block-heading about-hero-title" lang="en">Get to Know the Project</h1>
-		<!-- /wp:heading -->
-		<!-- wp:heading {"level":1,"className":"about-hero-title"} -->
-		<h1 class="wp-block-heading about-hero-title" lang="de">Lerne das Projekt kennen</h1>
-		<!-- /wp:heading -->
-		<!-- wp:paragraph {"className":"about-hero-sub"} -->
-		<p class="about-hero-sub">FORnano Satellites</p>
-		<!-- /wp:paragraph -->
-	</div>
-</header>
 
-<!-- OVERVIEW-SEKTION (Framer: "About") -->
-<section class="wp-block-group section" id="overview">
-	<div class="wp-block-group overview">
-
-		<!-- wp:group {"className":"overview-header","layout":{"type":"default"}} -->
-		<div class="wp-block-group overview-header">
-			<!-- wp:paragraph {"className":"label"} -->
-			<p class="label" lang="en">Overview</p>
-			<!-- /wp:paragraph -->
-			<!-- wp:paragraph {"className":"label"} -->
-			<p class="label" lang="de">Überblick</p>
-			<!-- /wp:paragraph -->
-			<!-- wp:heading {"className":"heading"} -->
-			<h2 class="wp-block-heading heading" lang="en">Project Summary</h2>
-			<!-- /wp:heading -->
-			<!-- wp:heading {"className":"heading"} -->
-			<h2 class="wp-block-heading heading" lang="de">Projektzusammenfassung</h2>
-			<!-- /wp:heading -->
-		</div>
-		<!-- /wp:group -->
-
-		<?php if ( $satellite_fade_images ) : ?>
-		<!-- wp:html -->
-		<div class="fade-card" id="fade-card">
-			<div class="fade-card-frame">
-				<?php foreach ( $satellite_fade_images as $i => $rel ) : ?>
-				<img class="fade-card-img<?php echo 0 === $i ? ' is-active' : ''; ?>" alt="" src="<?php echo $satellite_url( $rel ); ?>" />
-				<?php endforeach; ?>
-			</div>
-		</div>
-		<!-- /wp:html -->
-		<?php endif; ?>
-
-		<!-- wp:group {"className":"overview-body","layout":{"type":"default"}} -->
-		<div class="wp-block-group overview-body">
-
-			<!-- wp:group {"className":"overview-columns","layout":{"type":"default"}} -->
-			<div class="wp-block-group overview-columns">
-				<!-- wp:heading {"level":3,"className":"overview-col-heading"} -->
-				<h3 class="wp-block-heading overview-col-heading" lang="en">Innovations in Nanosatellites – Advanced Assembly and Packaging, Computing Technology and Applications</h3>
-				<!-- /wp:heading -->
-				<!-- wp:heading {"level":3,"className":"overview-col-heading"} -->
-				<h3 class="wp-block-heading overview-col-heading" lang="de">Innovationen in nano-Satelliten – Fortgeschrittene AVT und Packaging, Rechentechnik und Anwendungen</h3>
-				<!-- /wp:heading -->
-				<!-- wp:group {"className":"overview-col-text","layout":{"type":"default"}} -->
-				<div class="wp-block-group overview-col-text">
-				<?php
-				foreach ( $satellite_summary as $satellite_para ) {
-					satellite_i18n( $satellite_para[0], $satellite_para[1], 'p', 'body-text' );
-				}
-				?>
-				</div>
-				<!-- /wp:group -->
-			</div>
-			<!-- /wp:group -->
-
-			<!-- wp:group {"className":"overview-images","layout":{"type":"default"}} -->
-			<div class="wp-block-group overview-images">
-				<?php foreach ( array( 'images/gallery/satellite-horizon.jpg', 'images/gallery/particle-sphere.jpg' ) as $rel ) : ?>
-					<?php if ( $satellite_img( $rel ) ) : ?>
-				<!-- wp:image {"className":"overview-image"} -->
-				<figure class="wp-block-image overview-image"><img src="<?php echo $satellite_url( $rel ); ?>" alt="" /></figure>
-				<!-- /wp:image -->
-					<?php endif; ?>
-				<?php endforeach; ?>
-			</div>
-			<!-- /wp:group -->
-
-		</div>
-		<!-- /wp:group -->
-
-		<!-- wp:group {"className":"overview-feature","layout":{"type":"default"}} -->
-		<div class="wp-block-group overview-feature">
-			<?php if ( $satellite_img( 'images/gallery/astronaut-earthrise.jpg' ) ) : ?>
-			<!-- wp:image {"className":"overview-feature-media"} -->
-			<figure class="wp-block-image overview-feature-media"><img src="<?php echo $satellite_url( 'images/gallery/astronaut-earthrise.jpg' ); ?>" alt="" /></figure>
-			<!-- /wp:image -->
-			<?php endif; ?>
-			<!-- wp:group {"className":"overview-feature-card","layout":{"type":"default"}} -->
-			<div class="wp-block-group overview-feature-card">
-				<!-- wp:paragraph -->
-				<p lang="en">FORnano Satellites is a 36-month research project funded with <strong>€1.8 million</strong> by the Bayerische Forschungsstiftung. Project management lies with the Chair of Manufacturing Automation and Production Systems (FAPS) at FAU Erlangen-Nürnberg; the work is organized in six subprojects.</p>
-				<!-- /wp:paragraph -->
-				<!-- wp:paragraph -->
-				<p lang="de">FORnano Satellites ist ein auf 36&nbsp;Monate angelegtes Forschungsprojekt, das mit <strong>1,8&nbsp;Mio.&nbsp;€</strong> von der Bayerischen Forschungsstiftung gefördert wird. Die Projektleitung liegt beim Lehrstuhl für Fertigungsautomatisierung und Produktionssystematik (FAPS) der FAU Erlangen-Nürnberg; die Arbeit gliedert sich in sechs Teilprojekte.</p>
-				<!-- /wp:paragraph -->
-			</div>
-			<!-- /wp:group -->
-		</div>
-		<!-- /wp:group -->
-
-	</div>
-</section>
-
-<?php
 $satellite_work_packages = satellite_work_packages();
-?>
-<!-- TEILPROJEKTE-SEKTION (Framer: "Cool Stuff"): sechs Karten laut fornano.pinsker.ai, jede führt zur Teilprojekt-Seite -->
-<section class="wp-block-group section" id="tech-stack">
-	<div class="wp-block-group tech-stack-row">
 
-		<!-- wp:group {"className":"tech-stack-header","layout":{"type":"default"}} -->
-		<div class="wp-block-group tech-stack-header">
-			<!-- wp:paragraph {"className":"label"} -->
-			<p class="label" lang="en">Work Packages</p>
-			<!-- /wp:paragraph -->
-			<!-- wp:paragraph {"className":"label"} -->
-			<p class="label" lang="de">Arbeitspakete</p>
-			<!-- /wp:paragraph -->
-			<!-- wp:heading {"className":"heading"} -->
-			<h2 class="wp-block-heading heading" lang="en">6 interlinked subprojects</h2>
-			<!-- /wp:heading -->
-			<!-- wp:heading {"className":"heading"} -->
-			<h2 class="wp-block-heading heading" lang="de">6 vernetzte Teilprojekte</h2>
-			<!-- /wp:heading -->
-		</div>
-		<!-- /wp:group -->
+/* ── Seitenkopf ── */
+satellite_page_hero( 'Get to Know the Project', 'Lerne das Projekt kennen', 'FORnano Satellites', 'about-hero--glow' );
 
-		<!-- wp:group {"className":"tech-cards","layout":{"type":"default"}} -->
-		<div class="wp-block-group tech-cards">
-			<?php foreach ( $satellite_work_packages as $satellite_n => $satellite_tp ) : ?>
-			<?php $satellite_icon = 'images/tech/tech-' . ( ( $satellite_n - 1 ) % 3 + 1 ) . '.png'; ?>
-			<!-- wp:group {"className":"tech-card","layout":{"type":"default"}} -->
-			<div class="wp-block-group tech-card">
-				<?php if ( $satellite_img( $satellite_icon ) ) : ?>
-				<!-- wp:image {"className":"tech-card-icon"} -->
-				<figure class="wp-block-image tech-card-icon"><img src="<?php echo $satellite_url( $satellite_icon ); ?>" alt="" /></figure>
-				<!-- /wp:image -->
-				<?php else : ?>
-				<!-- wp:html --><div class="tech-card-icon tech-card-icon--fallback" aria-hidden="true"><?php echo satellite_arrow_icon(); ?></div><!-- /wp:html -->
-				<?php endif; ?>
-				<!-- wp:group {"className":"tech-card-body","layout":{"type":"default"}} -->
-				<div class="wp-block-group tech-card-body">
-					<!-- wp:paragraph {"className":"tech-card-num"} -->
-					<p class="tech-card-num"><?php echo esc_html( 'TP' . $satellite_n ); ?></p>
-					<!-- /wp:paragraph -->
-					<!-- wp:heading {"level":3,"className":"tech-card-title"} -->
-					<h3 class="wp-block-heading tech-card-title"><a class="tech-card-link" href="<?php echo esc_url( home_url( '/work-packages/tp-' . $satellite_n . '/' ) ); ?>"><span lang="en"><?php echo esc_html( $satellite_tp['title'][0] ); ?></span><span lang="de"><?php echo esc_html( $satellite_tp['title'][1] ); ?></span></a></h3>
-					<!-- /wp:heading -->
-					<!-- wp:paragraph {"className":"tech-card-text"} -->
-					<p class="tech-card-text"><span lang="en"><?php echo esc_html( $satellite_tp['short'][0] ); ?></span><span lang="de"><?php echo esc_html( $satellite_tp['short'][1] ); ?></span></p>
-					<!-- /wp:paragraph -->
-					<!-- wp:html -->
-					<span class="btn-about tech-card-more" aria-hidden="true">
-						<span class="btn-about-face"><?php satellite_i18n_text( 'LEARN MORE', 'MEHR ERFAHREN' ); ?> <?php echo satellite_arrow_up_right_icon(); ?></span>
-						<span class="btn-about-face btn-about-face--hover"><?php satellite_i18n_text( 'LEARN MORE', 'MEHR ERFAHREN' ); ?> <?php echo satellite_arrow_up_right_icon(); ?></span>
-					</span>
-					<!-- /wp:html -->
-				</div>
-				<!-- /wp:group -->
-			</div>
-			<!-- /wp:group -->
-			<?php endforeach; ?>
-		</div>
-		<!-- /wp:group -->
+/* ── Überblick (Framer "About") ── */
+satellite_open( 'section', 'section', 'overview' );
+satellite_open( 'overview' );
 
-	</div>
-</section>
+satellite_open( 'overview-header' );
+satellite_i18n( 'Overview', 'Überblick', 'p', 'label' );
+satellite_i18n( 'Project Summary', 'Projektzusammenfassung', 'h2', 'heading' );
+satellite_close();
+
+// Bildwechsel-Karte: alle 5 s Überblendung (js/satellite.js, initFadeCard)
+satellite_open( 'fade-card', 'div', 'fade-card' );
+satellite_open( 'fade-card-frame' );
+foreach ( array( 'images/about-satellite.png', 'images/gallery/earth-starfield.jpg', 'images/gallery/nebula-blue.png', 'images/gallery/nebula-flow.jpg' ) as $satellite_rel ) {
+	satellite_image( $satellite_rel, 'fade-card-img', '', false );
+}
+satellite_close();
+satellite_close();
+
+satellite_open( 'overview-body' );
+satellite_open( 'overview-columns' );
+satellite_i18n( 'Innovations in Nanosatellites – Advanced Assembly and Packaging, Computing Technology and Applications', 'Innovationen in nano-Satelliten – Fortgeschrittene AVT und Packaging, Rechentechnik und Anwendungen', 'h3', 'overview-col-heading' );
+satellite_open( 'overview-col-text' );
+foreach ( $satellite_summary as $satellite_para ) {
+	satellite_i18n( $satellite_para[0], $satellite_para[1], 'p', 'body-text' );
+}
+satellite_close();
+satellite_close(); // overview-columns
+satellite_open( 'overview-images' );
+satellite_image( 'images/gallery/satellite-horizon.jpg', 'overview-image' );
+satellite_image( 'images/gallery/particle-sphere.jpg', 'overview-image' );
+satellite_close();
+satellite_close(); // overview-body
+
+satellite_open( 'overview-feature' );
+satellite_image( 'images/gallery/astronaut-earthrise.jpg', 'overview-feature-media' );
+satellite_open( 'overview-feature-card' );
+satellite_i18n(
+	'FORnano Satellites is a 36-month research project funded with <strong>€1.8 million</strong> by the Bayerische Forschungsstiftung. Project management lies with the Chair of Manufacturing Automation and Production Systems (FAPS) at FAU Erlangen-Nürnberg; the work is organized in six subprojects.',
+	'FORnano Satellites ist ein auf 36&nbsp;Monate angelegtes Forschungsprojekt, das mit <strong>1,8&nbsp;Mio.&nbsp;€</strong> von der Bayerischen Forschungsstiftung gefördert wird. Die Projektleitung liegt beim Lehrstuhl für Fertigungsautomatisierung und Produktionssystematik (FAPS) der FAU Erlangen-Nürnberg; die Arbeit gliedert sich in sechs Teilprojekte.'
+);
+satellite_close();
+satellite_close(); // overview-feature
+
+satellite_close(); // overview
+satellite_close( 'section' );
+
+/* ── Teilprojekt-Karten (Framer "Cool Stuff"): jede Karte führt zur Teilprojekt-Seite ── */
+satellite_open( 'section', 'section', 'tech-stack' );
+satellite_open( 'tech-stack-row' );
+satellite_open( 'tech-stack-header' );
+satellite_i18n( 'Work Packages', 'Arbeitspakete', 'p', 'label' );
+satellite_i18n( '6 interlinked subprojects', '6 vernetzte Teilprojekte', 'h2', 'heading' );
+satellite_close();
+satellite_open( 'tech-cards' );
+foreach ( $satellite_work_packages as $satellite_n => $satellite_tp ) {
+	satellite_open( 'tech-card' );
+	satellite_image( 'images/tech/tech-' . ( ( $satellite_n - 1 ) % 3 + 1 ) . '.png', 'tech-card-icon' );
+	satellite_open( 'tech-card-body' );
+	satellite_text( 'TP' . $satellite_n, 'p', 'tech-card-num' );
+	satellite_i18n( $satellite_tp['title'][0], $satellite_tp['title'][1], 'h3', 'tech-card-title' );
+	satellite_i18n( $satellite_tp['short'][0], $satellite_tp['short'][1], 'p', 'tech-card-text' );
+	// Der Button-Link wird per CSS über die ganze Karte gezogen (Karte komplett klickbar).
+	satellite_button_pair( 'LEARN MORE', 'MEHR ERFAHREN', home_url( '/work-packages/tp-' . $satellite_n . '/' ), 'tech-card-more' );
+	satellite_close();
+	satellite_close();
+}
+satellite_close(); // tech-cards
+satellite_close(); // tech-stack-row
+satellite_close( 'section' );

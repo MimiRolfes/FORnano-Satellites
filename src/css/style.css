@@ -1,13 +1,15 @@
 /*
 Theme Name: Satellite
-Theme URI: https://adored-designers-687866.framer.app
+Theme URI: https://github.com/MimiRolfes/FORnano-Satellites
 Author: Milena Rolfes
-Author URI: mailto:milena.rolfes@web.de
-Description: Dark futuristic one-page theme for the Satellite FAU project website. Converted from the original Grav theme.
-Version: 1.0.0
+Author URI: https://github.com/MimiRolfes
+Description: Block theme for the FORnanoSatellites research project (FAU Erlangen-Nürnberg): dark, futuristic landing page with bilingual content (EN/DE), editable entirely in the block editor.
+Version: 1.1.0
 Requires at least: 6.6
-Requires PHP: 8.1
+Requires PHP: 8.2
 License: MIT
+License URI: https://opensource.org/license/mit
+Tags: full-site-editing, block-patterns, custom-colors, dark
 Text Domain: satellite
 */
 
@@ -32,7 +34,7 @@ Text Domain: satellite
   --dim: rgb(101, 101, 101);
   --lime: #8FE388; /* Framer "rgb(143,227,136)" — Akzent + Button-Füllung */
   --lime-glow:rgba(167, 115, 82, 0.25);
-  --blue: #577BDE; /* Framer Button-Hover-Blau */
+  --blue: #4B6FD6; /* Framer Button-Hover-Blau (#577BDE), für 4,5:1 mit weißem Text leicht abgedunkelt — FAU/WCAG 2.2 AA */
   --silver: #D2D2D2; /* Framer "Silver 100" — Karten-Rahmen, Offset-Schatten, Highlight-Nummer */
   --teal: #13ACAB; /* Framer Hero-Trennlinie */
   --ink: #525252; /* Framer "Grey 100" — Fließtext auf hellen Sektionen */
@@ -87,22 +89,29 @@ img {
 }
 
 /* ── Sprachumschalter (DE/EN) ──
-   Jeder Text existiert doppelt (je ein [lang]-Element), siehe
-   satellite_i18n()/satellite_i18n_text() in functions.php. body-scoped,
-   NICHT [lang="de"] allein — sonst matcht das auch das <html lang="…">-
-   Attribut selbst (Dokumentsprache) und blendet die komplette Seite aus.
-   Nur ausblenden, nie aktiv zurück auf sichtbar setzen (kein
-   display:revert/unset) — sonst gewinnt diese Regel per Spezifität gegen
-   andere Regeln, die ein Element aus einem ANDEREN Grund ausblenden (z. B.
-   .btn-label-short je nach Breakpoint), und hebt deren display:none wieder
-   auf. So bleibt ein Element verborgen, sobald IRGENDEINE Regel es
-   ausblendet — unabhängig von der Reihenfolge. */
-html:not([data-lang=de]) body [lang=de] {
+   Jeder Text existiert doppelt: ein Block mit der Klasse "lang-en", einer mit
+   "lang-de" (siehe satellite_i18n() in inc/blocks.php). <html data-lang> wird
+   vom Skript im <head> bzw. js/satellite.js gesetzt. Nur ausblenden, nie aktiv
+   zurück auf sichtbar setzen (kein display:revert/unset) — so bleibt ein
+   Element verborgen, sobald IRGENDEINE Regel es ausblendet (z. B.
+   .btn-label-short je nach Breakpoint). Im Block-Editor gibt es kein
+   data-lang: dort sind beide Sprachen sichtbar (siehe editor-style.css). */
+html[data-lang=en] .lang-de {
   display: none;
 }
 
-html[data-lang=de] body [lang=en] {
+html[data-lang=de] .lang-en {
   display: none;
+}
+
+/* Kern-Bilder: WordPress gibt Bildern einen Unterabstand — hier nicht gewollt */
+/* :where() = Spezifität 0, damit eigene Klassen (z. B. .footer-wordmark { margin: … }) gewinnen */
+:where(figure.wp-block-image) {
+  margin: 0;
+}
+
+:where(.wp-block-image) img {
+  height: auto;
 }
 
 /* ============================================================
@@ -112,6 +121,11 @@ html[data-lang=de] body [lang=en] {
    als 8 Hintergrund-Verläufe — 2 pro Ecke. Farbe über die Custom-Property
    --bracket steuerbar (damit sie je Kontext auf hellem/dunklem Grund
    angepasst werden kann). */
+/* Pfeil ↗ am Button-Ende (CSS-Maske in Textfarbe, kein Markup) */
+/* Landing-Button (Ausweich-Variante ohne JavaScript): lime Fläche, harter Silber-Schatten, Pfeil ↗ rechts; beim
+   Hover/Fokus füllt sich eine blaue Fläche von unten und der Text wird weiß
+   (Framer: Fläche schiebt sich von unten rein). Der Pfeil ist eine CSS-Maske,
+   kein Markup — so bleibt der Button ein ganz normaler Text-Button im Editor. */
 /* ── Kleine Kategorie-Labels / "Section Tag" (z. B. "ABOUT", "HIGHLIGHTS") ──
    Framer-Komponente "Elements/Section Tag": Chakra Petch 500, 15px, kein
    Tracking, Farbe Grey 100 (#525252), min-width 80px, Padding 5px 12px.
@@ -333,6 +347,7 @@ html[data-lang=de] body [lang=en] {
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid #303030;
+  border-bottom: 0;
   overflow: hidden;
   opacity: 0;
   visibility: hidden;
@@ -349,7 +364,15 @@ html[data-lang=de] body [lang=en] {
   transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.34, 1.3, 0.64, 1), visibility 0s linear 0s;
   pointer-events: all;
 }
+.nav-dropdown {
+  /* Einträge sind Absätze mit Link (je Sprache einer) — die Trennlinie hängt
+     am Absatz, damit sie auch bei ausgeblendeter Zweitsprache stimmt. */
+}
+.nav-dropdown > p {
+  border-bottom: 1px solid #303030;
+}
 .nav-dropdown a {
+  display: block;
   font-family: var(--fh);
   font-size: 13px;
   font-weight: 600;
@@ -357,11 +380,7 @@ html[data-lang=de] body [lang=en] {
   text-transform: uppercase;
   color: var(--text);
   padding: 16px 20px;
-  border-bottom: 1px solid #303030;
   transition: color var(--t);
-}
-.nav-dropdown a:last-child {
-  border-bottom: none;
 }
 .nav-dropdown a:hover, .nav-dropdown a:focus-visible {
   color: var(--lime);
@@ -447,6 +466,12 @@ html[data-lang=de] body [lang=en] {
   inset: 0;
   width: 100%;
   height: 100%;
+  margin: 0;
+}
+.hero-earth img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
   -o-object-fit: cover;
      object-fit: cover;
   -o-object-position: center center;
@@ -545,9 +570,11 @@ html[data-lang=de] body [lang=en] {
   color: #f3f3f3;
   pointer-events: none;
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55); /* Lesbarkeit über wechselnden Bildbereichen (WCAG) */
+  /* Akzent-Wörter = Text-Farbe "lime" aus der Werkzeugleiste (<mark>) */
 }
-.hero-headline .accent {
+.hero-headline mark {
   color: var(--lime);
+  background: none;
   text-shadow: 0 0 40px var(--lime-glow), 0 2px 14px rgba(0, 0, 0, 0.55);
 }
 
@@ -556,6 +583,7 @@ html[data-lang=de] body [lang=en] {
   width: 300px;
   flex-shrink: 0;
   text-align: left;
+  padding-bottom: 7px;
 }
 
 .hero-eyebrow {
@@ -581,65 +609,169 @@ html[data-lang=de] body [lang=en] {
   background: var(--teal);
 }
 
-.btn-about {
-  display: inline-block;
-  margin-top: 32px;
-  background: var(--lime);
+/* Landing-Button = Kern-Schaltfläche (Block "Schaltflächen") mit der Klasse
+   btn-about. Aussehen: Mixin landing-button (_mixins.scss). */
+.wp-block-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 32px 0 0;
+}
+
+.wp-block-button.btn-about {
+  margin: 0;
+}
+
+.wp-block-button.btn-about .wp-block-button__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 10px 20px;
   font-family: var(--fh);
   font-size: 15px;
   font-weight: 500;
   letter-spacing: 0.1em;
+  line-height: 24px;
   text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  color: #000;
+  background-color: var(--lime);
+  background-image: linear-gradient(var(--blue), var(--blue));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 100% 0;
+  border: 1px solid #7a7a7a;
   border-radius: 0;
+  box-shadow: var(--shadow-hard);
+  cursor: pointer;
+  transition: background-size 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.wp-block-button.btn-about .wp-block-button__link::after {
+  content: "";
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M7 17 17 7M7 7h10v10' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M7 17 17 7M7 7h10v10' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+.wp-block-button.btn-about .wp-block-button__link:hover, .wp-block-button.btn-about .wp-block-button__link:focus-visible {
+  color: #fff;
+  background-size: 100% 100%;
+  border-color: var(--ink);
+}
+
+/* Exakt wie auf der Landing Page (Framer): Der Button besteht aus zwei
+   Flächen — einer lime mit schwarzem Text und einer blauen mit weißem Text.
+   Beim Hover/Fokus schiebt sich die lime Fläche nach oben hinaus, die blaue von
+   unten herein. Im Editor steht nur ein Text; js/satellite.js (initButtons)
+   verpackt ihn auf der Website in diese zwei Flächen (.is-enhanced). Ohne
+   JavaScript bleibt die einfachere Füll-Variante oben. */
+.wp-block-button.btn-about .wp-block-button__link.is-enhanced {
+  display: flex;
+  position: static;
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  color: inherit;
+}
+.wp-block-button.btn-about .wp-block-button__link.is-enhanced::after {
+  content: none;
+}
+.wp-block-button.btn-about .wp-block-button__link.is-enhanced:hover, .wp-block-button.btn-about .wp-block-button__link.is-enhanced:focus-visible {
+  color: inherit;
+  background: none;
+  border: 0;
+}
+.wp-block-button.btn-about .wp-block-button__link.is-enhanced:focus-visible {
+  outline: none;
+}
+.wp-block-button.btn-about .wp-block-button__link.is-enhanced:focus-visible .btn-clip {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
+}
+
+.btn-clip {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  background: var(--lime);
   border: 1px solid #7a7a7a;
   box-shadow: var(--shadow-hard);
-  white-space: nowrap;
-  overflow: hidden;
-  position: relative;
   transition: border-color 0.3s ease;
-  cursor: pointer;
-  /* Sichtbarer Button-Text (echtes Markup statt attr(data-label), damit das
-     Pfeil-Icon als SVG statt als Unicode-Zeichen gerendert wird — sonst
-     wählen Handy-Browser dafür ein anderes Fallback-Font mit sichtbar
-     anderer Pfeilform als Desktop-Browser). Bestimmt die Button-Größe. */
 }
-.btn-about .btn-about-face {
+
+.btn-face {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
   padding: 10px 20px;
+  font-family: var(--fh);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  line-height: 24px;
+  text-transform: uppercase;
+  white-space: nowrap;
   color: #000;
-  position: relative;
-  z-index: 1;
   transition: transform 0.3s ease;
 }
-.btn-about .btn-about-face .btn-arrow {
+.btn-face::after {
+  content: "";
+  flex-shrink: 0;
   width: 14px;
   height: 14px;
-  flex-shrink: 0;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M7 17 17 7M7 7h10v10' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M7 17 17 7M7 7h10v10' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/contain no-repeat;
 }
-.btn-about {
-  /* Blaue Füllung schiebt sich von unten rein (Hover-Effekt) */
-}
-.btn-about .btn-about-face--hover {
-  color: #fff;
-  background: var(--blue);
+
+.btn-face--hover {
   position: absolute;
   inset: 0;
   z-index: 2;
+  color: #fff;
+  background: var(--blue);
   transform: translateY(100%);
 }
-.btn-about:hover, .btn-about:focus-visible {
+
+.is-enhanced:hover .btn-clip,
+.is-enhanced:focus-visible .btn-clip,
+.tech-card:hover .tech-card-more .btn-clip,
+.contact-submit:hover .btn-clip,
+.contact-submit:focus-visible .btn-clip {
   border-color: var(--ink);
 }
-.btn-about:hover .btn-about-face:not(.btn-about-face--hover), .btn-about:focus-visible .btn-about-face:not(.btn-about-face--hover) {
+
+.is-enhanced:hover .btn-face:not(.btn-face--hover),
+.is-enhanced:focus-visible .btn-face:not(.btn-face--hover),
+.tech-card:hover .tech-card-more .btn-face:not(.btn-face--hover),
+.contact-submit:hover .btn-face:not(.btn-face--hover),
+.contact-submit:focus-visible .btn-face:not(.btn-face--hover) {
   transform: translateY(-100%);
 }
-.btn-about:hover .btn-about-face--hover, .btn-about:focus-visible .btn-about-face--hover {
+
+.is-enhanced:hover .btn-face--hover,
+.is-enhanced:focus-visible .btn-face--hover,
+.tech-card:hover .tech-card-more .btn-face--hover,
+.contact-submit:hover .btn-face--hover,
+.contact-submit:focus-visible .btn-face--hover {
   transform: translateY(0);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .btn-face,
+  .btn-clip {
+    transition: none;
+  }
+}
 /* Top-Level (nicht verschachtelt), damit die Responsive-Regel (gleiche
    Spezifität, später importiert) sie bei ≤809px zuverlässig überschreibt. */
 .btn-label-short {
@@ -706,6 +838,20 @@ html[data-lang=de] body [lang=en] {
   text-align: center;
 }
 
+/* Barrierefreiheit (WCAG 2.2 AA, FAU-Vorgabe): Auf den mittleren Verlaufstönen von
+   #about, #team und #sponsors hätte das graue Label unter 3:1 Kontrast —
+   dort bekommt es eine passende Farbe. */
+#about .label {
+  color: #fff;
+  --bracket: rgba(255, 255, 255, 0.5);
+}
+
+#team .label,
+#sponsors .label {
+  color: #000;
+  --bracket: rgba(0, 0, 0, 0.5);
+}
+
 /* Section-Tag / .label hat EINE universelle Farbe (Framer "Grey 100" =
    #525252 = var(--ink)) auf allen Sektionen — kein sektionsspezifischer
    Override. Hinweis: im dunklen Verlaufsanfang von #about ist der Kontrast
@@ -738,8 +884,7 @@ html[data-lang=de] body [lang=en] {
   width: clamp(280px, 42vw, 520px);
   max-width: none;
   aspect-ratio: 1/1;
-  -o-object-fit: fill;
-     object-fit: fill;
+  margin: 0;
   z-index: 0;
   pointer-events: none;
   will-change: transform;
@@ -747,6 +892,13 @@ html[data-lang=de] body [lang=en] {
      Rein-/Raus-Zoomen mit minimalem Höhen-Versatz, weich hin und her. */
   animation: about-satellite-bob 2.4s ease-in-out infinite alternate;
   transform: translateY(-50%) scale(1);
+}
+.about-satellite img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  -o-object-fit: fill;
+     object-fit: fill;
 }
 
 @keyframes about-satellite-bob {
@@ -806,7 +958,9 @@ html[data-lang=de] body [lang=en] {
   flex-shrink: 0;
   width: 28px;
   height: 28px;
-  color: #000;
+  background: #000;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M12 19V6M12 6L6 12M12 6L18 12' stroke='black' stroke-width='1.5' stroke-linecap='square'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M12 19V6M12 6L6 12M12 6L18 12' stroke='black' stroke-width='1.5' stroke-linecap='square'/%3E%3C/svg%3E") center/contain no-repeat;
 }
 
 .metric-body {
@@ -871,7 +1025,7 @@ html[data-lang=de] body [lang=en] {
   gap: 24px;
   text-align: left; /* #highlights .container zentriert nur den Kopf, nicht die Karten */
 }
-.hl-card p {
+.hl-card > p {
   font-family: var(--fb);
   font-size: 16px;
   font-weight: 400;
@@ -900,7 +1054,7 @@ html[data-lang=de] body [lang=en] {
   font-size: 40px;
   font-weight: 600;
   line-height: 1.2;
-  color: var(--silver);
+  color: #8a8a8a;
 }
 
 /* Karten-Bild (Framer: 1fr breit, 210px hoch, leichte Grün-Tönung). */
@@ -1014,7 +1168,7 @@ html[data-lang=de] body [lang=en] {
   font-size: 16px;
   font-weight: 400;
   line-height: 1.4;
-  color: #7a7a7a;
+  color: #595959;
   text-transform: capitalize;
 }
 
@@ -1060,7 +1214,7 @@ html[data-lang=de] body [lang=en] {
 
 .sponsors-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 4px;
 }
 
@@ -1093,11 +1247,23 @@ html[data-lang=de] body [lang=en] {
      object-fit: contain;
 }
 
-.sponsor-logo--placeholder {
-  height: 40px;
-  width: 100%;
-  border: 1px dashed rgba(0, 0, 0, 0.2);
-  background: rgba(0, 0, 0, 0.03);
+.sponsor-name {
+  margin: 0;
+  font-family: var(--fh);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #000;
+}
+
+/* Logo vorhanden -> Name ausblenden; kein Logo -> leeren Bild-Platzhalter
+   ausblenden (im Editor bleibt er zum Anklicken sichtbar, siehe editor-style.css) */
+.sponsor-card:has(.sponsor-logo img[src]) .sponsor-name {
+  display: none;
+}
+
+.sponsor-logo:not(:has(img[src])) {
+  display: none;
 }
 
 /* ── Footer ──
@@ -1134,6 +1300,7 @@ html[data-lang=de] body [lang=en] {
 
 .footer-logo {
   display: block;
+  margin: 0;
   font-family: var(--fh);
   font-size: clamp(1.4rem, 2.2vw, 1.85rem);
   line-height: 1.2;
@@ -1176,7 +1343,9 @@ html[data-lang=de] body [lang=en] {
 
 .footer-nav {
   display: flex;
+  flex-wrap: wrap;
   gap: 16px;
+  font-size: 13px;
 }
 .footer-nav a {
   font-family: var(--fh);
@@ -1209,27 +1378,47 @@ html[data-lang=de] body [lang=en] {
   color: var(--silver);
 }
 
-.footer-social {
+.footer-social.wp-block-social-links {
   display: flex;
   align-items: center;
   gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
-
-.footer-social-link {
+.footer-social.wp-block-social-links .wp-social-link {
+  margin: 0;
+  padding: 0;
+  background: none;
+}
+.footer-social.wp-block-social-links .wp-block-social-link-anchor {
   display: flex;
+  padding: 0;
   color: var(--silver);
   transition: color var(--t);
 }
-.footer-social-link svg {
+.footer-social.wp-block-social-links .wp-block-social-link-anchor svg {
   width: 18px;
   height: 18px;
+  fill: currentColor;
 }
-.footer-social-link:hover {
+.footer-social.wp-block-social-links .wp-block-social-link-anchor:hover, .footer-social.wp-block-social-links .wp-block-social-link-anchor:focus-visible {
+  color: var(--lime);
+}
+.footer-social.wp-block-social-links .wp-block-social-link-anchor.is-copied {
   color: var(--lime);
 }
 
-.footer-copy-email.is-copied {
-  color: var(--lime);
+.screen-reader-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 .footer-wordmark {
@@ -1243,6 +1432,12 @@ html[data-lang=de] body [lang=en] {
   margin: 40px auto 0;
   opacity: 0.53;
   pointer-events: none;
+}
+.footer-wordmark img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 
 /* ============================================================
@@ -1501,12 +1696,19 @@ html[data-lang=de] body [lang=en] {
   transition: color 0.4s ease;
 }
 
-/* Bei den letzten beiden Karten (TP5/TP6, hellster Verlaufsteil) wird nur
-   der Fließtext schwarz statt grau, damit er dort lesbar bleibt — die
-   Überschrift bleibt bewusst weiß wie bei allen anderen Karten. Klasse
-   kommt aus dem Arbeitspakete-Array in patterns/home.php. */
+/* Die letzten beiden Karten (TP5/TP6) liegen auf dem Übergang Blau -> Orange/Gold des
+   Verlaufs. Klasse kommt aus dem Arbeitspakete-Array in patterns/home.php. */
 .timeline-card--dark p {
-  color: #000;
+  color: #f3f3f3;
+}
+
+/* Auf den mittleren/hellen Verlaufstönen (Blau -> Orange) hätten weißer Titel und
+   Text zu wenig Kontrast: diese Karten bekommen eine dunkle Glasfläche (WCAG 2.2 AA,
+   FAU-Vorgabe). */
+.timeline-card--dark {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1553,8 +1755,7 @@ html[data-lang=de] body [lang=en] {
   top: -126px;
   width: 100%;
   height: calc(100% + 190px);
-  -o-object-fit: cover;
-     object-fit: cover;
+  margin: 0;
   opacity: 0.59;
   /* Framer: onMount-Appear, scale 1.65 -> 1, 3 s */
   animation: about-hero-zoom 3s cubic-bezier(0.2, 0.8, 0.2, 1) both;
@@ -1569,6 +1770,15 @@ html[data-lang=de] body [lang=en] {
     transform: none;
   }
 }
+/* Bild im Seitenkopf (Kern-Bild-Block): füllt die Figure */
+.about-hero-img img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
 @keyframes about-hero-zoom {
   from {
     transform: scale(1.65);
@@ -1706,9 +1916,7 @@ html[data-lang=de] body [lang=en] {
   inset: 0;
   width: 100%;
   height: 100%;
-  max-width: none;
-  -o-object-fit: cover;
-     object-fit: cover;
+  margin: 0;
   opacity: 0;
   transform: scale(1.1);
   transition: opacity 2s cubic-bezier(0.44, 0, 0.56, 1), transform 2.5s cubic-bezier(0.12, 0.23, 0.5, 1);
@@ -1716,6 +1924,19 @@ html[data-lang=de] body [lang=en] {
 .fade-card-img.is-active {
   opacity: 1;
   transform: scale(1);
+}
+.fade-card-img img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+/* Ohne JavaScript bleibt wenigstens das erste Bild sichtbar */
+.fade-card:not(.has-js) .fade-card-img:first-child {
+  opacity: 1;
+  transform: none;
 }
 
 /* Inhalt ist in Framer um 5 % je Seite eingerückt (56 px bei 1120 px). */
@@ -1897,20 +2118,21 @@ html[data-lang=de] body [lang=en] {
   flex: 0 0 278px;
   width: 278px;
   height: 272px;
+  margin: 0;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.tech-card-icon img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
   -o-object-fit: contain;
      object-fit: contain;
-  margin: 0;
 }
 
-.tech-card-icon--fallback {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #000;
-}
-.tech-card-icon--fallback svg {
-  width: 96px;
-  height: 96px;
+/* Ohne Icon-Bild (Vorlagen-Grafik nicht im Repo) bekommt der Text die ganze Karte;
+   im Editor bleibt der leere Bild-Platzhalter zum Anklicken sichtbar (editor-style.css) */
+.tech-card-icon:not(:has(img[src])) {
+  display: none;
 }
 
 .tech-card-body {
@@ -1949,34 +2171,29 @@ html[data-lang=de] body [lang=en] {
   color: var(--ink);
 }
 
-/* Teilprojekt-Karten sind komplett klickbar: der Titel-Link wird per ::after
-   über die ganze Karte gezogen (ein Link pro Karte für Tastatur/Screenreader);
-   "Mehr erfahren" ist nur die Optik des Buttons. */
-.tech-card-link {
-  color: inherit;
-  text-decoration: none;
+/* Teilprojekt-Karten sind komplett klickbar: der Link der Schaltfläche
+   "Mehr erfahren" wird per ::before über die ganze Karte gezogen (ein Link pro
+   Karte für Tastatur und Screenreader). Dafür darf der Link selbst nicht
+   positioniert sein, sonst bezieht sich ::before auf ihn statt auf die Karte. */
+.tech-card-more {
+  margin-top: 12px;
 }
-.tech-card-link::after {
+
+.tech-card-more .wp-block-button__link {
+  position: static;
+}
+.tech-card-more .wp-block-button__link::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 1;
 }
-.tech-card-link:focus-visible {
+.tech-card-more .wp-block-button__link:focus-visible {
   outline: none;
 }
-.tech-card-link:focus-visible::after {
+.tech-card-more .wp-block-button__link:focus-visible::before {
   outline: 2px solid var(--blue);
   outline-offset: 3px;
-}
-
-.tech-card-more {
-  margin-top: 12px;
-  pointer-events: none;
-}
-
-.tech-card-icon {
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 /* Hover/Fokus der gewählten Karte: Schatten wächst und wird blau (Farbe des
@@ -1992,17 +2209,15 @@ html[data-lang=de] body [lang=en] {
 .tech-card:focus-within .tech-card-icon {
   transform: scale(1.05);
 }
-.tech-card:hover .tech-card-more,
-.tech-card:focus-within .tech-card-more {
+.tech-card:hover,
+.tech-card:focus-within {
+  /* Button ohne JavaScript (Ausweich-Variante): Füllung wie beim Einzel-Hover */
+}
+.tech-card:hover .tech-card-more .wp-block-button__link:not(.is-enhanced),
+.tech-card:focus-within .tech-card-more .wp-block-button__link:not(.is-enhanced) {
+  color: #fff;
+  background-size: 100% 100%;
   border-color: var(--ink);
-}
-.tech-card:hover .tech-card-more .btn-about-face:not(.btn-about-face--hover),
-.tech-card:focus-within .tech-card-more .btn-about-face:not(.btn-about-face--hover) {
-  transform: translateY(-100%);
-}
-.tech-card:hover .tech-card-more .btn-about-face--hover,
-.tech-card:focus-within .tech-card-more .btn-about-face--hover {
-  transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2107,15 +2322,11 @@ html[data-lang=de] body [lang=en] {
   height: auto;
 }
 
-.page-text-inner a.btn-about {
-  text-decoration: none;
-}
-
 .not-found-home {
   margin-top: 24px;
 }
 
-.work-package-back {
+.work-package-back .wp-block-button__link {
   box-shadow: 4px 4px 0 0 rgb(150, 150, 150);
 }
 .work-package-back--top {
@@ -2251,12 +2462,23 @@ html[data-lang=de] body [lang=en] {
 
 button.contact-submit {
   align-self: flex-start;
-  margin-top: 0;
-  padding: 0;
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
-  line-height: inherit;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  display: flex;
+  cursor: pointer;
+}
+button.contact-submit:focus-visible {
+  outline: none;
+}
+button.contact-submit:focus-visible .btn-clip {
+  outline: 2px solid var(--blue);
+  outline-offset: 3px;
 }
 
 .contact-notice {
@@ -2649,6 +2871,10 @@ button.contact-submit {
   .hero-aside {
     text-align: center;
   }
+  .hero-aside .wp-block-buttons {
+    justify-content: center;
+    margin-top: 41px;
+  } /* wie bisher auf dem Handy (Button zentriert) */
   /* Framers Phone-Variante zeigt die Satelliten-Grafik deutlich größer,
      tiefer versetzt und voll deckend — bewusster Per-Breakpoint-Override,
      kein fließender Wert. Direkt an Framers Rohdaten gemessen (live DOM
@@ -2698,7 +2924,7 @@ button.contact-submit {
     align-items: flex-start;
     margin-top: 40px;
   }
-  .btn-about {
+  .about-cta {
     order: 3;
     margin-top: 40px;
   }
@@ -2709,7 +2935,7 @@ button.contact-submit {
     display: none;
   }
   .btn-label-short {
-    display: inline;
+    display: block;
   }
   /* Footer: Framers Phone-Variante stapelt die Pages-Links statt sie in
      einer Reihe zu zeigen, und richtet den Credit-Text links statt rechts

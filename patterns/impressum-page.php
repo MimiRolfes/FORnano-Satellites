@@ -1,16 +1,13 @@
 <?php
 /**
- * Title: Impressum Page Content
+ * Title: Satellite – Impressum
  * Slug: satellite/impressum-page
  * Categories: satellite
- * Inserter: no
+ * Description: Impressum (Rechtstext, Seite "Impressum").
  *
- * Deutsch: Inhalt der Impressum-Seite (templates/page-impressum.html, gilt
- * für die WordPress-Seite mit Slug "impressum"). Text 1:1 von
- * fornano.pinsker.ai/impressum; nur auf Deutsch, da rechtsverbindlich.
- * Alle Absätze sind im Site-Editor als normale Blöcke bearbeitbar — die
- * Angaben (Anschrift, Vertretung, USt-IdNr.) sind vor dem Livegang von der
- * FAU zu bestätigen.
+ * Deutsch: Inhalt der Seite "Impressum" (Slug impressum). Text von fornano.pinsker.ai/impressum.
+ * Nur auf Deutsch, da rechtsverbindlich (im EN-Modus steht ein Hinweis). Alle
+ * Absätze sind normale Blöcke; vor dem Livegang von der FAU zu prüfen.
  */
 satellite_page_hero( 'Legal Notice', 'Impressum' );
 
@@ -37,12 +34,11 @@ $satellite_legal = array(
 	array( 'h3', 'Urheberrecht' ),
 	array( 'p', 'Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet. Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Insbesondere werden Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.' ),
 );
-?>
-<section class="wp-block-group section page-text" id="legal">
-	<div class="wp-block-group page-text-inner">
-		<!-- wp:paragraph {"className":"page-text-note"} -->
-		<p class="page-text-note" lang="en">This legal text is provided in German only.</p>
-		<!-- /wp:paragraph -->
-		<?php satellite_render_text_blocks( $satellite_legal ); ?>
-	</div>
-</section>
+
+
+satellite_open( 'section page-text', 'section', 'legal' );
+satellite_open( 'page-text-inner' );
+satellite_text( 'This legal text is provided in German only.', 'p', 'page-text-note lang-en' );
+satellite_render_text_blocks( $satellite_legal );
+satellite_close();
+satellite_close( 'section' );

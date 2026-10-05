@@ -1,15 +1,13 @@
 <?php
 /**
- * Title: Datenschutz Page Content
+ * Title: Satellite – Datenschutzerklärung
  * Slug: satellite/datenschutz-page
  * Categories: satellite
- * Inserter: no
+ * Description: Datenschutzerklärung (Rechtstext, Seite "Datenschutz").
  *
- * Deutsch: Inhalt der Datenschutzerklärung (templates/page-datenschutz.html,
- * gilt für die WordPress-Seite mit Slug "datenschutz"). Text 1:1 von
- * fornano.pinsker.ai/datenschutz (Stand Januar 2025); nur auf Deutsch, da
- * rechtsverbindlich. Vor dem Livegang von der FAU zu bestätigen — v. a. der
- * Abschnitt "Hosting" und das Kontaktformular (Versand per E-Mail).
+ * Deutsch: Inhalt der Seite "Datenschutz" (Slug datenschutz). Text von fornano.pinsker.ai/datenschutz (Stand Januar 2025).
+ * Nur auf Deutsch, da rechtsverbindlich (im EN-Modus steht ein Hinweis). Alle
+ * Absätze sind normale Blöcke; vor dem Livegang von der FAU zu prüfen.
  */
 satellite_page_hero( 'Privacy Policy', 'Datenschutzerklärung' );
 
@@ -63,12 +61,11 @@ $satellite_legal = array(
 	array( 'h2', '9. Aktualität und Änderung dieser Datenschutzerklärung' ),
 	array( 'p', 'Diese Datenschutzerklärung ist aktuell gültig und hat den Stand Januar 2025. Durch die Weiterentwicklung unserer Website und Angebote darüber oder aufgrund geänderter gesetzlicher beziehungsweise behördlicher Vorgaben kann es notwendig werden, diese Datenschutzerklärung zu ändern.' ),
 );
-?>
-<section class="wp-block-group section page-text" id="legal">
-	<div class="wp-block-group page-text-inner">
-		<!-- wp:paragraph {"className":"page-text-note"} -->
-		<p class="page-text-note" lang="en">This legal text is provided in German only.</p>
-		<!-- /wp:paragraph -->
-		<?php satellite_render_text_blocks( $satellite_legal ); ?>
-	</div>
-</section>
+
+
+satellite_open( 'section page-text', 'section', 'legal' );
+satellite_open( 'page-text-inner' );
+satellite_text( 'This legal text is provided in German only.', 'p', 'page-text-note lang-en' );
+satellite_render_text_blocks( $satellite_legal );
+satellite_close();
+satellite_close( 'section' );

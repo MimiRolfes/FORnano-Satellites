@@ -1,17 +1,15 @@
 <?php
 /**
- * Title: Gallery Page Content
+ * Title: Satellite – Galerie
  * Slug: satellite/gallery-page
  * Categories: satellite
- * Inserter: no
+ * Description: Seite "Galerie": Seitenkopf und zwei versetzte Bildspalten.
  *
- * Deutsch: Inhalt der Gallery-Seite (templates/page-gallery.html, gilt für
- * die WordPress-Seite mit Slug "gallery"). Aufbau nach Framers Gallery-Seite:
- * Seitenkopf wie About, darunter Verlauf (hellgrau -> schwarz) mit
- * zentrierter Überschrift und zwei versetzten Bildspalten. Die Bilder sind
- * normale Bild-Blöcke und im Editor austauschbar (die echten Projektbilder
- * folgen später); die Texte sind zweisprachig.
- *
+ * Deutsch: Inhalt der Galerie-Seite. Aufbau nach Framers Gallery-Seite:
+ * Seitenkopf wie About, darunter Verlauf (hellgrau -> schwarz) mit zentrierter
+ * Überschrift und zwei versetzten Bildspalten. Die Bilder sind normale
+ * Bild-Blöcke (Ersetzen, Alternativtext in der Seitenleiste); weitere Bilder
+ * einfach in eine Spalte einfügen. Texte zweisprachig.
  * Framer-Korrekturen: "SINSIDE" -> "an inside", "VISUUALS" -> "Visuals".
  */
 satellite_page_hero(
@@ -33,38 +31,19 @@ $satellite_gallery = array(
 		array( 'images/gallery/nebula-blue.png', 'Blue nebula clouds' ),
 	),
 );
-?>
-<section class="wp-block-group section" id="visuals">
-	<div class="wp-block-group gallery-header">
-		<!-- wp:paragraph {"className":"label"} -->
-		<p class="label" lang="en">Visuals</p>
-		<!-- /wp:paragraph -->
-		<!-- wp:paragraph {"className":"label"} -->
-		<p class="label" lang="de">Bilder</p>
-		<!-- /wp:paragraph -->
-		<!-- wp:heading {"className":"heading"} -->
-		<h2 class="wp-block-heading heading" lang="en">Moments that shaped the upcoming future</h2>
-		<!-- /wp:heading -->
-		<!-- wp:heading {"className":"heading"} -->
-		<h2 class="wp-block-heading heading" lang="de">Momente, die die kommende Zukunft prägen</h2>
-		<!-- /wp:heading -->
-	</div>
 
-	<!-- wp:group {"className":"gallery-grid","layout":{"type":"default"}} -->
-	<div class="wp-block-group gallery-grid">
-		<?php foreach ( $satellite_gallery as $satellite_col ) : ?>
-		<!-- wp:group {"className":"gallery-col","layout":{"type":"default"}} -->
-		<div class="wp-block-group gallery-col">
-			<?php foreach ( $satellite_col as $satellite_item ) : ?>
-				<?php if ( file_exists( get_template_directory() . '/' . $satellite_item[0] ) ) : ?>
-			<!-- wp:image {"className":"gallery-item"} -->
-			<figure class="wp-block-image gallery-item"><img src="<?php echo esc_url( get_template_directory_uri() . '/' . $satellite_item[0] ); ?>" alt="<?php echo esc_attr( $satellite_item[1] ); ?>" /></figure>
-			<!-- /wp:image -->
-				<?php endif; ?>
-			<?php endforeach; ?>
-		</div>
-		<!-- /wp:group -->
-		<?php endforeach; ?>
-	</div>
-	<!-- /wp:group -->
-</section>
+satellite_open( 'section', 'section', 'visuals' );
+satellite_open( 'gallery-header' );
+satellite_i18n( 'Visuals', 'Bilder', 'p', 'label' );
+satellite_i18n( 'Moments that shaped the upcoming future', 'Momente, die die kommende Zukunft prägen', 'h2', 'heading' );
+satellite_close();
+satellite_open( 'gallery-grid' );
+foreach ( $satellite_gallery as $satellite_col ) {
+	satellite_open( 'gallery-col' );
+	foreach ( $satellite_col as $satellite_item ) {
+		satellite_image( $satellite_item[0], 'gallery-item', $satellite_item[1] );
+	}
+	satellite_close();
+}
+satellite_close(); // gallery-grid
+satellite_close( 'section' );

@@ -37,6 +37,13 @@
   > .container { text-align: center; }
 }
 
+/* Barrierefreiheit (WCAG 2.2 AA, FAU-Vorgabe): Auf den mittleren Verlaufstönen von
+   #about, #team und #sponsors hätte das graue Label unter 3:1 Kontrast —
+   dort bekommt es eine passende Farbe. */
+#about .label   { color: #fff; --bracket: rgba(255, 255, 255, 0.5); }
+#team .label,
+#sponsors .label { color: #000; --bracket: rgba(0, 0, 0, 0.5); }
+
 /* Section-Tag / .label hat EINE universelle Farbe (Framer "Grey 100" =
    #525252 = var(--ink)) auf allen Sektionen — kein sektionsspezifischer
    Override. Hinweis: im dunklen Verlaufsanfang von #about ist der Kontrast
@@ -63,9 +70,9 @@
   top: 50%;
   right: clamp(-140px, -7vw, -40px);
   width: clamp(280px, 42vw, 520px);
-  max-width: none; // sonst kappt der globale img{max-width:100%}-Reset (_base.scss) die Phone-Breite (112vw) auf 100% des Containers
+  max-width: none; // sonst kappt ein globales max-width:100% die Phone-Breite (112vw) auf 100% des Containers
   aspect-ratio: 1 / 1;
-  object-fit: fill; // Framers eigener Wert (direkt aus dem Element ausgelesen) — zeigt den ganzen Rumpf nase-bis-heck ohne Beschnitt, dafür leicht verzerrt gestaucht; weder "contain" (Rumpf landet außerhalb des sichtbaren Bereichs) noch "cover" (schneidet die Nase ab) stimmen hier
+  margin: 0;
   z-index: 0;
   pointer-events: none;
   will-change: transform;
@@ -73,6 +80,13 @@
      Rein-/Raus-Zoomen mit minimalem Höhen-Versatz, weich hin und her. */
   animation: about-satellite-bob 2.4s ease-in-out infinite alternate;
   transform: translateY(-50%) scale(1);
+
+  img {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: fill; // Framers eigener Wert (direkt aus dem Element ausgelesen) — zeigt den ganzen Rumpf nase-bis-heck ohne Beschnitt; weder "contain" noch "cover" stimmen hier
+  }
 }
 @keyframes about-satellite-bob {
   from { transform: translateY(-50%) scale(1); }
@@ -120,7 +134,10 @@
   flex-shrink: 0;
   width: 28px;
   height: 28px;
-  color: #000;
+  background: #000;
+  // Pfeil ↑ als CSS-Maske (dekorativ, kein Markup)
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M12 19V6M12 6L6 12M12 6L18 12' stroke='black' stroke-width='1.5' stroke-linecap='square'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M12 19V6M12 6L6 12M12 6L18 12' stroke='black' stroke-width='1.5' stroke-linecap='square'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 .metric-body {
   display: flex;
@@ -177,7 +194,7 @@
   gap: 24px;
   text-align: left;   /* #highlights .container zentriert nur den Kopf, nicht die Karten */
 
-  p {
+  > p {
     font-family: var(--fb);
     font-size: 16px;
     font-weight: 400;
@@ -204,7 +221,7 @@
   font-size: 40px;
   font-weight: 600;
   line-height: 1.2;
-  color: var(--silver);
+  color: #8a8a8a; // Framer: Silver 100 (#d2d2d2) — für 3:1 (großer Text, WCAG 2.2 AA) abgedunkelt
 }
 /* Karten-Bild (Framer: 1fr breit, 210px hoch, leichte Grün-Tönung). */
 .hl-visual {
@@ -301,7 +318,7 @@
   font-size: 16px;
   font-weight: 400;
   line-height: 1.4;
-  color: #7a7a7a;
+  color: #595959; // Framer: #7a7a7a — für 4,5:1 auf dem Verlauf abgedunkelt (WCAG 2.2 AA)
   text-transform: capitalize;
 }
 .person-line {
@@ -339,7 +356,7 @@
 }
 .sponsors-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 4px;
 }
 .sponsor-card {
@@ -364,12 +381,18 @@
 
   img { max-height: 40px; width: auto; max-width: 100%; object-fit: contain; }
 }
-.sponsor-logo--placeholder {
-  height: 40px;
-  width: 100%;
-  border: 1px dashed rgba(0, 0, 0, 0.2);
-  background: rgba(0, 0, 0, 0.03);
+.sponsor-name {
+  margin: 0;
+  font-family: var(--fh);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: #000;
 }
+/* Logo vorhanden -> Name ausblenden; kein Logo -> leeren Bild-Platzhalter
+   ausblenden (im Editor bleibt er zum Anklicken sichtbar, siehe editor-style.css) */
+.sponsor-card:has(.sponsor-logo img[src]) .sponsor-name { display: none; }
+.sponsor-logo:not(:has(img[src])) { display: none; }
 
 /* ── Footer ──
    Framer: radial-gradient Braun→Grün→Schwarz, 3 "Glas"-Karten (Marke |
@@ -401,6 +424,7 @@
 }
 .footer-logo {
   display: block;
+  margin: 0;
   font-family: var(--fh);
   font-size: clamp(1.4rem, 2.2vw, 1.85rem); // "FORnano Satellite" ist länger als Framers "Satellite" — kleiner, damit die Karte nicht unnötig hoch wird
   line-height: 1.2;
@@ -438,7 +462,9 @@
 }
 .footer-nav {
   display: flex;
+  flex-wrap: wrap;
   gap: 16px;
+  font-size: 13px; // Zeilenhöhe der Links (13 px × 1,6) wie bisher
 
   a {
     font-family: var(--fh);
@@ -468,20 +494,38 @@
   text-transform: uppercase;
   color: var(--silver);
 }
-.footer-social {
+.footer-social.wp-block-social-links {
   display: flex;
   align-items: center;
   gap: 20px;
-}
-.footer-social-link {
-  display: flex;
-  color: var(--silver);
-  transition: color var(--t);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 
-  svg { width: 18px; height: 18px; }
-  &:hover { color: var(--lime); }
+  .wp-social-link { margin: 0; padding: 0; background: none; }
+  .wp-block-social-link-anchor {
+    display: flex;
+    padding: 0;
+    color: var(--silver);
+    transition: color var(--t);
+
+    svg { width: 18px; height: 18px; fill: currentColor; }
+    &:hover,
+    &:focus-visible { color: var(--lime); }
+    &.is-copied { color: var(--lime); }
+  }
 }
-.footer-copy-email.is-copied { color: var(--lime); }
+.screen-reader-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
 .footer-wordmark {
   display: block;
   width: 100%;
@@ -492,4 +536,6 @@
   margin: 40px auto 0; // Framers exakter Stack-Gap zwischen Karten-Reihe und Wortbild
   opacity: 0.53;
   pointer-events: none;
+
+  img { width: 100%; height: 100%; object-fit: contain; }
 }
