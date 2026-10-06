@@ -5,13 +5,11 @@
  * Aufbau:
  *  - inc/blocks.php          Helfer, die gültige Kernblöcke für die Patterns erzeugen
  *  - inc/work-packages.php   Texte der Teilprojekte TP1–TP6 (DE/EN)
- *  - inc/contact-form.php    Kontaktformular-Block + Versand
  *  - patterns/*.php          Inhalt der Seiten (werden beim Aktivieren als echte Seiten angelegt)
  *  - parts/, templates/      Kopf/Fuß und Seitenvorlagen
  */
 
 require_once get_template_directory() . '/inc/blocks.php';
-require_once get_template_directory() . '/inc/contact-form.php';
 
 /**
  * Theme-Funktionen: dynamischer <title>, Editor-Stylesheets (der Block-
@@ -38,37 +36,16 @@ function satellite_pattern_categories() {
 add_action( 'init', 'satellite_pattern_categories' );
 
 /**
- * Teilprojekte (TP1–TP6): eigener Beitragstyp "work_package" (URL
- * /work-packages/tp-1/ …). Der Inhalt eines Teilprojekts besteht aus
- * normalen Blöcken (Seitenkopf, Überschrift, Text, Zurück-Buttons); die
- * Vorbelegung (inc/work-packages.php) wird beim Aktivieren des Themes
- * einmalig als sechs Beiträge angelegt, danach wird alles im Editor
- * gepflegt. Templates: templates/single-work_package.html.
+ * Teilprojekte (TP1–TP6): normale Seiten — eine Elternseite "work-packages"
+ * (Übersicht) mit sechs Unterseiten tp-1 … tp-6, Adressen /work-packages/tp-1/ …
+ * Kein eigener Beitragstyp und kein Plugin nötig (FAU: Erweiterungen gehören
+ * in Plugins). Die Vorbelegung liegt in inc/work-packages.php und wird beim
+ * Aktivieren des Themes einmalig als Seiten angelegt, danach pflegt man alles
+ * im Editor.
  */
 function satellite_work_packages() {
 	return require get_template_directory() . '/inc/work-packages.php';
 }
-
-function satellite_register_work_package_type() {
-	register_post_type(
-		'work_package',
-		array(
-			'labels'       => array(
-				'name'          => __( 'Subprojects', 'satellite' ),
-				'singular_name' => __( 'Subproject', 'satellite' ),
-				'add_new_item'  => __( 'Add new subproject', 'satellite' ),
-				'edit_item'     => __( 'Edit subproject', 'satellite' ),
-			),
-			'public'       => true,
-			'show_in_rest' => true, // Block-Editor
-			'menu_icon'    => 'dashicons-networking',
-			'supports'     => array( 'title', 'editor', 'thumbnail', 'page-attributes' ),
-			'rewrite'      => array( 'slug' => 'work-packages' ),
-			'has_archive'  => false,
-		)
-	);
-}
-add_action( 'init', 'satellite_register_work_package_type' );
 
 /**
  * Block-Markup eines Teilprojekts: Seitenkopf, oben ein Zurück-Button,
@@ -107,38 +84,22 @@ function satellite_pattern_content( $slug ) {
 
 /**
  * Beim Aktivieren des Themes werden angelegt (nur was fehlt):
- *  - die sechs Teilprojekt-Beiträge,
- *  - die Seiten Home, About, Gallery, Contact, Impressum und Datenschutz
- *    mit dem Inhalt der gleichnamigen Patterns (als echte, bearbeitbare Blöcke),
+ *  - die Seiten Home, About, Gallery, Contact, Impressum, Datenschutz und
+ *    "Work packages" mit dem Inhalt der gleichnamigen Patterns (als echte,
+ *    bearbeitbare Blöcke),
+ *  - darunter als Unterseiten die sechs Teilprojekte TP1–TP6,
  *  - Home wird als Startseite gesetzt.
- * Danach arbeitet man wie gewohnt unter "Seiten" bzw. "Subprojects".
+ * Danach arbeitet man wie gewohnt unter "Seiten".
  */
 function satellite_seed_content() {
-	satellite_register_work_package_type();
-
-	foreach ( satellite_work_packages() as $n => $tp ) {
-		if ( get_page_by_path( 'tp-' . $n, OBJECT, 'work_package' ) ) {
-			continue;
-		}
-		wp_insert_post(
-			array(
-				'post_type'    => 'work_package',
-				'post_status'  => 'publish',
-				'post_name'    => 'tp-' . $n,
-				'post_title'   => 'TP' . $n . ': ' . $tp['title'][1],
-				'menu_order'   => $n,
-				'post_content' => satellite_work_package_content( $n, $tp ),
-			)
-		);
-	}
-
 	$pages = array(
-		'home'        => array( 'Home', 'satellite/home' ),
-		'about'       => array( 'About the project', 'satellite/about-page' ),
-		'gallery'     => array( 'Gallery', 'satellite/gallery-page' ),
-		'contact'     => array( 'Contact', 'satellite/contact-page' ),
-		'impressum'   => array( 'Impressum', 'satellite/impressum-page' ),
-		'datenschutz' => array( 'Datenschutz', 'satellite/datenschutz-page' ),
+		'home'          => array( 'Home', 'satellite/home' ),
+		'about'         => array( 'About the project', 'satellite/about-page' ),
+		'work-packages' => array( 'Work packages', 'satellite/work-packages-page' ),
+		'gallery'       => array( 'Gallery', 'satellite/gallery-page' ),
+		'contact'       => array( 'Contact', 'satellite/contact-page' ),
+		'impressum'     => array( 'Impressum', 'satellite/impressum-page' ),
+		'datenschutz'   => array( 'Datenschutz', 'satellite/datenschutz-page' ),
 	);
 	foreach ( $pages as $slug => $page ) {
 		if ( get_page_by_path( $slug ) ) {
@@ -155,12 +116,31 @@ function satellite_seed_content() {
 		);
 	}
 
+	$parent = get_page_by_path( 'work-packages' );
+	if ( $parent ) {
+		foreach ( satellite_work_packages() as $n => $tp ) {
+			if ( get_page_by_path( 'work-packages/tp-' . $n ) ) {
+				continue;
+			}
+			wp_insert_post(
+				array(
+					'post_type'    => 'page',
+					'post_status'  => 'publish',
+					'post_name'    => 'tp-' . $n,
+					'post_parent'  => $parent->ID,
+					'post_title'   => 'TP' . $n . ': ' . $tp['title'][1],
+					'menu_order'   => $n,
+					'post_content' => satellite_work_package_content( $n, $tp ),
+				)
+			);
+		}
+	}
+
 	$home = get_page_by_path( 'home' );
 	if ( $home ) {
 		update_option( 'show_on_front', 'page' );
 		update_option( 'page_on_front', $home->ID );
 	}
-	flush_rewrite_rules();
 }
 add_action( 'after_switch_theme', 'satellite_seed_content' );
 

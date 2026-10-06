@@ -229,19 +229,13 @@
 }
 .is-enhanced:hover .btn-clip,
 .is-enhanced:focus-visible .btn-clip,
-.tech-card:hover .tech-card-more .btn-clip,
-.contact-submit:hover .btn-clip,
-.contact-submit:focus-visible .btn-clip { border-color: var(--ink); }
+.tech-card:hover .tech-card-more .btn-clip { border-color: var(--ink); }
 .is-enhanced:hover .btn-face:not(.btn-face--hover),
 .is-enhanced:focus-visible .btn-face:not(.btn-face--hover),
-.tech-card:hover .tech-card-more .btn-face:not(.btn-face--hover),
-.contact-submit:hover .btn-face:not(.btn-face--hover),
-.contact-submit:focus-visible .btn-face:not(.btn-face--hover) { transform: translateY(-100%); }
+.tech-card:hover .tech-card-more .btn-face:not(.btn-face--hover) { transform: translateY(-100%); }
 .is-enhanced:hover .btn-face--hover,
 .is-enhanced:focus-visible .btn-face--hover,
-.tech-card:hover .tech-card-more .btn-face--hover,
-.contact-submit:hover .btn-face--hover,
-.contact-submit:focus-visible .btn-face--hover { transform: translateY(0); }
+.tech-card:hover .tech-card-more .btn-face--hover { transform: translateY(0); }
 @media (prefers-reduced-motion: reduce) {
   .btn-face,
   .btn-clip { transition: none; }

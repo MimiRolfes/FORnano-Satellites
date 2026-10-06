@@ -744,25 +744,19 @@ html[data-lang=de] .lang-en {
 
 .is-enhanced:hover .btn-clip,
 .is-enhanced:focus-visible .btn-clip,
-.tech-card:hover .tech-card-more .btn-clip,
-.contact-submit:hover .btn-clip,
-.contact-submit:focus-visible .btn-clip {
+.tech-card:hover .tech-card-more .btn-clip {
   border-color: var(--ink);
 }
 
 .is-enhanced:hover .btn-face:not(.btn-face--hover),
 .is-enhanced:focus-visible .btn-face:not(.btn-face--hover),
-.tech-card:hover .tech-card-more .btn-face:not(.btn-face--hover),
-.contact-submit:hover .btn-face:not(.btn-face--hover),
-.contact-submit:focus-visible .btn-face:not(.btn-face--hover) {
+.tech-card:hover .tech-card-more .btn-face:not(.btn-face--hover) {
   transform: translateY(-100%);
 }
 
 .is-enhanced:hover .btn-face--hover,
 .is-enhanced:focus-visible .btn-face--hover,
-.tech-card:hover .tech-card-more .btn-face--hover,
-.contact-submit:hover .btn-face--hover,
-.contact-submit:focus-visible .btn-face--hover {
+.tech-card:hover .tech-card-more .btn-face--hover {
   transform: translateY(0);
 }
 
@@ -2336,25 +2330,27 @@ html[data-lang=de] .lang-en {
   margin: 40px 0 0;
 }
 
-/* ── Kontakt: Formular + Infokarten ── */
+/* ── Kontakt: Infokarten (kein Formular — E-Mail, Telefon und Adresse genügen) ── */
+.contact-intro-block {
+  max-width: 760px;
+  margin: 0 auto 48px;
+  text-align: center;
+}
+
+.contact-lead {
+  font-family: var(--fb);
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
 .contact-grid {
-  display: flex;
-  align-items: flex-start;
-  gap: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  align-items: stretch;
+  gap: 24px;
   max-width: 1120px;
   margin: 0 auto;
-}
-
-.contact-form-card {
-  flex: 1.4;
-}
-
-.contact-side {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  min-width: 0;
 }
 
 .contact-card {
@@ -2367,7 +2363,9 @@ html[data-lang=de] .lang-en {
 .contact-heading {
   margin: 0 0 12px;
   font-family: var(--fh);
-  font-size: 28px;
+  font-size: 22px;
+  overflow-wrap: anywhere;
+  hyphens: auto;
   font-weight: 600;
   line-height: 1.2;
   text-transform: uppercase;
@@ -2398,124 +2396,6 @@ html[data-lang=de] .lang-en {
   color: #000;
 }
 
-.contact-form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.contact-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.contact-field label {
-  font-family: var(--fh);
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: #000;
-}
-.contact-field input,
-.contact-field textarea {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 12px 14px;
-  font-family: var(--fb);
-  font-size: 16px;
-  color: #000;
-  background: #fff;
-  border: 1px solid #7a7a7a;
-  border-radius: 0;
-}
-.contact-field input:focus-visible,
-.contact-field textarea:focus-visible {
-  outline: 2px solid var(--blue);
-  outline-offset: 1px;
-}
-.contact-field textarea {
-  min-height: 160px;
-  resize: vertical;
-}
-
-/* Honeypot: für Menschen unsichtbar, für Bots ein normales Feld */
-.contact-hp {
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-}
-
-.contact-privacy {
-  margin: 0;
-  font-family: var(--fb);
-  font-size: 14px;
-  line-height: 1.4;
-  color: var(--ink);
-}
-.contact-privacy a {
-  color: #000;
-  text-underline-offset: 3px;
-}
-
-button.contact-submit {
-  align-self: flex-start;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-  padding: 0;
-  margin: 0;
-  background: none;
-  border: 0;
-  box-shadow: none;
-  display: flex;
-  cursor: pointer;
-}
-button.contact-submit:focus-visible {
-  outline: none;
-}
-button.contact-submit:focus-visible .btn-clip {
-  outline: 2px solid var(--blue);
-  outline-offset: 3px;
-}
-
-.contact-notice {
-  margin: 0 0 20px;
-  padding: 14px 16px;
-  font-family: var(--fb);
-  font-size: 16px;
-  line-height: 1.4;
-  color: #000;
-  border: 1px solid #7a7a7a;
-  background: #fff;
-}
-.contact-notice--sent {
-  border-color: #2e7d32;
-}
-.contact-notice--invalid, .contact-notice--error {
-  border-color: #b3261e;
-}
-
-@media (max-width: 1199px) {
-  .contact-grid {
-    flex-direction: column;
-    align-items: stretch;
-  }
-}
-@media (max-width: 809px) {
-  .page-text {
-    padding: 80px 20px;
-  }
-  .page-text-inner h2,
-  .contact-heading {
-    font-size: 24px;
-  }
-  .contact-card {
-    padding: 24px 20px;
-  }
-}
 /* ── Gallery (Framer: Verlauf hellgrau -> schwarz, zwei Spalten à 497 px,
    Spaltenabstand 71 px, Bildabstand ~92 px, zweite Spalte 4 px tiefer) ── */
 #visuals {
@@ -2643,6 +2523,33 @@ button.contact-submit:focus-visible .btn-clip {
   }
   .gallery-col:last-child .gallery-item:nth-child(3) {
     order: 6;
+  }
+}
+@media (max-width: 809px) {
+  .page-text {
+    padding: 80px 20px;
+  }
+  .page-text--plain {
+    padding-top: 140px;
+  }
+  .page-text-inner h2 {
+    font-size: 24px;
+  }
+  .contact-intro-block {
+    margin-bottom: 32px;
+  }
+  .contact-card {
+    padding: 24px 20px;
+  }
+  .contact-heading {
+    font-size: 20px;
+  }
+}
+/* Dreispaltig: Kurztexte haben gleich viel Platz, damit die Felder (Name, E-Mail …)
+   in allen Karten auf derselben Höhe beginnen */
+@media (min-width: 1100px) {
+  .contact-intro {
+    min-height: 7em;
   }
 }
 /* ============================================================

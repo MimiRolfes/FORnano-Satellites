@@ -10,7 +10,7 @@ Block theme for the FORnanoSatellites research project (FAU Erlangen-Nürnberg).
 
 == Description ==
 
-Dark, futuristic project website with bilingual content (English/German, switchable). All texts, images, buttons and links are core blocks and can be edited in the block editor; on activation the theme creates the pages Home, About the project, Gallery, Contact, Impressum and Datenschutz and the six subproject entries (post type "Subprojects").
+Dark, futuristic project website with bilingual content (English/German, switchable). All texts, images, buttons and links are core blocks and can be edited in the block editor; on activation the theme creates the pages Home, About the project, Work packages (with the six subproject pages TP1-TP6 as child pages), Gallery, Contact, Impressum and Datenschutz.
 
 * Block editor theme (no classic theme, no page builder, no plugin required)
 * Fonts Chakra Petch and Inter (SIL OFL) are served locally; no CDN, no external requests
@@ -25,8 +25,7 @@ Milena Rolfes - https://github.com/MimiRolfes - https://milenarolfes.framer.webs
 
 1. Copy the `satellite` folder to `wp-content/themes/` (without `node_modules`, see `.distignore`).
 2. Activate it under Appearance > Themes.
-3. Save Settings > Permalinks once.
-4. Set the site title and the administrator email (receives the contact form messages) under Settings > General.
+3. Set the site title under Settings > General.
 
 See README.md for the editing guide.
 

@@ -83,21 +83,25 @@
   &--bottom { margin: 40px 0 0; }
 }
 
-/* ── Kontakt: Formular + Infokarten ── */
+/* ── Kontakt: Infokarten (kein Formular — E-Mail, Telefon und Adresse genügen) ── */
+.contact-intro-block {
+  max-width: 760px;
+  margin: 0 auto 48px;
+  text-align: center;
+}
+.contact-lead {
+  font-family: var(--fb);
+  font-size: 18px;
+  line-height: 1.5;
+  color: var(--ink);
+}
 .contact-grid {
-  display: flex;
-  align-items: flex-start;
-  gap: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  align-items: stretch; // alle Karten gleich hoch
+  gap: 24px;
   max-width: 1120px;
   margin: 0 auto;
-}
-.contact-form-card { flex: 1.4; }
-.contact-side {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  min-width: 0;
 }
 .contact-card {
   min-width: 0;
@@ -108,7 +112,9 @@
 .contact-heading {
   margin: 0 0 12px;
   font-family: var(--fh);
-  font-size: 28px;
+  font-size: 22px; // "PROJEKTKOORDINATION" muss in die schmale Karte passen
+  overflow-wrap: anywhere;
+  hyphens: auto;
   font-weight: 600;
   line-height: 1.2;
   text-transform: uppercase;
@@ -132,82 +138,6 @@
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: #000;
-}
-.contact-form { display: flex; flex-direction: column; gap: 20px; }
-.contact-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-
-  label {
-    font-family: var(--fh);
-    font-size: 15px;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-    color: #000;
-  }
-  input,
-  textarea {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 12px 14px;
-    font-family: var(--fb);
-    font-size: 16px;
-    color: #000;
-    background: #fff;
-    border: 1px solid #7a7a7a;
-    border-radius: 0;
-    &:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
-  }
-  textarea { min-height: 160px; resize: vertical; }
-}
-/* Honeypot: für Menschen unsichtbar, für Bots ein normales Feld */
-.contact-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-.contact-privacy {
-  margin: 0;
-  font-family: var(--fb);
-  font-size: 14px;
-  line-height: 1.4;
-  color: var(--ink);
-  a { color: #000; text-underline-offset: 3px; }
-}
-button.contact-submit {
-  align-self: flex-start;
-  appearance: none;
-  padding: 0;
-  margin: 0;
-  background: none;
-  border: 0;
-  box-shadow: none;
-  display: flex;
-  cursor: pointer;
-
-  &:focus-visible { outline: none; }
-  &:focus-visible .btn-clip { outline: 2px solid var(--blue); outline-offset: 3px; }
-}
-.contact-notice {
-  margin: 0 0 20px;
-  padding: 14px 16px;
-  font-family: var(--fb);
-  font-size: 16px;
-  line-height: 1.4;
-  color: #000;
-  border: 1px solid #7a7a7a;
-  background: #fff;
-  &--sent { border-color: #2e7d32; }
-  &--invalid,
-  &--error { border-color: #b3261e; }
-}
-
-@media (max-width: 1199px) {
-  .contact-grid { flex-direction: column; align-items: stretch; }
-}
-@media (max-width: 809px) {
-  .page-text { padding: 80px 20px; }
-  .page-text-inner h2,
-  .contact-heading { font-size: 24px; }
-  .contact-card { padding: 24px 20px; }
 }
 
 /* ── Gallery (Framer: Verlauf hellgrau -> schwarz, zwei Spalten à 497 px,
@@ -277,4 +207,19 @@ button.contact-submit {
   .gallery-col:last-child  .gallery-item:nth-child(2) { order: 4; }
   .gallery-col:first-child .gallery-item:nth-child(3) { order: 5; }
   .gallery-col:last-child  .gallery-item:nth-child(3) { order: 6; }
+}
+
+@media (max-width: 809px) {
+  .page-text { padding: 80px 20px; }
+  .page-text--plain { padding-top: 140px; }
+  .page-text-inner h2 { font-size: 24px; }
+  .contact-intro-block { margin-bottom: 32px; }
+  .contact-card { padding: 24px 20px; }
+  .contact-heading { font-size: 20px; }
+}
+
+/* Dreispaltig: Kurztexte haben gleich viel Platz, damit die Felder (Name, E-Mail …)
+   in allen Karten auf derselben Höhe beginnen */
+@media (min-width: 1100px) {
+  .contact-intro { min-height: 7em; }
 }

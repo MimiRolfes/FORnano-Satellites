@@ -14,10 +14,9 @@ Dunkles One-Page-Design mit WebGL-Hero-Animation, als WordPress-Block-Theme.
 
 1. Diesen `satellite/`-Ordner nach `wp-content/themes/` kopieren.
 2. Unter **Design → Themes** aktivieren. Dabei legt das Theme **automatisch** an:
-   - die Seiten **Home** (wird zur Startseite), **About the project**, **Gallery**, **Contact**, **Impressum** und **Datenschutz** — jeweils mit allen Texten und Bildern der Vorlage,
-   - die sechs Teilprojekt-Beiträge unter **Subprojects** (TP1–TP6).
-3. Einmal **Einstellungen → Permalinks → Speichern** klicken (damit die Adressen `/work-packages/tp-1/` … funktionieren).
-4. **Einstellungen → Allgemein:** Website-Titel setzen (erscheint im Logo und im Footer) und die Administrations-E-Mail prüfen — an diese Adresse gehen die Nachrichten aus dem Kontaktformular.
+   - die Seiten **Home** (wird zur Startseite), **About the project**, **Work packages**, **Gallery**, **Contact**, **Impressum** und **Datenschutz** — jeweils mit allen Texten und Bildern der Vorlage,
+   - darunter als Unterseiten von „Work packages“ die sechs Teilprojekte **TP1–TP6** (Adressen `/work-packages/tp-1/` …).
+3. **Einstellungen → Allgemein:** Website-Titel setzen (erscheint im Logo und im Footer).
 
 ## Inhalte bearbeiten (Anleitung für Einsteiger)
 
@@ -37,11 +36,11 @@ Die Website wird wie in einem Seitenbaukasten **direkt auf der Seite** bearbeite
 
 **Dekoration:** Blöcke namens *Dekoration (nicht bearbeiten)* (Glow, Linien, Animationsfläche) sind gesperrt und nur Zierde.
 
-**Teilprojekte:** Dashboard → **Subprojects** → Beitrag öffnen. Das ist eine normale Seite mit Text, Zurück-Buttons und Seitenkopf; ein Bild fügt man mit **+ → Bild** ein, wo man es haben möchte.
+**Teilprojekte:** Dashboard → **Seiten** → „Work packages“ → die Unterseite TP1–TP6 öffnen. Das sind normale Seiten mit Seitenkopf, Text und Zurück-Buttons; ein Bild fügt man mit **+ → Bild** ein, wo man es haben möchte.
 
 **Menü und Fußzeile:** **Design → Editor → Muster → Kopfzeile / Fußzeile**. Menüpunkte und Footer-Links sind Absätze mit Link (je Sprache einer); die Symbole unten rechts sind ein „Social Icons“-Block (anklicken, Adresse ändern oder ein Symbol hinzufügen).
 
-**Kontaktformular:** Block *Satellite: Kontaktformular* auf der Seite „Contact“ anklicken — rechts in der Seitenleiste stehen alle Beschriftungen und Rückmeldungen (Englisch + Deutsch). Die Nachrichten gehen an die Administrations-E-Mail.
+**Kontakt:** Die Seite „Contact“ zeigt Karten mit Projektkoordination, Ansprechpartner und Projektleitung (Adresse, E-Mail, Telefon) — alles normale Textblöcke. Ein Kontaktformular gibt es bewusst nicht.
 
 **Seite zurücksetzen / neue Seite aus der Vorlage:** Neue Seite anlegen → **+** → *Muster* → Kategorie **Satellite** → z. B. „Satellite – Startseite“ einfügen.
 
@@ -78,11 +77,10 @@ Das ist nur eine Entwicklungs-Hilfe, kein Ersatz für einen echten Test in WordP
 ## Theme-Struktur (Block-Theme)
 
 - `theme.json` — Farbpalette, Typografie (lokal eingebundene Schriften), Layout-Einstellungen
-- `templates/` — `page.html` (alle Seiten: Kopf, Inhalt der Seite, Fuß), `single-work_package.html` (Teilprojekte), `404.html`, `index.html`
+- `templates/` — `page.html` (alle Seiten: Kopf, Inhalt der Seite, Fuß), `404.html`, `index.html`
 - `parts/` — wiederverwendbare Template-Parts (Header, Footer)
 - `patterns/` — Inhalt der Seiten, Kopf- und Fußzeile als PHP-Dateien. Sie werden beim Aktivieren in echte Seiten umgewandelt (siehe `satellite_seed_content()` in `functions.php`); die Seiten-Patterns stehen zusätzlich im Einfüge-Dialog des Editors.
 - `inc/blocks.php` — Helfer, die gültige Kernblöcke erzeugen (Text-Paare EN/DE, Bilder, Buttons, Gruppen)
-- `inc/contact-form.php` — Kontaktformular-Block und Versand
 - `editor-style.css` — Zusatz-Stile für den Editor (EN/DE-Marken, sichtbare Platzhalter)
 - `fonts/` — lokal eingebundene Schriftarten Chakra Petch (SIL OFL) und Inter (SIL OFL)
 - `images/` — im Theme mitgelieferte Bilder
@@ -98,13 +96,12 @@ Quelle: [Vorgaben an Themes (wp.rrze.fau.de)](https://www.wp.rrze.fau.de/entwick
 - ✅ WordPress 6.6 / PHP 8.2 als Mindestversion (style.css, readme.txt, README konsistent, Version 1.1.0)
 - ✅ Alle Laufzeit-Ressourcen lokal: Schriften (Chakra Petch, Inter), Icons als CSS; keine CDNs, keine externen Anfragen
 - ✅ Sass-Build (Autoprefixer, cssnano); CSS und JS minifiziert; Skripte nur dort geladen, wo sie gebraucht werden (WebGL-Hero nur mit Hero, Zeitleiste nur mit Zeitleiste …)
-- ✅ Läuft ohne zusätzliche Plugins
-- ✅ Kontrast (WCAG 2.2 AA) im Ruhezustand geprüft und angepasst; sichtbarer Fokus; Menü per Tastatur; `prefers-reduced-motion`; Formular mit Labels und Fehlermeldungen
+- ✅ Läuft ohne zusätzliche Plugins; keine funktionalen Erweiterungen im Theme (Teilprojekte sind normale Seiten, kein Beitragstyp; kein Formular, daher auch keine Verarbeitung personenbezogener Daten)
+- ✅ Kontrast (WCAG 2.2 AA) im Ruhezustand geprüft und angepasst; sichtbarer Fokus; Menü per Tastatur; `prefers-reduced-motion`
 - ✅ Impressum- und Datenschutz-Seite mit Link im Footer
 
 **Noch offen / Abstimmung mit dem RRZE nötig**
 - ⚠️ **Theme Check** und **WCAG-Audit** laufen nur in echtem WordPress (Debug-Modus an) — noch nicht durchgeführt.
-- ⚠️ **Funktionale Erweiterungen gehören laut FAU in Plugins:** Der Beitragstyp „Subprojects“ und das Kontaktformular liegen derzeit im Theme (`functions.php`, `inc/`). Für die zentrale FAU-Instanz sollten beide in ein kleines Plugin (z. B. `satellite-functions`) umziehen oder durch bestehende FAU-Plugins ersetzt werden.
 - ⚠️ **Pflichtseiten:** FAU verlangt Impressum, Datenschutzerklärung **und Barrierefreiheitserklärung**; das RRZE erzeugt sie mit dem Plugin *RRZE Legal*. Unsere statischen Impressum-/Datenschutz-Seiten sind Platzhalter aus der alten Seite; eine Barrierefreiheitserklärung fehlt.
 - ⚠️ Der Scroll-Effekt der Überschriften (Grau -> Schwarz) hat mitten im Übergang kurz weniger Kontrast als AA; mit „Bewegung reduzieren“ entfällt er.
 - ⚠️ Die gemerkte Sprache (EN/DE) liegt im `localStorage` des Browsers — in der Datenschutzerklärung erwähnen.

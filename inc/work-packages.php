@@ -4,11 +4,10 @@
  * von fornano.pinsker.ai/work-packages/1–6 (Deutsch) mit englischer
  * Übersetzung (beide Sprachen Pflicht, siehe satellite_i18n()).
  *
- * Verwendet für (1) die Teilprojekt-Karten auf der About-Seite
- * (title, short) und (2) die einmalige Anlage der sechs Beiträge vom Typ
- * "work_package" beim Aktivieren des Themes (lead, body). Danach sind die
- * Inhalte ausschließlich im WordPress-Editor zu pflegen, diese Datei wird
- * nur noch für die Karten-Texte als Vorbelegung gelesen.
+ * Verwendet für (1) die Teilprojekt-Karten auf der About-Seite und die
+ * Übersichtsseite /work-packages/ (title, short) und (2) die einmalige Anlage
+ * der sechs Unterseiten tp-1 … tp-6 beim Aktivieren des Themes (lead, body).
+ * Danach sind die Inhalte ausschließlich im WordPress-Editor zu pflegen.
  *
  * Jeder Eintrag: array( EN, DE ).
  */

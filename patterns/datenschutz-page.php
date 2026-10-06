@@ -54,8 +54,6 @@ $satellite_legal = array(
 	array( 'p', 'Der Provider der Seiten erhebt und speichert automatisch Informationen in so genannten Server-Log-Dateien, die Ihr Browser automatisch an uns übermittelt. Dies sind:' ),
 	array( 'ul', array( 'Browsertyp und Browserversion', 'Verwendetes Betriebssystem', 'Referrer URL', 'Hostname des zugreifenden Rechners', 'Uhrzeit der Serveranfrage', 'IP-Adresse' ) ),
 	array( 'p', 'Eine Zusammenführung dieser Daten mit anderen Datenquellen wird nicht vorgenommen. Die Erfassung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. f DSGVO.' ),
-	array( 'h3', 'Kontaktformular' ),
-	array( 'p', 'Wenn Sie uns per Kontaktformular Anfragen zukommen lassen, werden Ihre Angaben aus dem Anfrageformular inklusive der von Ihnen dort angegebenen Kontaktdaten zwecks Bearbeitung der Anfrage und für den Fall von Anschlussfragen bei uns gespeichert. Diese Daten geben wir nicht ohne Ihre Einwilligung weiter. Die Verarbeitung dieser Daten erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b DSGVO.' ),
 	array( 'h2', '8. SSL- bzw. TLS-Verschlüsselung' ),
 	array( 'p', 'Diese Seite nutzt aus Sicherheitsgründen und zum Schutz der Übertragung vertraulicher Inhalte eine SSL- bzw. TLS-Verschlüsselung. Eine verschlüsselte Verbindung erkennen Sie daran, dass die Adresszeile des Browsers von „http://" auf „https://" wechselt und an dem Schloss-Symbol in Ihrer Browserzeile.' ),
 	array( 'h2', '9. Aktualität und Änderung dieser Datenschutzerklärung' ),
