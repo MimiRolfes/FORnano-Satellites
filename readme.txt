@@ -27,7 +27,7 @@ Milena Rolfes - https://github.com/MimiRolfes - https://milenarolfes.framer.webs
 2. Activate it under Appearance > Themes.
 3. Set the site title under Settings > General.
 
-See README.md for the editing guide.
+User documentation (editing guide for editors): https://github.com/MimiRolfes/FORnano-Satellites#inhalte-bearbeiten-anleitung-für-einsteiger
 
 == Copyright ==
 

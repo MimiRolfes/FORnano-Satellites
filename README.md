@@ -96,16 +96,20 @@ Quelle: [Vorgaben an Themes (wp.rrze.fau.de)](https://www.wp.rrze.fau.de/entwick
 - ✅ WordPress 6.6 / PHP 8.2 als Mindestversion (style.css, readme.txt, README konsistent, Version 1.1.0)
 - ✅ Alle Laufzeit-Ressourcen lokal: Schriften (Chakra Petch, Inter), Icons als CSS; keine CDNs, keine externen Anfragen
 - ✅ Sass-Build (Autoprefixer, cssnano); CSS und JS minifiziert; Skripte nur dort geladen, wo sie gebraucht werden (WebGL-Hero nur mit Hero, Zeitleiste nur mit Zeitleiste …)
+- ✅ Corporate Design mit dem RRZE geklärt (eigenes Design ist in Ordnung); GitHub-Repo ist öffentlich
 - ✅ Läuft ohne zusätzliche Plugins; keine funktionalen Erweiterungen im Theme (Teilprojekte sind normale Seiten, kein Beitragstyp; kein Formular, daher auch keine Verarbeitung personenbezogener Daten)
+- ✅ Klickflächen mind. 24 px und Fokus nicht unter der fixierten Navigation (WCAG 2.2: 2.5.8, 2.4.11); Screenshot für die Themes-Liste (`screenshot.jpg`)
 - ✅ Kontrast (WCAG 2.2 AA) im Ruhezustand geprüft und angepasst; sichtbarer Fokus; Menü per Tastatur; `prefers-reduced-motion`
 - ✅ Impressum- und Datenschutz-Seite mit Link im Footer
 
 **Noch offen / Abstimmung mit dem RRZE nötig**
-- ⚠️ **Theme Check** und **WCAG-Audit** laufen nur in echtem WordPress (Debug-Modus an) — noch nicht durchgeführt.
-- ⚠️ **Pflichtseiten:** FAU verlangt Impressum, Datenschutzerklärung **und Barrierefreiheitserklärung**; das RRZE erzeugt sie mit dem Plugin *RRZE Legal*. Unsere statischen Impressum-/Datenschutz-Seiten sind Platzhalter aus der alten Seite; eine Barrierefreiheitserklärung fehlt.
+- ⚠️ **Theme Check** und **WCAG-Audit** laufen nur in echtem WordPress (Debug-Modus an, auch Multisite) — noch nicht durchgeführt.
+- ⚠️ **Seiten beim Aktivieren anlegen** (`satellite_seed_content()`): Das RRZE verlangt, dass Themes keine Funktionen der Plugin-Domäne übernehmen. Das automatische Anlegen von Seiten ist ein Grenzfall — mit dem RRZE klären; Alternative: Seiten manuell aus den Mustern („Satellite – …“) anlegen.
+- ⚠️ **CSS** liegt in einer Datei (`style.css`) und wird auf jeder Seite geladen; nur das JavaScript ist nach Bedarf aufgeteilt. Die FAU-Regel „nur laden, wo benötigt“ ist beim CSS nur teilweise erfüllt.
+- ⚠️ **Pflichtseiten:** FAU verlangt Impressum, Datenschutzerklärung **und Barrierefreiheitserklärung** (mit Feedback-Möglichkeit, z. B. E-Mail); das RRZE erzeugt sie mit dem Plugin *RRZE Legal*. Unsere Impressum-/Datenschutz-Seiten sind Platzhalter aus der alten Seite; eine Barrierefreiheitserklärung fehlt.
 - ⚠️ Der Scroll-Effekt der Überschriften (Grau -> Schwarz) hat mitten im Übergang kurz weniger Kontrast als AA; mit „Bewegung reduzieren“ entfällt er.
 - ⚠️ Die gemerkte Sprache (EN/DE) liegt im `localStorage` des Browsers — in der Datenschutzerklärung erwähnen.
-- ⚠️ Es muss einen Ansprechpartner für das Theme geben und es muss öffentlich (WordPress.org oder öffentliches GitHub/GitLab-Repo) bereitgestellt werden.
+- ⚠️ `Tested up to` fehlt bewusst, bis in echtem WordPress getestet wurde.
 
 ## Ansprechpartnerin für das Theme
 

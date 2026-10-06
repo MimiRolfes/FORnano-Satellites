@@ -467,6 +467,8 @@
   font-size: 13px; // Zeilenhöhe der Links (13 px × 1,6) wie bisher
 
   a {
+    display: inline-block;
+    padding: 4px 0; // Klickfläche mind. 24 px hoch (WCAG 2.2: 2.5.8)
     font-family: var(--fh);
     font-size: 13px;
     font-weight: 600;
@@ -505,7 +507,7 @@
   .wp-social-link { margin: 0; padding: 0; background: none; }
   .wp-block-social-link-anchor {
     display: flex;
-    padding: 0;
+    padding: 3px; // 18 px Icon + 2×3 px = 24 px Klickfläche (WCAG 2.2: 2.5.8)
     color: var(--silver);
     transition: color var(--t);
 

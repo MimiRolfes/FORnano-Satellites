@@ -19,5 +19,19 @@
     "postcss": "^8.4.38",
     "sass": "^1.77.0",
     "terser": "^5.51.2"
+  },
+  "author": "Milena Rolfes (https://github.com/MimiRolfes)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MimiRolfes/FORnano-Satellites.git"
+  },
+  "homepage": "https://github.com/MimiRolfes/FORnano-Satellites#readme",
+  "engines": {
+    "node": ">=18"
+  },
+  "wordpress": {
+    "requires": "6.6",
+    "requiresPhp": "8.2"
   }
 }

@@ -35,7 +35,8 @@
    das <html>-Element bestimmt den Root-Scroller, body allein hat absichtlich
    nach außen ragende Dekorationselemente (z. B. .about-satellite) nicht
    zuverlässig abgeschnitten (bestehender, bisher unbehobener Bug). */
-html { scroll-behavior: smooth; overflow-x: hidden; }
+/* scroll-padding-top: fokussierte Elemente verschwinden beim Tabben nicht unter der fixierten Navigation (WCAG 2.2: 2.4.11) */
+html { scroll-behavior: smooth; overflow-x: hidden; scroll-padding-top: 110px; }
 body {
   background: var(--bg);
   color: var(--text);
