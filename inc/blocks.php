@@ -90,23 +90,42 @@ function satellite_text( $text, $tag = 'p', $class = '' ) {
 }
 
 /**
- * Leere, gesperrte Gruppe für reine Dekoration (Glow, Linien, Orb …).
- * Erscheint in der Listenansicht als "Dekoration" und lässt sich nicht
- * versehentlich verschieben oder löschen.
+ * Reine Dekoration (Glow, Linien, Orb …) als gesperrter "Abstandhalter"-Block.
+ * Eine leere Gruppe würde im Editor die Layout-Auswahl ("Group blocks together.
+ * Select a layout") zeigen; der Abstandhalter-Block bleibt dagegen unauffällig
+ * (und ist von Haus aus für Screenreader ausgeblendet). Die Höhe steht als
+ * Block-Wert inline am Element, deshalb muss sie hier zur CSS-Größe der
+ * jeweiligen Klasse passen. In der Listenansicht heißt er "Dekoration",
+ * lässt sich nicht verschieben oder löschen.
+ *
+ * @param string $class  CSS-Klasse (steuert Aussehen und Größe, siehe SCSS).
+ * @param string $anchor Optional: id.
  */
 function satellite_deco( $class, $anchor = '' ) {
-	$attrs = array(
+	// Feste Höhen der Dekorationen (wie im SCSS); Rest: "0px" bzw. per CSS dehnbar.
+	$heights = array(
+		'hero-orb'          => 'min(90vw, 90vh)',
+		'hero-frost'        => '38%',
+		'hero-divider'      => '1px',
+		'metric-icon'       => '28px',
+		'person-line'       => '1px',
+		'timeline-dot'      => '12px',
+		'about-hero-glow'   => '433px',
+		'nav-backdrop'      => 'auto',
+	);
+	$height = isset( $heights[ $class ] ) ? $heights[ $class ] : '0px';
+	$attrs  = array(
+		'height'    => $height,
 		'className' => $class,
 		'metadata'  => array( 'name' => 'Dekoration (nicht bearbeiten)' ),
 		'lock'      => array( 'move' => true, 'remove' => true ),
-		'layout'    => array( 'type' => 'default' ),
 	);
 	if ( $anchor ) {
 		$attrs['anchor'] = $anchor;
 	}
-	echo '<!-- wp:group ' . wp_json_encode( $attrs ) . " -->\n";
-	echo '<div class="wp-block-group ' . esc_attr( $class ) . '"' . ( $anchor ? ' id="' . esc_attr( $anchor ) . '"' : '' ) . "></div>\n";
-	echo "<!-- /wp:group -->\n\n";
+	echo '<!-- wp:spacer ' . wp_json_encode( $attrs ) . " -->\n";
+	echo '<div style="height:' . esc_attr( $height ) . '" aria-hidden="true" class="wp-block-spacer ' . esc_attr( $class ) . '"' . ( $anchor ? ' id="' . esc_attr( $anchor ) . '"' : '' ) . "></div>\n";
+	echo "<!-- /wp:spacer -->\n\n";
 }
 
 /**

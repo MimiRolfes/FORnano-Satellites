@@ -243,4 +243,8 @@
 
 /* Top-Level (nicht verschachtelt), damit die Responsive-Regel (gleiche
    Spezifität, später importiert) sie bei ≤809px zuverlässig überschreibt. */
-.btn-label-short { display: none; }
+/* Kurze Button-Beschriftung ("ABOUT US") nur auf dem Handy; höhere Spezifität nötig,
+   weil WordPress ".wp-block-buttons > .wp-block-button { display: inline-block }" setzt */
+@media (min-width: 810px) {
+  .wp-block-buttons > .wp-block-button.btn-label-short { display: none; }
+}

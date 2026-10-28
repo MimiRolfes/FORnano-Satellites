@@ -19,7 +19,8 @@ foreach ( satellite_work_packages() as $satellite_n => $satellite_tp ) {
 	satellite_i18n(
 		'<a href="' . esc_url( $satellite_url ) . '">TP' . $satellite_n . ' · ' . esc_html( $satellite_tp['title'][0] ) . '</a>',
 		'<a href="' . esc_url( $satellite_url ) . '">TP' . $satellite_n . ' · ' . esc_html( $satellite_tp['title'][1] ) . '</a>',
-		'h3'
+		'h2',
+		'wp-overview-title'
 	);
 	satellite_i18n( $satellite_tp['short'][0], $satellite_tp['short'][1] );
 }

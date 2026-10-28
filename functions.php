@@ -84,7 +84,7 @@ function satellite_pattern_content( $slug ) {
 
 /**
  * Beim Aktivieren des Themes werden angelegt (nur was fehlt):
- *  - die Seiten Home, About, Gallery, Contact, Impressum, Datenschutz und
+ *  - die Seiten Home, About, Gallery, Contact, Impressum und
  *    "Work packages" mit dem Inhalt der gleichnamigen Patterns (als echte,
  *    bearbeitbare Blöcke),
  *  - darunter als Unterseiten die sechs Teilprojekte TP1–TP6,
@@ -99,7 +99,6 @@ function satellite_seed_content() {
 		'gallery'       => array( 'Gallery', 'satellite/gallery-page' ),
 		'contact'       => array( 'Contact', 'satellite/contact-page' ),
 		'impressum'     => array( 'Impressum', 'satellite/impressum-page' ),
-		'datenschutz'   => array( 'Datenschutz', 'satellite/datenschutz-page' ),
 	);
 	foreach ( $pages as $slug => $page ) {
 		if ( get_page_by_path( $slug ) ) {
@@ -204,11 +203,12 @@ function satellite_enqueue_assets() {
 		array(),
 		wp_get_theme()->get( 'Version' )
 	);
+	// Version = Änderungszeit der Datei, damit Browser nach jeder Änderung das neue CSS laden (kein veralteter Cache).
 	wp_enqueue_style(
 		'satellite-style',
 		get_stylesheet_uri(),
 		array(),
-		wp_get_theme()->get( 'Version' )
+		(string) filemtime( get_stylesheet_directory() . '/style.css' )
 	);
 	wp_enqueue_script( 'satellite-script', satellite_script_url( 'satellite' ), array(), wp_get_theme()->get( 'Version' ), true );
 }

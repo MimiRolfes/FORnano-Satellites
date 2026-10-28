@@ -10,3 +10,5 @@ build-js.js
 Assets
 src
 js/src
+.wp-env.json
+tests

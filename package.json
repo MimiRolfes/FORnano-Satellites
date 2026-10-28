@@ -30,8 +30,8 @@
   "engines": {
     "node": ">=18"
   },
-  "wordpress": {
-    "requires": "6.6",
-    "requiresPhp": "8.2"
+  "requires": {
+    "wp": "6.6",
+    "php": "8.2"
   }
 }

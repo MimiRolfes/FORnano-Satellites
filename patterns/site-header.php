@@ -21,8 +21,8 @@ $satellite_menu = array(
 	array( '/contact/', 'CONTACT', 'KONTAKT' ),
 );
 ?>
-<!-- wp:group {"tagName":"header","className":"nav","layout":{"type":"default"}} -->
-<header class="wp-block-group nav">
+<!-- wp:group {"className":"nav","layout":{"type":"default"}} -->
+<div class="wp-block-group nav">
 
 <!-- wp:group {"className":"nav-wrap","layout":{"type":"default"}} -->
 <div class="wp-block-group nav-wrap">
@@ -67,5 +67,5 @@ foreach ( $satellite_menu as $satellite_item ) {
 </div>
 <!-- /wp:group -->
 
-</header>
+</div>
 <!-- /wp:group -->

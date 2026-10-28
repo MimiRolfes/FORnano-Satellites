@@ -26,8 +26,8 @@ $satellite_footer_links = array(
 	array( '/datenschutz/', 'Privacy', 'Datenschutz' ),
 );
 ?>
-<!-- wp:group {"tagName":"footer","className":"footer","layout":{"type":"default"}} -->
-<footer class="wp-block-group footer">
+<!-- wp:group {"className":"footer","layout":{"type":"default"}} -->
+<div class="wp-block-group footer">
 
 <!-- wp:group {"className":"container footer-grid","layout":{"type":"default"}} -->
 <div class="wp-block-group container footer-grid">
@@ -82,5 +82,5 @@ foreach ( $satellite_footer_links as $satellite_link ) {
 <!-- /wp:group -->
 
 <?php satellite_image( 'images/footer-vision.png', 'footer-wordmark', '', false ); ?>
-</footer>
+</div>
 <!-- /wp:group -->

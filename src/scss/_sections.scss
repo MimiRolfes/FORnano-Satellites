@@ -305,6 +305,15 @@
     @include corner-brackets(11px);
   }
 }
+/* Ohne Foto rendert WordPress den leeren Bild-Block gar nicht — dann bleibt hier
+   ein dunkler Platzhalter (im Editor ist der Bild-Block selbst der Platzhalter). */
+.person:not(:has(.person-photo))::before {
+  content: '';
+  display: block;
+  width: 100%;
+  aspect-ratio: 0.89 / 1;
+  background: #2b2f36;
+}
 .person-name {
   font-family: var(--fh);
   font-size: 20px;

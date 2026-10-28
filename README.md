@@ -14,7 +14,7 @@ Dunkles One-Page-Design mit WebGL-Hero-Animation, als WordPress-Block-Theme.
 
 1. Diesen `satellite/`-Ordner nach `wp-content/themes/` kopieren.
 2. Unter **Design → Themes** aktivieren. Dabei legt das Theme **automatisch** an:
-   - die Seiten **Home** (wird zur Startseite), **About the project**, **Work packages**, **Gallery**, **Contact**, **Impressum** und **Datenschutz** — jeweils mit allen Texten und Bildern der Vorlage,
+   - die Seiten **Home** (wird zur Startseite), **About the project**, **Work packages**, **Gallery**, **Contact** und **Impressum** — jeweils mit allen Texten und Bildern der Vorlage,
    - darunter als Unterseiten von „Work packages“ die sechs Teilprojekte **TP1–TP6** (Adressen `/work-packages/tp-1/` …).
 3. **Einstellungen → Allgemein:** Website-Titel setzen (erscheint im Logo und im Footer).
 
@@ -100,16 +100,16 @@ Quelle: [Vorgaben an Themes (wp.rrze.fau.de)](https://www.wp.rrze.fau.de/entwick
 - ✅ Läuft ohne zusätzliche Plugins; keine funktionalen Erweiterungen im Theme (Teilprojekte sind normale Seiten, kein Beitragstyp; kein Formular, daher auch keine Verarbeitung personenbezogener Daten)
 - ✅ Klickflächen mind. 24 px und Fokus nicht unter der fixierten Navigation (WCAG 2.2: 2.5.8, 2.4.11); Screenshot für die Themes-Liste (`screenshot.jpg`)
 - ✅ Kontrast (WCAG 2.2 AA) im Ruhezustand geprüft und angepasst; sichtbarer Fokus; Menü per Tastatur; `prefers-reduced-motion`
-- ✅ Impressum- und Datenschutz-Seite mit Link im Footer
+- ✅ Impressum-Seite; der Footer verlinkt `/datenschutz/` — diese Seite stellt die FAU bereit (Datenschutzerklärung der FAU wird übernommen), das Theme liefert bewusst keinen eigenen Datenschutztext
 
 **Noch offen / Abstimmung mit dem RRZE nötig**
-- ⚠️ **Theme Check** und **WCAG-Audit** laufen nur in echtem WordPress (Debug-Modus an, auch Multisite) — noch nicht durchgeführt.
+- ⚠️ **Manuelle Prüfungen** stehen noch aus: Screenreader-Test (VoiceOver/NVDA), Durchklicken im Editor als Einsteigerin, Test in der echten FAU-Instanz.
 - ⚠️ **Seiten beim Aktivieren anlegen** (`satellite_seed_content()`): Das RRZE verlangt, dass Themes keine Funktionen der Plugin-Domäne übernehmen. Das automatische Anlegen von Seiten ist ein Grenzfall — mit dem RRZE klären; Alternative: Seiten manuell aus den Mustern („Satellite – …“) anlegen.
 - ⚠️ **CSS** liegt in einer Datei (`style.css`) und wird auf jeder Seite geladen; nur das JavaScript ist nach Bedarf aufgeteilt. Die FAU-Regel „nur laden, wo benötigt“ ist beim CSS nur teilweise erfüllt.
-- ⚠️ **Pflichtseiten:** FAU verlangt Impressum, Datenschutzerklärung **und Barrierefreiheitserklärung** (mit Feedback-Möglichkeit, z. B. E-Mail); das RRZE erzeugt sie mit dem Plugin *RRZE Legal*. Unsere Impressum-/Datenschutz-Seiten sind Platzhalter aus der alten Seite; eine Barrierefreiheitserklärung fehlt.
+- ⚠️ **Pflichtseiten:** Datenschutzerklärung kommt von der FAU (übernommen). Impressum und Barrierefreiheitserklärung ebenfalls mit dem RRZE klären (Plugin *RRZE Legal* erzeugt alle drei); unser eigener Impressum-Text ist ein Platzhalter aus der alten Seite, eine Barrierefreiheitserklärung fehlt.
 - ⚠️ Der Scroll-Effekt der Überschriften (Grau -> Schwarz) hat mitten im Übergang kurz weniger Kontrast als AA; mit „Bewegung reduzieren“ entfällt er.
-- ⚠️ Die gemerkte Sprache (EN/DE) liegt im `localStorage` des Browsers — in der Datenschutzerklärung erwähnen.
-- ⚠️ `Tested up to` fehlt bewusst, bis in echtem WordPress getestet wurde.
+- ⚠️ Die gemerkte Sprache (EN/DE) liegt im `localStorage` des Browsers — Hinweis ggf. in der FAU-Datenschutzerklärung ergänzen lassen.
+- ✅ Getestet in echtem WordPress (wp-env, WordPress 7.1.4, PHP 8.2, Debug-Modus an, Stand 2026-10-28): Theme Check (5019 Tests) bestanden; alle Seiten und Vorlagen im Block-Editor ohne ungültige Blöcke; axe (WCAG 2.2 AA, EN/DE, Desktop/Handy) ohne Verstöße; Multisite mit Unterseite; keine PHP-Meldungen im Debug-Log. Skripte: `tests/`
 
 ## Ansprechpartnerin für das Theme
 

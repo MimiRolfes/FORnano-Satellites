@@ -36,7 +36,7 @@
      untereinander, Tech-Stack bleibt zweispaltig mit kleineren Karten. */
   .about-hero { padding-top: 74px; } /* Framer Tablet: Titelblock-Mitte bei y≈217 */
   .about-hero-title { font-size: 48px; }
-  .overview-columns { flex-direction: column; gap: 16px; margin-bottom: 48px; }
+  .overview-columns { gap: 16px; margin-bottom: 48px; }
   .overview-col-heading { font-size: 26px; }
   .overview-image { aspect-ratio: 1.19 / 1; }
   .overview-feature { flex-direction: column; height: auto; gap: 9px; }
@@ -122,8 +122,7 @@
   /* Framer kürzt den Button-Text in der Phone-Variante ("About the
      project" -> "About"), damit der Button nicht die ganze Zeile
      einnimmt — hier per CSS nachgebildet statt Text zu duplizieren. */
-  .btn-label-full { display: none; }
-  .btn-label-short { display: block; }
+  .wp-block-buttons > .wp-block-button.btn-label-full { display: none; }
 
   /* Footer: Framers Phone-Variante stapelt die Pages-Links statt sie in
      einer Reihe zu zeigen, und richtet den Credit-Text links statt rechts
