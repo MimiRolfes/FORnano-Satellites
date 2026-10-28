@@ -2,13 +2,13 @@
 
 WordPress-Block-Theme für die Projektwebsite von **FORnanoSatellites** (FAU Erlangen-Nürnberg).
 
-Dunkles One-Page-Design mit WebGL-Hero-Animation, als WordPress-Block-Theme.
+Dunkles, mehrseitiges Design mit WebGL-Hero-Animation, zweisprachig (EN/DE umschaltbar) und vollständig im Block-Editor bearbeitbar.
 
 ## Voraussetzungen
 
-- WordPress 6.6+
-- PHP 8.1+
-- Node.js 18+ (nur zum Bearbeiten der Styles nötig, nicht zum Betrieb der Seite)
+- WordPress 6.6+ (getestet mit 7.1)
+- PHP 8.2+
+- Node.js 18+ (nur zum Bearbeiten der Styles/Skripte und für die Tests nötig, nicht zum Betrieb der Seite)
 
 ## Installation
 
@@ -62,17 +62,33 @@ Die Quelldateien liegen unter [`src/scss/`](src/scss). Der Build erzeugt:
 - `style.css` — minifiziert, das lädt WordPress
 - `src/css/style.css` — lesbar, mit Autoprefixer, aber unminifiziert (zum Nachschauen)
 
-## Lokale Vorschau ohne WordPress
+## Die Seite ansehen und ausprobieren
 
-[`../dev-server/`](../dev-server) enthält einen schlanken PHP-Router, der einen minimalen Teil der WordPress-API simuliert und direkt die echten Template-/Part-/Pattern-Dateien dieses Themes rendert — praktisch für schnelle visuelle Checks ohne komplette WordPress-Installation.
+Das Theme läuft in **jedem normalen WordPress** (6.6+, PHP 8.2+). Docker ist nur eine von mehreren Möglichkeiten, es zum Anschauen und Testen zu starten:
 
+**A) Ohne Installation, nur im Browser (am einfachsten, z. B. zum Anschauen)**
+Link öffnen: <https://playground.wordpress.net/?blueprint-url=https://raw.githubusercontent.com/MimiRolfes/FORnano-Satellites/main/blueprint.json>
+WordPress Playground baut im Browser eine komplette WordPress-Seite mit dem Theme aus GitHub auf (etwa eine halbe Minute) und meldet dich als Admin an. Man kann auch im Editor klicken und Texte ändern; geändert wird nur im Browser des Besuchers, nichts ist gespeichert, wenn man den Tab leert. Zeigt den Stand von `main` auf GitHub.
+
+**B) Auf dem eigenen Rechner ohne Docker (nur Node.js nötig)**
+Im Theme-Ordner:
 ```bash
-cd ../dev-server
-bash run.sh
-# → http://localhost:8791/
+npx @wp-playground/cli@latest server --auto-mount
 ```
+Danach läuft die Seite unter http://127.0.0.1:9400 (Dashboard: `/wp-admin`, Login `admin` / `password`). Das Theme ist aktiviert und die Seiten sind angelegt. Zeigt immer den aktuellen Stand des Ordners.
 
-Das ist nur eine Entwicklungs-Hilfe, kein Ersatz für einen echten Test in WordPress vor der Veröffentlichung.
+**C) Auf dem eigenen Rechner mit Docker (volle Testumgebung, nötig für die Tests)**
+Docker Desktop muss laufen. `.wp-env.json` startet WordPress mit PHP 8.2, Debug-Modus, *Theme Check* und *Query Monitor*:
+```bash
+npx @wordpress/env start                                              # → http://localhost:8888
+npx @wordpress/env run cli wp theme activate satellite                # legt die Seiten an
+npx @wordpress/env run cli wp rewrite structure '/%postname%/' --hard
+```
+Dashboard: http://localhost:8888/wp-admin — Login `admin` / `password` (nur lokal). Beenden mit `npx @wordpress/env stop`, zurücksetzen mit `npx @wordpress/env destroy`.
+Automatische Prüfungen (Theme Check, Block-Editor, Barrierefreiheit, Bedienung) liegen in [`tests/`](tests) — Anleitung in [`tests/README.md`](tests/README.md).
+
+**D) In einem eigenen WordPress (Hosting, Local, XAMPP …)**
+Den Ordner `satellite/` (ohne `node_modules`, siehe `.distignore`) nach `wp-content/themes/` kopieren, unter **Design → Themes** aktivieren (siehe Installation oben).
 
 ## Theme-Struktur (Block-Theme)
 
@@ -85,6 +101,8 @@ Das ist nur eine Entwicklungs-Hilfe, kein Ersatz für einen echten Test in WordP
 - `fonts/` — lokal eingebundene Schriftarten Chakra Petch (SIL OFL) und Inter (SIL OFL)
 - `images/` — im Theme mitgelieferte Bilder
 - `inc/work-packages.php` — Texte der Teilprojekte TP1–TP6 (DE/EN)
+- `readme.txt`, `screenshot.jpg` — Theme-Beschreibung und Vorschaubild für WordPress
+- `tests/`, `.wp-env.json`, `blueprint.json` — Tests, lokale WordPress-Umgebung (Docker) und Browser-Vorschau (Playground) (gehören nicht ins ausgelieferte Theme, siehe `.distignore`)
 - `js/src/*.js` — lesbare Skripte (`satellite.js` = Basis, dazu `hero-orb`, `timeline`, `page-hero`, `about`); `js/*.min.js` ist der Build (`npm run build:js`)
 
 ## Stand bezüglich der FAU-RRZE-Theme-Vorgaben
@@ -92,24 +110,23 @@ Das ist nur eine Entwicklungs-Hilfe, kein Ersatz für einen echten Test in WordP
 Quelle: [Vorgaben an Themes (wp.rrze.fau.de)](https://www.wp.rrze.fau.de/entwicklung/einsatz-fremdplugins/vorgaben-an-themes/) und die FAU-Seite zu Pflichtseiten.
 
 **Erfüllt**
-- ✅ Block-Editor-Theme (kein Classic Theme, kein eigener Pagebuilder)
-- ✅ WordPress 6.6 / PHP 8.2 als Mindestversion (style.css, readme.txt, README konsistent, Version 1.1.0)
+- ✅ Block-Editor-Theme (kein Classic Theme, kein eigener Pagebuilder, keine Plugin-Installer)
+- ✅ WordPress 6.6 / PHP 8.2 als Mindestversion (`style.css`, `readme.txt`, `package.json`, README konsistent, Version 1.1.0, `Tested up to` 7.1)
 - ✅ Alle Laufzeit-Ressourcen lokal: Schriften (Chakra Petch, Inter), Icons als CSS; keine CDNs, keine externen Anfragen
 - ✅ Sass-Build (Autoprefixer, cssnano); CSS und JS minifiziert; Skripte nur dort geladen, wo sie gebraucht werden (WebGL-Hero nur mit Hero, Zeitleiste nur mit Zeitleiste …)
-- ✅ Corporate Design mit dem RRZE geklärt (eigenes Design ist in Ordnung); GitHub-Repo ist öffentlich
 - ✅ Läuft ohne zusätzliche Plugins; keine funktionalen Erweiterungen im Theme (Teilprojekte sind normale Seiten, kein Beitragstyp; kein Formular, daher auch keine Verarbeitung personenbezogener Daten)
-- ✅ Klickflächen mind. 24 px und Fokus nicht unter der fixierten Navigation (WCAG 2.2: 2.5.8, 2.4.11); Screenshot für die Themes-Liste (`screenshot.jpg`)
-- ✅ Kontrast (WCAG 2.2 AA) im Ruhezustand geprüft und angepasst; sichtbarer Fokus; Menü per Tastatur; `prefers-reduced-motion`
-- ✅ Impressum-Seite; der Footer verlinkt `/datenschutz/` — diese Seite stellt die FAU bereit (Datenschutzerklärung der FAU wird übernommen), das Theme liefert bewusst keinen eigenen Datenschutztext
+- ✅ Barrierefreiheit (WCAG 2.2 AA): Kontrast im Ruhezustand geprüft und angepasst, sichtbarer Fokus, Fokus nicht unter der fixierten Navigation, Klickflächen mind. 24 px, Menü per Tastatur, `prefers-reduced-motion`
+- ✅ Corporate Design mit dem RRZE geklärt (eigenes Design ist in Ordnung); GitHub-Repo ist öffentlich; Ansprechpartnerin: siehe unten
+- ✅ Getestet in echtem WordPress (wp-env, WordPress 7.1.4, PHP 8.2, Debug-Modus an, Stand 2026-10-28): Theme Check (5019 Tests) bestanden; alle Seiten und Vorlagen im Block-Editor ohne ungültige Blöcke; axe (WCAG 2.2 AA, EN/DE, Desktop/Handy) ohne Verstöße; Multisite mit Unterseite; keine PHP-Meldungen im Debug-Log. Skripte: `tests/`
 
-**Noch offen / Abstimmung mit dem RRZE nötig**
-- ⚠️ **Manuelle Prüfungen** stehen noch aus: Screenreader-Test (VoiceOver/NVDA), Durchklicken im Editor als Einsteigerin, Test in der echten FAU-Instanz.
-- ⚠️ **Seiten beim Aktivieren anlegen** (`satellite_seed_content()`): Das RRZE verlangt, dass Themes keine Funktionen der Plugin-Domäne übernehmen. Das automatische Anlegen von Seiten ist ein Grenzfall — mit dem RRZE klären; Alternative: Seiten manuell aus den Mustern („Satellite – …“) anlegen.
-- ⚠️ **CSS** liegt in einer Datei (`style.css`) und wird auf jeder Seite geladen; nur das JavaScript ist nach Bedarf aufgeteilt. Die FAU-Regel „nur laden, wo benötigt“ ist beim CSS nur teilweise erfüllt.
-- ⚠️ **Pflichtseiten:** Datenschutzerklärung kommt von der FAU (übernommen). Impressum und Barrierefreiheitserklärung ebenfalls mit dem RRZE klären (Plugin *RRZE Legal* erzeugt alle drei); unser eigener Impressum-Text ist ein Platzhalter aus der alten Seite, eine Barrierefreiheitserklärung fehlt.
+**Pflichtseiten:** Die Datenschutzerklärung stellt die FAU bereit; der Footer verlinkt `/datenschutz/`, das Theme enthält bewusst keinen eigenen Datenschutztext. Das Impressum bleibt im Theme (Text bearbeitbar, vom Projektverantwortlichen zu prüfen). Die Barrierefreiheitserklärung fehlt noch und soll ebenfalls von der FAU kommen (RRZE-Plugin *RRZE Legal*).
+
+**Offen / mit dem RRZE zu klären**
+- ⚠️ **Seiten beim Aktivieren anlegen** (`satellite_seed_content()`): Grenzfall zur FAU-Regel „keine Plugin-Aufgaben im Theme“. Alternative: Seiten manuell aus den Mustern („Satellite – …“) anlegen.
+- ⚠️ **CSS** liegt in einer Datei (`style.css`, ca. 40 KB) und wird auf jeder Seite geladen; nur das JavaScript ist nach Bedarf aufgeteilt. Die FAU-Regel „nur laden, wo benötigt“ ist beim CSS nur teilweise erfüllt.
+- ⚠️ **Manuelle Prüfungen:** Screenreader-Test (VoiceOver/NVDA) und Test in der echten FAU-Instanz.
 - ⚠️ Der Scroll-Effekt der Überschriften (Grau -> Schwarz) hat mitten im Übergang kurz weniger Kontrast als AA; mit „Bewegung reduzieren“ entfällt er.
 - ⚠️ Die gemerkte Sprache (EN/DE) liegt im `localStorage` des Browsers — Hinweis ggf. in der FAU-Datenschutzerklärung ergänzen lassen.
-- ✅ Getestet in echtem WordPress (wp-env, WordPress 7.1.4, PHP 8.2, Debug-Modus an, Stand 2026-10-28): Theme Check (5019 Tests) bestanden; alle Seiten und Vorlagen im Block-Editor ohne ungültige Blöcke; axe (WCAG 2.2 AA, EN/DE, Desktop/Handy) ohne Verstöße; Multisite mit Unterseite; keine PHP-Meldungen im Debug-Log. Skripte: `tests/`
 
 ## Ansprechpartnerin für das Theme
 

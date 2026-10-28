@@ -65,13 +65,19 @@ foreach ( $satellite_footer_links as $satellite_link ) {
 <!-- wp:group {"className":"footer-card footer-credit-card","layout":{"type":"default"}} -->
 <div class="wp-block-group footer-card footer-credit-card">
 <?php satellite_i18n( 'Design by Milena Rolfes', 'Design von Milena Rolfes', 'p', 'footer-credit' ); ?>
+<!-- wp:group {"className":"footer-social-row","layout":{"type":"default"}} -->
+<div class="wp-block-group footer-social-row">
 <!-- wp:social-links {"openInNewTab":true,"className":"is-style-logos-only footer-social"} -->
 <ul class="wp-block-social-links is-style-logos-only footer-social"><!-- wp:social-link {"url":"https://github.com/MimiRolfes","service":"github","label":"GitHub"} /-->
 
-<!-- wp:social-link {"url":"https://milenarolfes.framer.website","service":"chain","label":"Portfolio"} /-->
-
-<!-- wp:social-link {"url":"mailto:milena.rolfes@web.de","service":"mail","label":"Email"} /--></ul>
+<!-- wp:social-link {"url":"https://milenarolfes.framer.website","service":"chain","label":"Portfolio"} /--></ul>
 <!-- /wp:social-links -->
+
+<!-- wp:social-links {"className":"is-style-logos-only footer-social"} -->
+<ul class="wp-block-social-links is-style-logos-only footer-social"><!-- wp:social-link {"url":"mailto:milena.rolfes@web.de","service":"mail","label":"E-Mail"} /--></ul>
+<!-- /wp:social-links -->
+</div>
+<!-- /wp:group -->
 </div>
 <!-- /wp:group -->
 

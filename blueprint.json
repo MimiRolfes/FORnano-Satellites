@@ -1,0 +1,14 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"landingPage": "/",
+	"preferredVersions": { "php": "8.2", "wp": "latest" },
+	"steps": [
+		{ "step": "setSiteOptions", "options": { "permalink_structure": "/%postname%/", "blogname": "FORnano Satellites" } },
+		{
+			"step": "installTheme",
+			"themeData": { "resource": "git:directory", "url": "https://github.com/MimiRolfes/FORnano-Satellites", "ref": "main", "refType": "branch" },
+			"options": { "activate": true, "targetFolderName": "satellite" }
+		},
+		{ "step": "login", "username": "admin", "password": "password" }
+	]
+}

@@ -1390,7 +1390,16 @@ html[data-lang=de] .lang-en {
   color: var(--silver);
 }
 
-.footer-social.wp-block-social-links {
+.footer-social-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Farbe am <li> setzen: WordPress färbt die Icons im Stil "Nur Logos" mit Markenfarben
+   (GitHub = fast schwarz, auf dem dunklen Footer "ausgegraut") und die Anker erben per
+   "currentColor" — deshalb hier mit höherer Spezifität überschreiben. */
+.footer-social.wp-block-social-links.is-style-logos-only {
   display: flex;
   align-items: center;
   gap: 20px;
@@ -1398,27 +1407,23 @@ html[data-lang=de] .lang-en {
   padding: 0;
   list-style: none;
 }
-.footer-social.wp-block-social-links .wp-social-link {
+.footer-social.wp-block-social-links.is-style-logos-only .wp-social-link {
   margin: 0;
   padding: 0;
   background: none;
-}
-.footer-social.wp-block-social-links .wp-block-social-link-anchor {
-  display: flex;
-  padding: 3px;
   color: var(--silver);
   transition: color var(--t);
 }
-.footer-social.wp-block-social-links .wp-block-social-link-anchor svg {
+.footer-social.wp-block-social-links.is-style-logos-only .wp-social-link:hover, .footer-social.wp-block-social-links.is-style-logos-only .wp-social-link:focus-within {
+  color: var(--lime);
+}
+.footer-social.wp-block-social-links.is-style-logos-only .wp-block-social-link-anchor {
+  display: flex;
+  padding: 3px;
+}
+.footer-social.wp-block-social-links.is-style-logos-only .wp-block-social-link-anchor svg {
   width: 18px;
   height: 18px;
-  fill: currentColor;
-}
-.footer-social.wp-block-social-links .wp-block-social-link-anchor:hover, .footer-social.wp-block-social-links .wp-block-social-link-anchor:focus-visible {
-  color: var(--lime);
-}
-.footer-social.wp-block-social-links .wp-block-social-link-anchor.is-copied {
-  color: var(--lime);
 }
 
 .screen-reader-text {

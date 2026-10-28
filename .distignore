@@ -12,3 +12,4 @@ src
 js/src
 .wp-env.json
 tests
+blueprint.json

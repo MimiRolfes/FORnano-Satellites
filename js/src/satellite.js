@@ -192,27 +192,6 @@ document.addEventListener('keydown', e => {
 })();
 
 
-// Footer: E-Mail-Link kopiert die Adresse statt den Mail-Client zu öffnen
-// (mailto bleibt als Fallback erhalten, falls JS oder die Clipboard-API fehlt).
-(function initCopyEmail() {
-  // Jeder mailto:-Link im Footer-Social-Block (Adresse steht im Link selbst)
-  document.querySelectorAll('.footer-social a[href^="mailto:"]').forEach(function (link) {
-    link.addEventListener('click', function (e) {
-      if (!navigator.clipboard) return; // mailto-Fallback greift
-      e.preventDefault();
-      var email = link.getAttribute('href').replace(/^mailto:/, '');
-      navigator.clipboard.writeText(email).then(function () {
-        var original = link.getAttribute('title');
-        link.classList.add('is-copied');
-        link.setAttribute('title', 'Copied!');
-        setTimeout(function () {
-          link.classList.remove('is-copied');
-          if (original === null) { link.removeAttribute('title'); } else { link.setAttribute('title', original); }
-        }, 1500);
-      });
-    });
-  });
-})();
 
 
 // Buttons im Landing-Page-Look: Der Text eines Kern-Buttons (Klasse btn-about)
