@@ -1,6 +1,6 @@
 {
   "name": "satellite-wp-theme",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "description": "Build tooling for the Satellite WordPress theme \u2014 compiles src/scss/style.scss to style.css (Sass, Autoprefixer, cssnano) and minifies js/src/*.js to js/*.min.js (terser).",
   "scripts": {

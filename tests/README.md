@@ -5,6 +5,7 @@ Automatische Prüfungen gegen die lokale WordPress-Instanz (`@wordpress/env`, si
 ```bash
 npx @wordpress/env start
 npx @wordpress/env run cli wp theme activate satellite
+npx @wordpress/env run cli wp eval 'satellite_seed_content();'   # legt die Seiten an (nicht automatisch)
 npx @wordpress/env run cli wp rewrite structure '/%postname%/' --hard
 npm i --no-save playwright axe-core && npx playwright install chromium   # einmalig
 
@@ -16,4 +17,4 @@ node tests/func.mjs         # Sprachumschalter, Menü, Tastatur, Karten-Klick, E
 
 Login in den Skripten: `admin` / `password` (Standard von wp-env, nur lokal).
 Multisite: `npx @wordpress/env run cli wp core multisite-convert`, dann Theme netzwerkweit aktivieren
-und auf der Unterseite erneut aktivieren (die Seiten werden pro Unterseite angelegt).
+und auf der Unterseite erneut aktivieren (die Seiten pro Unterseite mit `wp eval` anlegen).

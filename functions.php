@@ -83,7 +83,9 @@ function satellite_pattern_content( $slug ) {
 }
 
 /**
- * Beim Aktivieren des Themes werden angelegt (nur was fehlt):
+ * Legt die Start-Seiten an (nur was fehlt). Läuft nicht automatisch, sondern
+ * nur auf Klick im Hinweis unter Design → Themes (siehe unten) oder per
+ * `wp eval 'satellite_seed_content();'`. Angelegt werden:
  *  - die Seiten Home, About, Gallery, Contact, Impressum und
  *    "Work packages" mit dem Inhalt der gleichnamigen Patterns (als echte,
  *    bearbeitbare Blöcke),
@@ -141,7 +143,26 @@ function satellite_seed_content() {
 		update_option( 'page_on_front', $home->ID );
 	}
 }
-add_action( 'after_switch_theme', 'satellite_seed_content' );
+
+/** Hinweis unter Design → Themes, solange es noch keine Startseite "home" gibt. */
+function satellite_seed_notice() {
+	if ( 'themes' !== get_current_screen()->id || ! current_user_can( 'publish_pages' ) || get_page_by_path( 'home' ) ) {
+		return;
+	}
+	$url = wp_nonce_url( admin_url( 'admin-post.php?action=satellite_seed' ), 'satellite_seed' );
+	echo '<div class="notice notice-info"><p>' . esc_html__( 'Satellite: Start pages (Home, About, Work packages, Gallery, Contact, Impressum) can be created from the theme patterns.', 'satellite' ) . ' <a class="button" href="' . esc_url( $url ) . '">' . esc_html__( 'Create pages', 'satellite' ) . '</a></p></div>';
+}
+add_action( 'admin_notices', 'satellite_seed_notice' );
+
+function satellite_seed_action() {
+	check_admin_referer( 'satellite_seed' );
+	if ( current_user_can( 'publish_pages' ) ) {
+		satellite_seed_content();
+	}
+	wp_safe_redirect( admin_url( 'edit.php?post_type=page' ) );
+	exit;
+}
+add_action( 'admin_post_satellite_seed', 'satellite_seed_action' );
 
 /**
  * Setzt [data-lang] auf <html> so früh wie möglich (vor dem ersten Render),

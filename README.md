@@ -13,7 +13,7 @@ Dunkles, mehrseitiges Design mit WebGL-Hero-Animation, zweisprachig (EN/DE umsch
 ## Installation
 
 1. Diesen `satellite/`-Ordner nach `wp-content/themes/` kopieren.
-2. Unter **Design → Themes** aktivieren. Dabei legt das Theme **automatisch** an:
+2. Unter **Design → Themes** aktivieren. Dort erscheint ein Hinweis mit dem Button **Create pages**; ein Klick legt (optional, nur was fehlt) an:
    - die Seiten **Home** (wird zur Startseite), **About the project**, **Work packages**, **Gallery**, **Contact** und **Impressum** — jeweils mit allen Texten und Bildern der Vorlage,
    - darunter als Unterseiten von „Work packages“ die sechs Teilprojekte **TP1–TP6** (Adressen `/work-packages/tp-1/` …).
 3. **Einstellungen → Allgemein:** Website-Titel setzen (erscheint im Logo und im Footer).
@@ -75,13 +75,14 @@ Im Theme-Ordner:
 ```bash
 npx @wp-playground/cli@latest server --auto-mount
 ```
-Danach läuft die Seite unter http://127.0.0.1:9400 (Dashboard: `/wp-admin`, Login `admin` / `password`). Das Theme ist aktiviert und die Seiten sind angelegt. Zeigt immer den aktuellen Stand des Ordners.
+Danach läuft die Seite unter http://127.0.0.1:9400 (Dashboard: `/wp-admin`, Login `admin` / `password`). Das Theme ist aktiviert und die Seiten sind angelegt (das Blueprint ruft `satellite_seed_content()` auf). Zeigt immer den aktuellen Stand des Ordners.
 
 **C) Auf dem eigenen Rechner mit Docker (volle Testumgebung, nötig für die Tests)**
 Docker Desktop muss laufen. `.wp-env.json` startet WordPress mit PHP 8.2, Debug-Modus, *Theme Check* und *Query Monitor*:
 ```bash
 npx @wordpress/env start                                              # → http://localhost:8888
-npx @wordpress/env run cli wp theme activate satellite                # legt die Seiten an
+npx @wordpress/env run cli wp theme activate satellite
+npx @wordpress/env run cli wp eval 'satellite_seed_content();'   # legt die Seiten an
 npx @wordpress/env run cli wp rewrite structure '/%postname%/' --hard
 ```
 Dashboard: http://localhost:8888/wp-admin — Login `admin` / `password` (nur lokal). Beenden mit `npx @wordpress/env stop`, zurücksetzen mit `npx @wordpress/env destroy`.
@@ -95,7 +96,7 @@ Den Ordner `satellite/` (ohne `node_modules`, siehe `.distignore`) nach `wp-cont
 - `theme.json` — Farbpalette, Typografie (lokal eingebundene Schriften), Layout-Einstellungen
 - `templates/` — `page.html` (alle Seiten: Kopf, Inhalt der Seite, Fuß), `404.html`, `index.html`
 - `parts/` — wiederverwendbare Template-Parts (Header, Footer)
-- `patterns/` — Inhalt der Seiten, Kopf- und Fußzeile als PHP-Dateien. Sie werden beim Aktivieren in echte Seiten umgewandelt (siehe `satellite_seed_content()` in `functions.php`); die Seiten-Patterns stehen zusätzlich im Einfüge-Dialog des Editors.
+- `patterns/` — Inhalt der Seiten, Kopf- und Fußzeile als PHP-Dateien. Sie werden auf Klick (Hinweis unter Design → Themes) in echte Seiten umgewandelt (siehe `satellite_seed_content()` in `functions.php`); die Seiten-Patterns stehen zusätzlich im Einfüge-Dialog des Editors.
 - `inc/blocks.php` — Helfer, die gültige Kernblöcke erzeugen (Text-Paare EN/DE, Bilder, Buttons, Gruppen)
 - `editor-style.css` — Zusatz-Stile für den Editor (EN/DE-Marken, sichtbare Platzhalter)
 - `fonts/` — lokal eingebundene Schriftarten Chakra Petch (SIL OFL) und Inter (SIL OFL)
@@ -119,10 +120,10 @@ Quelle: [Vorgaben an Themes (wp.rrze.fau.de)](https://www.wp.rrze.fau.de/entwick
 - ✅ Corporate Design mit dem RRZE geklärt (eigenes Design ist in Ordnung); GitHub-Repo ist öffentlich; Ansprechpartnerin: siehe unten
 - ✅ Getestet in echtem WordPress (wp-env, WordPress 7.1.4, PHP 8.2, Debug-Modus an, Stand 2026-10-28): Theme Check (5019 Tests) bestanden; alle Seiten und Vorlagen im Block-Editor ohne ungültige Blöcke; axe (WCAG 2.2 AA, EN/DE, Desktop/Handy) ohne Verstöße; Multisite mit Unterseite; keine PHP-Meldungen im Debug-Log. Skripte: `tests/`
 
-**Pflichtseiten:** Die Datenschutzerklärung stellt die FAU bereit; der Footer verlinkt `/datenschutz/`, das Theme enthält bewusst keinen eigenen Datenschutztext. Das Impressum bleibt im Theme (Text bearbeitbar, vom Projektverantwortlichen zu prüfen). Die Barrierefreiheitserklärung fehlt noch und soll ebenfalls von der FAU kommen (RRZE-Plugin *RRZE Legal*).
+**Pflichtseiten:** Die Datenschutzerklärung stellt die FAU bereit; der Footer zeigt das Menü `rrze-tos-menu` des Plugins *RRZE Legal* (Impressum, Datenschutz, Barrierefreiheit); ohne das Plugin stehen dort feste Links auf `/impressum/` und `/datenschutz/`. Das Theme enthält bewusst keinen eigenen Datenschutztext. Das Impressum bleibt im Theme (Text bearbeitbar, vom Projektverantwortlichen zu prüfen). Die Barrierefreiheitserklärung fehlt noch und soll ebenfalls von der FAU kommen (RRZE-Plugin *RRZE Legal*).
 
 **Offen / mit dem RRZE zu klären**
-- ⚠️ **Seiten beim Aktivieren anlegen** (`satellite_seed_content()`): Grenzfall zur FAU-Regel „keine Plugin-Aufgaben im Theme“. Alternative: Seiten manuell aus den Mustern („Satellite – …“) anlegen.
+- ✅ **Seiten anlegen** (`satellite_seed_content()`) läuft nicht mehr automatisch beim Aktivieren (Hinweis des RRZE-Prüfers), sondern nur optional per Button unter Design → Themes. Mögliche spätere Version: ganz entfernen, Seiten aus den Mustern („Satellite – …“) anlegen.
 - ⚠️ **CSS** liegt in einer Datei (`style.css`, ca. 40 KB) und wird auf jeder Seite geladen; nur das JavaScript ist nach Bedarf aufgeteilt. Die FAU-Regel „nur laden, wo benötigt“ ist beim CSS nur teilweise erfüllt.
 - ⚠️ **Manuelle Prüfungen:** Screenreader-Test (VoiceOver/NVDA) und Test in der echten FAU-Instanz.
 - ⚠️ Der Scroll-Effekt der Überschriften (Grau -> Schwarz) hat mitten im Übergang kurz weniger Kontrast als AA; mit „Bewegung reduzieren“ entfällt er.

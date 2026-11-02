@@ -18,13 +18,23 @@
  * Editor lässt sich jederzeit ein eigenes Bild dort einfügen.
  */
 $satellite_footer_links = array(
-	array( '/', 'Home', 'Startseite' ),
-	array( '/about/', 'About', 'Über uns' ),
-	array( '/gallery/', 'Gallery', 'Galerie' ),
-	array( '/contact/', 'Contact', 'Kontakt' ),
-	array( '/impressum/', 'Impressum', 'Impressum' ),
-	array( '/datenschutz/', 'Privacy', 'Datenschutz' ),
+	array( home_url( '/' ), 'Home', 'Startseite' ),
+	array( home_url( '/about/' ), 'About', 'Über uns' ),
+	array( home_url( '/gallery/' ), 'Gallery', 'Galerie' ),
+	array( home_url( '/contact/' ), 'Contact', 'Kontakt' ),
 );
+
+// Rechtstexte: das RRZE-Plugin rrze-legal legt das Menü "rrze-tos-menu" an
+// (Impressum, Datenschutz, Barrierefreiheit). Ohne Plugin bleiben zwei feste Links.
+$satellite_tos_items = wp_get_nav_menu_items( 'rrze-tos-menu' );
+if ( $satellite_tos_items ) {
+	foreach ( $satellite_tos_items as $satellite_item ) {
+		$satellite_footer_links[] = array( $satellite_item->url, $satellite_item->title, $satellite_item->title );
+	}
+} else {
+	$satellite_footer_links[] = array( home_url( '/impressum/' ), 'Impressum', 'Impressum' );
+	$satellite_footer_links[] = array( home_url( '/datenschutz/' ), 'Privacy', 'Datenschutz' );
+}
 ?>
 <!-- wp:group {"className":"footer","layout":{"type":"default"}} -->
 <div class="wp-block-group footer">
@@ -52,7 +62,7 @@ $satellite_footer_links = array(
 foreach ( $satellite_footer_links as $satellite_link ) {
 	foreach ( array( 'en' => $satellite_link[1], 'de' => $satellite_link[2] ) as $satellite_lang => $satellite_label ) {
 		echo '<!-- wp:paragraph ' . wp_json_encode( array( 'className' => 'lang-' . $satellite_lang ) ) . " -->\n";
-		echo '<p class="lang-' . esc_attr( $satellite_lang ) . '"><a href="' . esc_url( home_url( $satellite_link[0] ) ) . '">' . esc_html( $satellite_label ) . "</a></p>\n";
+		echo '<p class="lang-' . esc_attr( $satellite_lang ) . '"><a href="' . esc_url( $satellite_link[0] ) . '">' . esc_html( $satellite_label ) . "</a></p>\n";
 		echo "<!-- /wp:paragraph -->\n\n";
 	}
 }

@@ -3,7 +3,7 @@ Contributors: milenarolfes
 Requires at least: 6.6
 Requires PHP: 8.2
 Tested up to: 7.1
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: MIT
 License URI: https://opensource.org/license/mit
 
@@ -11,7 +11,7 @@ Block theme for the FORnanoSatellites research project (FAU Erlangen-Nürnberg).
 
 == Description ==
 
-Dark, futuristic project website with bilingual content (English/German, switchable). All texts, images, buttons and links are core blocks and can be edited in the block editor; on activation the theme creates the pages Home, About the project, Work packages (with the six subproject pages TP1-TP6 as child pages), Gallery, Contact and Impressum. (The privacy policy page is provided by the FAU instance.)
+Dark, futuristic project website with bilingual content (English/German, switchable). All texts, images, buttons and links are core blocks and can be edited in the block editor; the pages Home, About the project, Work packages (with the six subproject pages TP1-TP6 as child pages), Gallery, Contact and Impressum can be created with one click (button under Appearance > Themes). (The privacy policy page is provided by the FAU instance.)
 
 * Block editor theme (no classic theme, no page builder, no plugin required)
 * Fonts Chakra Petch and Inter (SIL OFL) are served locally; no CDN, no external requests
@@ -37,7 +37,11 @@ Fonts: Chakra Petch and Inter, SIL Open Font License 1.1.
 
 == Changelog ==
 
+= 1.1.1 =
+* Footer shows the menu "rrze-tos-menu" (rrze-legal) for the legal pages, with fixed links as fallback
+* Pages are no longer created automatically on activation, only on request (button under Appearance > Themes)
+
 = 1.1.0 =
-* Pages are created on activation and are fully editable as blocks (EN/DE pairs)
+* Pages are created on request and are fully editable as blocks (EN/DE pairs)
 * About, Gallery, Contact, Impressum, subproject pages, 404
 * Per-page script loading, minified scripts
