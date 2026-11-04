@@ -44,3 +44,8 @@
 .editor-styles-wrapper .hero { height: auto; min-height: 720px; }
 .editor-styles-wrapper .nav { position: relative; }
 .editor-styles-wrapper .about-satellite { position: relative; top: auto; right: auto; transform: none; animation: none; margin: 0 auto; }
+
+/* Highlights: Texte stehen im Editor doppelt da (EN + DE), vier Karten passen nicht in eine Reihe
+   (die Tablet-Regel greift hier nicht, der Editor sieht die Fenster-, nicht die Flächenbreite) -> 2 x 2 */
+.editor-styles-wrapper .highlights-grid { flex-wrap: wrap; }
+.editor-styles-wrapper .hl-card { flex: 1 1 calc(50% - 12px); min-width: 0; }
