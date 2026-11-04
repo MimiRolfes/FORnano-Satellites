@@ -970,6 +970,7 @@ html[data-lang=de] .lang-en {
 }
 
 .metric-n {
+  font-variant-numeric: tabular-nums;
   font-family: var(--fh);
   font-size: 24px;
   font-weight: 600;

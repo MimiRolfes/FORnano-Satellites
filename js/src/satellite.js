@@ -119,6 +119,39 @@
   }, 3000);
 })();
 
+// ── Kennzahlen hochzählen ─────────────────────────────────────
+// Die Zahlen in .metric-n (z. B. "322", "50+") zählen von 0 hoch, sobald der
+// Kennzahlen-Block ins Bild kommt (gleicher Auslöser wie das Einblenden).
+// Der Text bleibt im Editor frei änderbar; Zahlen mit Trennzeichen werden
+// nicht animiert. Ohne JS / bei prefers-reduced-motion bleibt der Endwert.
+(function initMetricCount() {
+  var box = document.querySelector('.metrics');
+  if (!box || window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+
+  var items = [];
+  box.querySelectorAll('.metric-n').forEach(function (el) {
+    var m = el.textContent.trim().match(/^(\D*)(\d+)(\D*)$/);
+    if (!m) return;
+    items.push({ el: el, pre: m[1], to: +m[2], post: m[3] });
+    el.textContent = m[1] + '0' + m[3];
+  });
+  if (!items.length) return;
+
+  var DURATION = 1800; // ms
+  var observer = new IntersectionObserver(function (entries) {
+    if (!entries[0].isIntersecting) return;
+    observer.disconnect();
+    var t0 = performance.now();
+    (function tick(now) {
+      var p = Math.min((now - t0) / DURATION, 1);
+      var eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+      items.forEach(function (i) { i.el.textContent = i.pre + Math.round(i.to * eased) + i.post; });
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
+  }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
+  observer.observe(box);
+})();
+
 // ── Überschriften-Farb-Enthüllung ─────────────────────────────
 // Framer-Komponente "TextReveal": die Sektions-Überschrift startet in
 // einem Grauton und färbt sich beim Scrollen Wort für Wort in die

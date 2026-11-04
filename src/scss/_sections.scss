@@ -145,6 +145,7 @@
   gap: 4px;
 }
 .metric-n {
+  font-variant-numeric: tabular-nums;   // gleich breite Ziffern, damit nichts beim Hochzählen springt
   font-family: var(--fh);
   font-size: 24px;
   font-weight: 600;
