@@ -1,23 +1,27 @@
 // Basis-Skript (auf jeder Seite): Menü, Sprachumschalter, Scroll-Reveal, Überschriften-Effekt, E-Mail kopieren, Buttons.
 
-// Nav-Dropdown öffnen/schließen (der "+"-Button oben rechts in der Navigation)
-const toggle = document.getElementById('nav-toggle');
-const dropdown = document.getElementById('nav-dropdown');
-const backdrop = document.getElementById('nav-backdrop');
+// Nav-Dropdown öffnen/schließen (der "+"-Button oben rechts in der Navigation).
+// Fehlt die Kopfzeile, läuft der Rest des Skripts trotzdem (Reveal, Überschriften-Effekt).
+(function initNav() {
+  const toggle = document.getElementById('nav-toggle');
+  const dropdown = document.getElementById('nav-dropdown');
+  const backdrop = document.getElementById('nav-backdrop');
+  if (!toggle || !dropdown || !backdrop) return;
 
-function setNav(open) {
-  toggle.classList.toggle('open', open);
-  dropdown.classList.toggle('open', open);
-  backdrop.classList.toggle('open', open);
-  toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-}
+  function setNav(open) {
+    toggle.classList.toggle('open', open);
+    dropdown.classList.toggle('open', open);
+    backdrop.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
 
-toggle.addEventListener('click', () => setNav(!dropdown.classList.contains('open')));
-dropdown.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setNav(false)));
-backdrop.addEventListener('click', () => setNav(false));
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && dropdown.classList.contains('open')) { setNav(false); toggle.focus(); }
-});
+  toggle.addEventListener('click', () => setNav(!dropdown.classList.contains('open')));
+  dropdown.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setNav(false)));
+  backdrop.addEventListener('click', () => setNav(false));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && dropdown.classList.contains('open')) { setNav(false); toggle.focus(); }
+  });
+})();
 
 // ── Sprachumschalter (DE/EN) ──────────────────────────────────
 // Jeder Text existiert doppelt im Markup (siehe satellite_i18n() in
