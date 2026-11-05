@@ -120,20 +120,61 @@
 })();
 
 // ── Kennzahlen hochzählen ─────────────────────────────────────
-// Die Zahlen in .metric-n (z. B. "322", "50+") zählen von 0 hoch, sobald der
-// Kennzahlen-Block ins Bild kommt (gleicher Auslöser wie das Einblenden).
-// Der Text bleibt im Editor frei änderbar; Zahlen mit Trennzeichen werden
-// nicht animiert. Ohne JS / bei prefers-reduced-motion bleibt der Endwert.
+// Jede Zahl in .metric-n zählt von 0 hoch, sobald der Kennzahlen-Block ins
+// Bild kommt (gleicher Auslöser wie das Einblenden) — egal was im Editor
+// dort steht: "322", "50+", "60 000 +", "12,5 %", "ca. 1.250 m", mehrere
+// Zahlen in einem Feld. Anderer Text, Formatierungen sowie Tausender-
+// (Leerzeichen, Punkt, Komma) und Dezimaltrennzeichen bleiben erhalten.
+// Ohne JS / bei prefers-reduced-motion bleibt der Endwert.
 (function initMetricCount() {
   var box = document.querySelector('.metrics');
   if (!box || window.matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
 
+  // Zahl = Tausendergruppen ("60 000", "1.250") oder Ganz-/Dezimalzahl ("322", "12,5")
+  var NUMBER = /\d{1,3}(?:[ \u00a0.,]\d{3})+(?!\d)|\d+(?:[.,]\d+)?/g;
+
+  // Text -> Teile: Strings und Zahlen-Objekte { to, sep, dec, decSep }
+  function parse(text) {
+    var parts = [], last = 0, m;
+    NUMBER.lastIndex = 0;
+    while ((m = NUMBER.exec(text))) {
+      var str = m[0], num;
+      if (/^\d{1,3}(?:[ \u00a0.,]\d{3})+$/.test(str)) {
+        num = { to: +str.replace(/\D/g, ''), sep: str.match(/\D/)[0], dec: 0 };
+      } else if (/\D/.test(str)) {
+        var d = str.split(/[.,]/)[1];
+        num = { to: parseFloat(str.replace(',', '.')), sep: '', dec: d.length, decSep: str.match(/\D/)[0] };
+      } else {
+        num = { to: +str, sep: '', dec: 0 };
+      }
+      if (m.index > last) parts.push(text.slice(last, m.index));
+      parts.push(num);
+      last = m.index + str.length;
+    }
+    if (last < text.length) parts.push(text.slice(last));
+    return parts;
+  }
+
+  // Teile -> Text, Zahlen mit dem Anteil "progress" (0..1) ihres Endwerts
+  function render(parts, progress) {
+    return parts.map(function (part) {
+      if (typeof part === 'string') return part;
+      var v = part.to * progress;
+      var str = part.dec ? v.toFixed(part.dec).replace('.', part.decSep) : String(Math.round(v));
+      return part.sep ? str.replace(/\B(?=(\d{3})+(?!\d))/g, part.sep) : str;
+    }).join('');
+  }
+
   var items = [];
   box.querySelectorAll('.metric-n').forEach(function (el) {
-    var m = el.textContent.trim().match(/^(\D*)(\d+)(\D*)$/);
-    if (!m) return;
-    items.push({ el: el, pre: m[1], to: +m[2], post: m[3] });
-    el.textContent = m[1] + '0' + m[3];
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    var node;
+    while ((node = walker.nextNode())) {
+      var parts = parse(node.nodeValue);
+      if (!parts.some(function (part) { return typeof part !== 'string'; })) continue;
+      items.push({ node: node, parts: parts });
+      node.nodeValue = render(parts, 0);
+    }
   });
   if (!items.length) return;
 
@@ -145,7 +186,7 @@
     (function tick(now) {
       var p = Math.min((now - t0) / DURATION, 1);
       var eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
-      items.forEach(function (i) { i.el.textContent = i.pre + Math.round(i.to * eased) + i.post; });
+      items.forEach(function (i) { i.node.nodeValue = render(i.parts, eased); });
       if (p < 1) requestAnimationFrame(tick);
     })(t0);
   }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
