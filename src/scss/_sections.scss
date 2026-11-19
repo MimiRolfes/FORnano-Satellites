@@ -391,6 +391,10 @@
 
   img { max-height: 40px; width: auto; max-width: 100%; object-fit: contain; }
 }
+/* ZfT-Wortbildmarke (4. Karte) ist kompakter als FAU/JMU und braucht mehr Höhe,
+   damit sie optisch gleich groß wirkt. */
+.sponsor-card:nth-child(4) .sponsor-logo img,
+.sponsor-logo img[src*="zft"] { max-height: 56px; }
 .sponsor-name {
   margin: 0;
   font-family: var(--fh);

@@ -11,7 +11,9 @@ npm-debug.log*
 # Repo. Die Patterns prüfen per file_exists(): sind die Dateien lokal da,
 # werden sie gezeigt, sonst rendert die Sektion ohne sie. Eigene Bilder
 # lokal ablegen oder im Website-Editor setzen (siehe patterns/home.php).
-images/highlights/
+# Highlights: eigene, selbst gerenderte Grafiken sind im Repo; die
+# Framer-Originale (Sicherungskopie) bleiben draußen.
+images/highlights/_framer-template/
 images/about-satellite.png
 images/footer-vision.png
 images/tech/

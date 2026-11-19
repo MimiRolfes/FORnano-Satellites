@@ -526,7 +526,7 @@ html[data-lang=de] .lang-en {
   transform: translate(-50%, -50%);
   width: min(90vw, 90vh);
   height: min(90vw, 90vh);
-  z-index: 15; /* unter .hero-container (20), damit der ABOUT-Button klickbar bleibt */
+  z-index: 15; /* unter .hero-container (20); der lässt die Maus durch (pointer-events: none), nur der ABOUT-Button bleibt klickbar */
   pointer-events: all;
 }
 .hero-orb canvas {
@@ -550,6 +550,11 @@ html[data-lang=de] .lang-en {
   display: flex;
   flex-direction: column;
   gap: clamp(64px, 14vh, 180px);
+  pointer-events: none;
+}
+
+.hero-container .wp-block-button {
+  pointer-events: auto;
 }
 
 /* Titelzeile: Überschrift links, Info + Button rechts, an der Grundlinie
@@ -1256,6 +1261,13 @@ html[data-lang=de] .lang-en {
   max-width: 100%;
   -o-object-fit: contain;
      object-fit: contain;
+}
+
+/* ZfT-Wortbildmarke (4. Karte) ist kompakter als FAU/JMU und braucht mehr Höhe,
+   damit sie optisch gleich groß wirkt. */
+.sponsor-card:nth-child(4) .sponsor-logo img,
+.sponsor-logo img[src*=zft] {
+  max-height: 56px;
 }
 
 .sponsor-name {

@@ -216,9 +216,9 @@ foreach ( array(
 	array( 'FAU Erlangen-Nürnberg', 'fau.svg' ),
 	array( 'Julius-Maximilians-Universität Würzburg', 'jmu.svg' ),
 	array( 'DLR – Deutsches Zentrum für Luft- und Raumfahrt', 'dlr.svg' ),
-	array( 'Zentrum für Telematik e.V. (ZfT)', 'zft.svg' ),
-	array( 'FAPS – Lehrstuhl für Fertigungsautomatisierung', 'faps.svg' ),
-	array( 'Bayerische Forschungsstiftung', 'bfs.svg' ),
+	array( 'Zentrum für Telematik e.V. (ZfT)', 'zft.png' ),
+	array( 'FAPS – Lehrstuhl für Fertigungsautomatisierung und Produktionssystematik', 'faps.svg' ),
+	array( 'Bayerische Transformations- und Forschungsstiftung', 'bfs.png' ),
 ) as $satellite_sponsor ) {
 	satellite_open( 'sponsor-card' );
 	satellite_image( 'images/sponsors/' . $satellite_sponsor[1], 'sponsor-logo', $satellite_sponsor[0] );
