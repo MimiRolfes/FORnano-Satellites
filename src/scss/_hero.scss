@@ -75,7 +75,7 @@
   transform: translate(-50%, -50%);
   width: min(90vw, 90vh);
   height: min(90vw, 90vh);
-  z-index: 15; /* unter .hero-container (20), damit der ABOUT-Button klickbar bleibt */
+  z-index: 15; /* unter .hero-container (20); der lässt die Maus durch (pointer-events: none), nur der ABOUT-Button bleibt klickbar */
   pointer-events: all;
 
   canvas {
@@ -100,7 +100,9 @@
   display: flex;
   flex-direction: column;
   gap: clamp(64px, 14vh, 180px);
+  pointer-events: none;   // die Maus geht durch zum Orb darunter (Hover-Effekt), nur der Button bleibt klickbar
 }
+.hero-container .wp-block-button { pointer-events: auto; }
 
 /* Titelzeile: Überschrift links, Info + Button rechts, an der Grundlinie
    ausgerichtet (Framer: stackDistribution space-between, align end). */

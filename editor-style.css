@@ -49,3 +49,7 @@
    (die Tablet-Regel greift hier nicht, der Editor sieht die Fenster-, nicht die Flächenbreite) -> 2 x 2 */
 .editor-styles-wrapper .highlights-grid { flex-wrap: wrap; }
 .editor-styles-wrapper .hl-card { flex: 1 1 calc(50% - 12px); min-width: 0; }
+
+/* Hero-Text im Editor anklickbar (auf der Website lässt er die Maus zum Orb durch) */
+.editor-styles-wrapper .hero-container,
+.editor-styles-wrapper .hero-container * { pointer-events: auto; }
